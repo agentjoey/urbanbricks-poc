@@ -86,7 +86,7 @@ PRODUCT.md 要求「一套叙事覆盖两类客户」，且不得让任一客群
 未核实的事实性数值必须显式包裹才能通过类型检查：
 
 ```ts
-priceBandUsd: unverified({ from: 45000, to: 65000 }),
+priceBand:     unverified({ from: 45000, to: 65000 }),  // 货币来自 site.ts 单一配置
 leadTimeWeeks: unverified({ from: 8, to: 14 }),
 name: 'The Harbor 40',   // 品牌命名，非事实声明，无需包裹
 ```
@@ -212,11 +212,21 @@ leads
 
 ### 域名
 
-**决定：尽快购入真实域名。**
+**已购入并确定为主域名：`urbanbricks.uk`**（Human Owner 决定，2026-07-21）。
 
-Vercel 预览部署带 `X-Robots-Tag: noindex`，搜索引擎不收录；即便推至生产的 `*.vercel.app` 也无品牌信号与域名权重，商业词上无法获得自然流量。域名年龄与索引积累是纯粹的时间函数。
+开发期使用 Vercel 预览域名（带 `X-Robots-Tag: noindex`，不会被收录），站点完成后再绑定 —— 这也避免半成品先被索引。
 
-开发期使用预览域名，域名到手后立即绑定。
+> **风险记录（Human Owner 已知悉并接受）**：目标市场是全球英语市场，但 `.uk` 是国家顶级域，Google 将其硬绑定到英国；ccTLD 在 Search Console 中**无法设置国际定位**。后果是美国、澳洲、加拿大等市场的自然搜索表现将持续受限。
+>
+> 已评估的替代方案：`urbanbricks.com` / `.net` 均已被占；`urbanbricks.co`（$4.99/年，Google 按通用域处理，无地域锁定）曾作为推荐方案提出，Human Owner 选择不采纳。
+>
+> **该取舍是持续成本而非一次性成本**：内容与外链积累越久，将来若迁移主域名，损失的排名权重越大。若后续自然流量数据显示非英国市场表现明显偏弱，应重开此决定，届时迁移成本高于现在。
+
+### 货币与本地化
+
+价格货币**不写入字段名**。`content/site.ts` 导出单一 `currency` 配置，户型数据只存 `priceBand: { from, to }`。原设计的 `priceBandUsd` 会把货币烙进每一条数据，导致更换货币需遍历全部户型；单一配置源使其成为一处改动。
+
+鉴于目标市场为全球英语市场而域名为 `.uk`，货币与计量单位的最终取值列入待办，由 Human Owner 在首批真实流量数据后确认。
 
 ---
 
@@ -322,7 +332,11 @@ Vercel 预览部署带 `X-Robots-Tag: noindex`，搜索引擎不收录；即便�
 
 | 项 | 责任人 | 状态 |
 |---|---|---|
-| 购入真实域名并配置 DNS | Human Owner | 待办（时间敏感）|
+| 域名 `urbanbricks.uk` | Human Owner | ✅ 已购入。站点完成后绑定 Vercel |
+| 货币与计量单位最终取值 | Human Owner | 待定（`content/site.ts` 单一配置，改动成本低）|
+| **交付周期真实数值** | Human Owner | **最高优先级** —— 定位「Open in weeks, not years」整个压在它上面；若真实工期以月/季计，是推翻定位而非改文案 |
+| 3D 渲染图（自有户型） | Human Owner | 待办 —— 图像政策第 1 级，页面主视觉依赖它 |
+| 工厂/工艺过程实拍 | Human Owner | 待办 —— 当前唯一 100% 真实的素材，直接论证「快」的机制 |
 | 结果目标（Baseline → Target 与测量窗口） | Human Owner | 暂缓，首批数据后补齐 |
 | Kimi model pin 是否改为 K3 | Human Owner | 待确认 |
 | Neon 项目开通、连接串写入 Vercel | Primary Agent | 待办 |
