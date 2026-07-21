@@ -1,13 +1,7 @@
-<!-- BEGIN:nextjs-agent-rules -->
-# This is NOT the Next.js you know
-
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
-<!-- END:nextjs-agent-rules -->
-
 <!-- pact:begin (managed by pactify — edit outside this block) -->
-# pact protocol — seat `build`
+# pact protocol — seat `review`
 
-This repo uses the **pact protocol** (v1). You are seat `build`, roles: worker.
+This repo uses the **pact protocol** (v1). You are seat `review`, roles: reviewer.
 
 **Primary — MCP:** the `pact` MCP server is wired into your config. Use its tools
 (projects / status / join / assign / checkpoint / accept / changes / merge / validate) and
@@ -18,8 +12,8 @@ restarting — default is this repo.
 
 **Fallback — shell** (if MCP is unavailable):
 ```bash
-export PACT_AGENT_ID=build
-pactify join build --roles worker
+export PACT_AGENT_ID=review
+pactify join review --roles reviewer
 ```
 then `pactify help` for the verbs.
 
