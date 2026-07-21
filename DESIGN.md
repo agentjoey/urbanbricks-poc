@@ -31,19 +31,19 @@ typography:
     lineHeight: 1.1
     letterSpacing: "-0.015em"
   title:
-    fontFamily: "Golos Text, Helvetica Neue, sans-serif"
+    fontFamily: "Schibsted Grotesk, Helvetica Neue, sans-serif"
     fontSize: "1.125rem"
     fontWeight: 600
     lineHeight: 1.35
     letterSpacing: "normal"
   body:
-    fontFamily: "Golos Text, Helvetica Neue, sans-serif"
+    fontFamily: "Schibsted Grotesk, Helvetica Neue, sans-serif"
     fontSize: "1.0625rem"
     fontWeight: 400
     lineHeight: 1.6
     letterSpacing: "normal"
   label:
-    fontFamily: "Golos Text, Helvetica Neue, sans-serif"
+    fontFamily: "Schibsted Grotesk, Helvetica Neue, sans-serif"
     fontSize: "0.8125rem"
     fontWeight: 500
     lineHeight: 1.3
@@ -153,16 +153,20 @@ Measured against white: Ink 18.81:1 · Muted Ink 7.77:1 · Deep Brass 6.68:1 · 
 ## 3. Typography
 
 **Display Font:** Archivo Expanded (fallback Archivo, Helvetica Neue, sans-serif)
-**Body Font:** Golos Text (fallback Helvetica Neue, sans-serif)
+**Body Font:** Schibsted Grotesk (fallback Helvetica Neue, sans-serif)
 
-Both are grotesques, and the contrast between them is deliberately **width**, not style. Archivo Expanded is broad, planted, and architectural — headlines occupy space the way a building occupies a site. Golos Text is narrow, plain, and undramatic — it reads like documentation, which is exactly the register a delivery promise should be written in. Setting a wide display against a compact body produces real hierarchy without reaching for a serif the brand has no reason to own.
+Both are grotesques, and the contrast between them is deliberately **width**, not style. Archivo Expanded is broad, planted, and architectural — headlines occupy space the way a building occupies a site. Schibsted Grotesk is compact, plain, and undramatic — drawn for news and data interfaces, it reads like documentation, which is exactly the register a delivery promise should be written in. Setting a wide display against a compact body produces real hierarchy without reaching for a serif the brand has no reason to own.
+
+> **Why not Golos Text** (the original choice, replaced 2026-07-22): its `tnum` feature is broken in the upstream source. The `.tf` tabular glyphs exist and the feature applies, but they carry five different advance widths (580/585/605/610/620 per 1000 em) instead of one — verified against `google/fonts` main, v2.004, not a subsetting artifact. Numbers in the spec table would not align, which defeats the signature component. Schibsted Grotesk's tabular digits measure a single advance across all ten, spread 0.
+>
+> The wider lesson, recorded because it cost a rework cycle: **a font advertising `tnum` is not evidence that `tnum` works.** Public Sans and Onest fail the same way; Libre Franklin and Wix Madefor Text have no tabular figures at all. Any future body-font change must be verified at the binary level before it is written into this document.
 
 Both are served self-hosted through `next/font`. No external font requests: this is a performance decision and a privacy one, since a visitor's IP never reaches a third-party font server.
 
 > **Implementation gates — resolve all three before the first page ships.**
 > 1. "Archivo Expanded" is not a separate Google Fonts family; it is Archivo's variable `wdth` axis at roughly 125. `next/font/google` must request it explicitly via `axes: ['wdth']`, and the width must be set in CSS. A plain `Archivo` import will silently render at normal width and the entire width-contrast hierarchy disappears.
 > 2. The fallback chain must carry `size-adjust` / metric overrides. An expanded display face falling back to Helvetica Neue is a large metric jump and will cause visible layout shift.
-> 3. The spec table depends on tabular figures. Confirm the served Golos Text build exposes `tnum`; some Google Fonts subsets strip feature variants. If it does not, the signature component loses its alignment and the font choice must be revisited.
+> 3. The spec table depends on tabular figures. Confirm the served Schibsted Grotesk build exposes a **working** `tnum` — not merely that the feature is listed. Verify at the binary level that all ten tabular digit glyphs carry one identical advance width. Golos Text passed the "is the feature present" check and still failed here.
 >
 > The pairing itself is a recommendation, not a locked decision. If Archivo Expanded proves unusable, the replacement must still provide the width-contrast axis and must not appear on the reflex-reject list.
 
@@ -228,7 +232,7 @@ Cards are used only where the content is genuinely a set of peers — the model 
 Every field has a persistent visible label. Placeholder-as-label is forbidden.
 
 ### Navigation
-- Golos Text at Label size, ink, sentence case. The active item carries a 2px **Deep Brass** underline plus a weight step to 600 — Deep Brass rather than Brass because an active-state indicator is a UI component under WCAG 1.4.11 and needs 3:1 (Brass on white is only 2.33:1), and the weight step means the state survives for anyone who cannot see the colour at all. Sticky on scroll with the hairline rule, never a shadow. Below 900px it collapses to a full-height sheet with the quote CTA pinned to the bottom, thumb-reachable.
+- Schibsted Grotesk at Label size, ink, sentence case. The active item carries a 2px **Deep Brass** underline plus a weight step to 600 — Deep Brass rather than Brass because an active-state indicator is a UI component under WCAG 1.4.11 and needs 3:1 (Brass on white is only 2.33:1), and the weight step means the state survives for anyone who cannot see the colour at all. Sticky on scroll with the hairline rule, never a shadow. Below 900px it collapses to a full-height sheet with the quote CTA pinned to the bottom, thumb-reachable.
 
 ### The Module Grid (signature system)
 
@@ -239,7 +243,7 @@ This is what the brand actually owns. The palette is a reasonable answer to "not
 Where a layout cannot resolve to whole cells, the layout is wrong — not the grid. On mobile the grid collapses to a single cell width and the ratio is preserved in image crops, which is what keeps the system recognisable at every size.
 
 ### Spec Table (signature component)
-The component the automotive-configurator reference exists to justify, and the one that carries the brand's credibility. A two-column list — Label left in Muted Ink, value right in Ink — separated by 1px Line rules, no zebra striping, no card wrapper, no icons. Values are set in Golos Text with tabular figures so numbers align down the column.
+The component the automotive-configurator reference exists to justify, and the one that carries the brand's credibility. A two-column list — Label left in Muted Ink, value right in Ink — separated by 1px Line rules, no zebra striping, no card wrapper, no icons. Values are set in Schibsted Grotesk with tabular figures so numbers align down the column.
 
 Delivery-window and price-band rows are the exception that earns brass: the value sits in Deep Brass at Title weight. In development, any value still wrapped in `unverified()` renders with a visible marker so unconfirmed figures cannot be mistaken for facts during review.
 
@@ -252,7 +256,7 @@ Delivery-window and price-band rows are the exception that earns brass: the valu
 - **Do** follow the three-tier imagery policy: labelled renders lead, real process photography where it exists, stock for context only. Zero imagery is a defect, not restraint.
 - **Do** resolve every major composition to whole cells of the Module Grid, and keep the grid visible rather than merely underlying.
 - **Do** swap in the dark-surface token whenever content sits on Ink Surface — Brass not Deep Brass for figures, Muted On Dark for labels, On Dark for the focus ring.
-- **Do** build hierarchy from width and weight — Archivo Expanded against Golos Text.
+- **Do** build hierarchy from width and weight — Archivo Expanded against Schibsted Grotesk.
 - **Do** give every claim a number, a date, or a named responsibility.
 - **Do** keep every surface flat at rest; shadows are a response to interaction only.
 - **Do** provide a `prefers-reduced-motion` alternative for every transition — motion is responsive feedback, not choreography.
