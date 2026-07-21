@@ -97,3 +97,10 @@ features:
         spec: .pact/tasks/_DECOMPOSITION.md
         evidence: null
         deps: [f4-shell, c3-image]
+      - id: p7-privacy
+        owner: build
+        status: assigned
+        reviewer: review
+        spec: .pact/tasks/_DECOMPOSITION.md
+        evidence: null
+        deps: [f4-shell]
