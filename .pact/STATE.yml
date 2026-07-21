@@ -48,3 +48,10 @@ features:
         spec: .pact/tasks/_DECOMPOSITION.md
         evidence: null
         deps: [f1-tokens, f2-content]
+      - id: c3-image
+        owner: build
+        status: assigned
+        reviewer: review
+        spec: .pact/tasks/_DECOMPOSITION.md
+        evidence: null
+        deps: [f1-tokens]
