@@ -5,3 +5,13 @@ agents:
   - { id: build, roles: [worker] }
   - { id: lead, roles: [orchestrator] }
 features:
+  - id: poc
+    branch: feat/poc
+    status: in_progress
+    tasks:
+      - id: f1-tokens
+        owner: build
+        status: assigned
+        reviewer: review
+        spec: .pact/tasks/_DECOMPOSITION.md
+        evidence: null
