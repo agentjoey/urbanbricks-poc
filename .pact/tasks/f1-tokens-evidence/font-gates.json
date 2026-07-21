@@ -1,0 +1,61 @@
+{
+  "status": "done",
+  "fontsLoaded": [
+    "Archivo unloaded",
+    "Archivo unloaded",
+    "Archivo loaded",
+    "Golos Text unloaded",
+    "Golos Text unloaded",
+    "Golos Text unloaded",
+    "Golos Text loaded",
+    "Archivo Fallback loaded",
+    "Golos Text Fallback loaded",
+    "__nextjs-Geist unloaded",
+    "__nextjs-Geist Mono unloaded",
+    "__nextjs-Geist unloaded",
+    "__nextjs-Geist Mono unloaded"
+  ],
+  "gate1_wdth": {
+    "computedFontStretch": "125%",
+    "expandedWidthPx": 868.45,
+    "normalWidthPx": 678.67,
+    "ratio": 1.28
+  },
+  "gate2_fallback_metrics": {
+    "archivoFallbackRegistered": true,
+    "golosFallbackRegistered": true,
+    "archivoHeightPx": 19,
+    "archivoFallbackHeightPx": 19,
+    "rawArialHeightPx": 19,
+    "golosHeightPx": 21,
+    "golosFallbackHeightPx": 21,
+    "arialRawWidthPx": 341.39,
+    "golosFallbackWidthPx": 370.63,
+    "archivoFallbackWidthPx": 336.92
+  },
+  "gate3_tnum": {
+    "note": "Golos Text 64px; same 8-char strings, digits 1 vs 8",
+    "tnumOff": {
+      "11111.11": 236.48,
+      "88888.88": 292.48
+    },
+    "tnumOn": {
+      "11111.11": 296.97,
+      "88888.88": 292.48
+    },
+    "tnumOnAbsDeltaPx": 4.49,
+    "perDigitWidthTnumOn": {
+      "0": 39.69,
+      "1": 39.69,
+      "2": 37.13,
+      "3": 37.45,
+      "4": 39.69,
+      "5": 37.13,
+      "6": 38.73,
+      "7": 39.69,
+      "8": 39.05,
+      "9": 38.73
+    },
+    "perDigitMaxDeltaPx": 2.56
+  }
+}

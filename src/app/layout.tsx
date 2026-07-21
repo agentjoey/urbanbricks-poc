@@ -1,15 +1,24 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Archivo, Golos_Text } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Display face (DESIGN.md § Typography): Archivo with its variable `wdth` axis
+// requested explicitly — without `axes: ["wdth"]` the font ships at normal width
+// and the width-contrast hierarchy disappears. The expanded rendering
+// (font-stretch: 125%) is applied in globals.css. `adjustFontFallback` is on by
+// default, emitting size-adjust/ascent-override metrics on the fallback face.
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
+  axes: ["wdth"],
+  fallback: ["Archivo", "Helvetica Neue", "sans-serif"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// Body face: Golos Text. The spec table depends on its tabular figures (`tnum`).
+const golosText = Golos_Text({
+  variable: "--font-golos",
   subsets: ["latin"],
+  fallback: ["Helvetica Neue", "sans-serif"],
 });
 
 export const metadata: Metadata = {
@@ -25,7 +34,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${archivo.variable} ${golosText.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

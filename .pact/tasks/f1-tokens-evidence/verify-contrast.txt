@@ -1,0 +1,21 @@
+
+> scaffold@0.1.0 verify:contrast /Users/xtation/AgentWorks/CodeSpace/urbanbricks-poc
+> node scripts/verify-contrast.mjs
+
+PASS  ink on white               18.81:1 (min 4.5)
+PASS  inkMuted on white          7.77:1 (min 4.5)
+PASS  brassDeep on white         6.68:1 (min 4.5)
+PASS  stroke on white (UI)       3.37:1 (min 3)
+PASS  ink on brass (btn)         8.07:1 (min 4.5)
+PASS  ink on brassHover          5.29:1 (min 4.5)
+PASS  destructive on white       4.76:1 (min 4.5)
+PASS  success on white           5.65:1 (min 4.5)
+PASS  onDark on dark             15.78:1 (min 4.5)
+PASS  mutedOnDark on dark        7.68:1 (min 4.5)
+PASS  brass on dark (figures)    7.60:1 (min 4.5)
+PASS  onDark ring on dark (UI)   15.78:1 (min 3)
+PASS  destructiveDark on dark    5.65:1 (min 4.5)
+PASS  successDark on dark        8.45:1 (min 4.5)
+PASS  brass->hover shift         1.53:1 (min 1.5)
+
+ALL PASS
