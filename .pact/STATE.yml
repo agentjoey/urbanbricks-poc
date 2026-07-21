@@ -125,3 +125,10 @@ features:
         spec: .pact/tasks/_DECOMPOSITION.md
         evidence: null
         deps: [p2-detail, c1-form, p7-privacy]
+      - id: x3-verify
+        owner: build
+        status: assigned
+        reviewer: review
+        spec: .pact/tasks/_DECOMPOSITION.md
+        evidence: null
+        deps: [x1-seo, x2-analytics, a1-admin]
