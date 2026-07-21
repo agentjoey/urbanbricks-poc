@@ -11,7 +11,7 @@ features:
     tasks:
       - id: f1-tokens
         owner: build
-        status: assigned
+        status: in_progress
         reviewer: review
         spec: .pact/tasks/_DECOMPOSITION.md
         evidence: null
