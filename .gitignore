@@ -10,3 +10,6 @@ build/
 *.log
 .turbo/
 next-env.d.ts
+
+# impeccable live-mode runtime state (local only)
+.impeccable/live/sessions/
