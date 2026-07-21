@@ -6,11 +6,23 @@
    No light/dark theme toggle: "Ink Surface" is a section treatment, not a theme.
    Dark sections opt in via the `.ink-surface` scope below (see the Every-Surface Rule). */
 
+/* Structural dark-mode prohibition (DESIGN.md forbids a light/dark theme).
+   Tailwind's `dark:` variant is media-based by default; redefining it to the
+   class strategy makes `dark:*` utilities inert unless a `.dark` class exists —
+   and nothing in this system ever adds one. This keeps the app from responding
+   to `prefers-color-scheme` no matter what later markup ships. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* Fallback metric overrides (DESIGN.md § Typography, implementation gate 2).
    Next 16's Turbopack build does not emit next/font's automatic adjusted
-   fallback face (verified: no ascent-override/size-adjust in the built CSS),
-   so the overrides are declared explicitly. Metrics are Next's own
-   precalculated values for these families (next/dist/server/font-utils). */
+   fallback face (verified: no ascent-override/size-adjust in the built CSS —
+   the injection lives in a webpack-only postcss pass, next-font-loader), so
+   the overrides are declared explicitly. Metrics are Next's own precalculated
+   capsize values for these families (next/dist/server/capsize-font-metrics.json).
+   The next/font calls in layout.tsx deliberately omit `fallback:` so the CSS
+   variables hold ONLY the real family name — the override face must sit
+   immediately after it and before any generic family, or it is unreachable
+   (a generic always matches, so anything after `sans-serif` is dead). */
 @font-face {
   font-family: "Archivo Fallback";
   src: local("Arial");
@@ -21,12 +33,12 @@
 }
 
 @font-face {
-  font-family: "Golos Text Fallback";
+  font-family: "Schibsted Grotesk Fallback";
   src: local("Arial");
-  ascent-override: 90.27%;
-  descent-override: 20.26%;
+  ascent-override: 93.46%;
+  descent-override: 24.67%;
   line-gap-override: 0%;
-  size-adjust: 108.57%;
+  size-adjust: 104.49%;
 }
 
 @theme inline {
@@ -42,6 +54,8 @@
   --color-stroke: var(--stroke);
   --color-ink-muted-on-dark: var(--ink-muted-on-dark);
   --color-on-dark: var(--on-dark);
+  --color-line-on-dark: var(--line-on-dark);
+  --color-stroke-on-dark: var(--stroke-on-dark);
   --color-destructive: var(--destructive);
   --color-destructive-on-dark: var(--destructive-on-dark);
   --color-success: var(--success);
@@ -82,8 +96,10 @@
   --shadow-detached: 0 8px 32px oklch(0.18 0.008 75 / 0.12);
 
   /* Typography — display face is Archivo with the variable `wdth` axis, rendered
-     expanded at 125 (font-stretch is applied where the display face is used). */
-  --font-sans: var(--font-golos), "Golos Text Fallback", "Helvetica Neue", sans-serif;
+     expanded at 125 (font-stretch is applied where the display face is used).
+     Body face is Schibsted Grotesk. Each stack puts its metric-adjusted
+     fallback face immediately after the real family, before any generic. */
+  --font-sans: var(--font-schibsted), "Schibsted Grotesk Fallback", "Helvetica Neue", sans-serif;
   --font-display: var(--font-archivo), "Archivo Fallback", Archivo, "Helvetica Neue", sans-serif;
   --font-heading: var(--font-display);
 
@@ -124,6 +140,8 @@
   --stroke: oklch(0.64 0.006 75);
   --ink-muted-on-dark: oklch(0.74 0.006 75);
   --on-dark: oklch(0.96 0.004 75);
+  --line-on-dark: oklch(0.32 0.008 75);
+  --stroke-on-dark: oklch(0.52 0.008 75);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-on-dark: oklch(0.68 0.19 27.325);
   --success: oklch(0.5 0.13 150);
@@ -148,15 +166,19 @@
   --input: var(--stroke);
   --ring: var(--ink);
 
-  /* Module Grid (DESIGN.md § The Module Grid) */
-  --module-cell-min: 18rem; /* smallest cell width before the grid collapses to one column */
-  --module-gap: var(--spacing-xs); /* gutter, proportional to the joining gap between modules */
+  /* Module Grid (DESIGN.md § The Module Grid). The gutter is proportional to
+     the cell, mirroring the product: the joining gap between joined modules is
+     declared as 1/40 of the module length, so the gutter is 0.025 × cell width.
+     The grid below derives both gutters and the stacked crop from this one
+     constant — change it here and the whole system follows. */
+  --module-gap-ratio: 0.025;
 }
 
 /* Ink Surface — a dark SECTION treatment, not a theme. Applying `.ink-surface`
    to a band swaps in the mandatory dark-surface counterparts (the Every-Surface
    Rule): Brass instead of Deep Brass for figures, Muted On Dark for secondary
-   copy, On Dark for the focus ring, and the on-dark state colours. */
+   copy, On Dark for the focus ring, Line/Stroke On Dark for hairlines and
+   interactive boundaries, and the on-dark state colours. */
 .ink-surface {
   --background: var(--surface-ink);
   --foreground: var(--on-dark);
@@ -174,13 +196,26 @@
   --destructive: var(--destructive-on-dark);
   --success: var(--success-on-dark);
   --ring: var(--on-dark);
+  --border: var(--line-on-dark);
+  --input: var(--stroke-on-dark);
   background-color: var(--surface-ink);
   color: var(--on-dark);
+  /* DESIGN.md §2: body text on Ink Surface raises line-height by 0.05 (1.6 → 1.65). */
+  line-height: 1.65;
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
+  }
+  /* Focus ring (DESIGN.md §5): a 2px ring offset 2px, Ink on light surfaces.
+     `.ink-surface` redefines --ring to --on-dark, so the surface decides the
+     ring — an ink ring on Ink Surface is 1.06:1 and invisible. Full alpha:
+     shadcn's stock `outline-ring/50` dilutes Ink to ~1.9:1 on white, below
+     the 3:1 that WCAG 1.4.11 / 2.4.11 require of a focus indicator. */
+  *:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
   }
   html {
     @apply font-sans;
@@ -190,33 +225,103 @@
     text-wrap: pretty;
   }
   h1,
-  h2,
-  h3 {
+  h2 {
     font-family: var(--font-display);
     /* Archivo Expanded: the variable `wdth` axis at 125. Without this the face
        renders at normal width and the width-contrast hierarchy disappears. */
     font-stretch: 125%;
+  }
+  /* Balance Rule (DESIGN.md §3): text-wrap only. Title-level headings (h3)
+     stay in the body face — the Hierarchy assigns Title to Schibsted Grotesk,
+     not to Archivo Expanded. */
+  h1,
+  h2,
+  h3 {
     text-wrap: balance;
   }
 }
 
-/* Module Grid utilities (DESIGN.md § The Module Grid).
-   Compositions resolve to whole cells: a 40ft model spans two cells, a stacked
-   two-storey build spans two cells vertically. */
-@utility grid-modules {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(var(--module-cell-min), 100%), 1fr));
-  gap: var(--module-gap);
+/* Module Grid (DESIGN.md § The Module Grid) — the signature system. The 5:2
+   base cell derives from the 20ft container footprint (20×8ft); a 40ft module
+   is two cells side by side, a stacked two-storey build two cells vertically.
+   The column count is FIXED per breakpoint (never auto-fit) so every cell
+   boundary is addressable — hairline rules land on cell boundaries and process
+   steps step across cells. The gutter is proportional: r × cell width, with
+   r = --module-gap-ratio (the joining gap, 1/40 of the module length).
+   Derivation: with n columns and gutter g = r·cell, cell = (100% − (n−1)·g)/n,
+   which solves to g = 100% · r / (n + r·(n−1)) — the formula used below. */
+@layer components {
+  .grid-modules {
+    --module-cols: 1;
+    --_module-gutter: calc(
+      100% * var(--module-gap-ratio) /
+        (var(--module-cols) + var(--module-gap-ratio) * (var(--module-cols) - 1))
+    );
+    display: grid;
+    grid-template-columns: repeat(var(--module-cols), minmax(0, 1fr));
+    column-gap: var(--_module-gutter);
+    /* Cancels the last row's gutter margin below. Exact while the grid fills
+       its containing block inline size, which is how this primitive is used. */
+    margin-block-end: calc(-1 * var(--_module-gutter));
+  }
+
+  /* Row gutter. A percentage `row-gap` resolves against the grid's own
+     (indefinite) block size, so it cannot express r × cell; a grid item's
+     percentage margin resolves against its grid AREA — the cell width — so
+     the row gutter is exactly r × cell. Grid-item margins never collapse,
+     and each row's gutter is the margin of its tallest-spanning item. */
+  .grid-modules > * {
+    margin-block-end: calc(100% * var(--module-gap-ratio));
+  }
+
+  @media (min-width: 48rem) {
+    .grid-modules {
+      --module-cols: 2;
+    }
+  }
+
+  @media (min-width: 80rem) {
+    .grid-modules {
+      --module-cols: 4;
+    }
+  }
+
+  /* Whole-cell spans. A span never exceeds the track count at its breakpoint —
+   "where a layout cannot resolve to whole cells, the layout is wrong, not the
+   grid" — so spans collapse to one cell below the breakpoint that can hold
+   them instead of creating implicit tracks. The gutter margin of a spanning
+   item is rescaled to r × ONE cell: its grid area is N cells + (N−1) gutters
+   wide, and cell = area / (N + r·(N−1)) by the same derivation as above. */
+  .cell-span-2,
+  .cell-span-3 {
+    grid-column: span 1;
+  }
+
+  @media (min-width: 48rem) {
+    .cell-span-2 {
+      grid-column: span 2;
+    }
+    .grid-modules > .cell-span-2 {
+      margin-block-end: calc(
+        100% * var(--module-gap-ratio) / (2 + var(--module-gap-ratio))
+      );
+    }
+  }
+
+  @media (min-width: 80rem) {
+    .cell-span-3 {
+      grid-column: span 3;
+    }
+    .grid-modules > .cell-span-3 {
+      margin-block-end: calc(
+        100% * var(--module-gap-ratio) / (3 + 2 * var(--module-gap-ratio))
+      );
+    }
+  }
 }
 
-@utility cell-span-2 {
-  grid-column: span 2;
-}
-
-@utility cell-span-3 {
-  grid-column: span 3;
-}
-
+/* Two 5:2 cells stacked plus one joining gutter: height = 2 + 2 + 5r in cell
+   units = 4.125 at r = 0.025. Derived from --module-gap-ratio; keep in sync. */
 @utility aspect-module-stacked {
-  aspect-ratio: 5 / 4;
+  aspect-ratio: 5 / 4.125;
 }

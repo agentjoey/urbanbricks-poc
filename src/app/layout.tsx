@@ -1,24 +1,31 @@
 import type { Metadata } from "next";
-import { Archivo, Golos_Text } from "next/font/google";
+import { Archivo, Schibsted_Grotesk } from "next/font/google";
 import "./globals.css";
 
 // Display face (DESIGN.md § Typography): Archivo with its variable `wdth` axis
 // requested explicitly — without `axes: ["wdth"]` the font ships at normal width
 // and the width-contrast hierarchy disappears. The expanded rendering
-// (font-stretch: 125%) is applied in globals.css. `adjustFontFallback` is on by
-// default, emitting size-adjust/ascent-override metrics on the fallback face.
+// (font-stretch: 125%) is applied in globals.css.
+//
+// `fallback` is deliberately omitted on both faces so each CSS variable holds
+// ONLY the real family name. Next 16's Turbopack build does not emit
+// next/font's automatic metric-adjusted fallback face (the injection is a
+// webpack-only postcss pass), so the adjusted faces are declared by hand in
+// globals.css and must sit immediately after the real family in the stack —
+// passing `fallback: [...]` here would bake generic families into the variable
+// and push the adjusted face behind `sans-serif`, where it is unreachable.
 const archivo = Archivo({
   variable: "--font-archivo",
   subsets: ["latin"],
   axes: ["wdth"],
-  fallback: ["Archivo", "Helvetica Neue", "sans-serif"],
 });
 
-// Body face: Golos Text. The spec table depends on its tabular figures (`tnum`).
-const golosText = Golos_Text({
-  variable: "--font-golos",
+// Body face: Schibsted Grotesk. The spec table depends on its tabular figures
+// (`tnum`) — verified working at the binary level on the served woff2 (all ten
+// tabular digits at one advance width, spread 0; see .pact/tasks/f1-tokens-evidence/).
+const schibstedGrotesk = Schibsted_Grotesk({
+  variable: "--font-schibsted",
   subsets: ["latin"],
-  fallback: ["Helvetica Neue", "sans-serif"],
 });
 
 export const metadata: Metadata = {
@@ -32,11 +39,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${archivo.variable} ${golosText.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="en" className={`${archivo.variable} ${schibstedGrotesk.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }

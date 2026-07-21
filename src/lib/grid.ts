@@ -7,24 +7,25 @@
  * occupies two cells vertically. Every major composition resolves to whole
  * cells — where a layout cannot, the layout is wrong, not the grid.
  *
- * The matching CSS custom properties (`--module-cell-min`, `--module-gap`,
- * `--aspect-module`) and utilities (`grid-modules`, `cell-span-*`,
- * `aspect-module`, `aspect-module-stacked`) live in `src/app/globals.css`.
+ * The gutter is proportional to the cell: the joining gap between joined
+ * modules is 1/40 of the module length, so the gutter is
+ * MODULE_GAP_RATIO × cell width. The stacked crop below is two cells plus one
+ * gutter: height = 2 + 2 + 5·r in cell units (the gutter scales with the cell
+ * WIDTH, and a cell is 5 wide), i.e. 4.125 at r = 0.025.
+ *
+ * The matching CSS (`--module-gap-ratio`, `--aspect-module`, `.grid-modules`,
+ * `.cell-span-*`, `aspect-module`, `aspect-module-stacked`) lives in
+ * `src/app/globals.css`.
  */
 
 /** Base cell proportions (20ft × 8ft footprint). */
 export const MODULE_CELL = { width: 5, height: 2 } as const;
 
+/** Joining gap between modules, as a fraction of the module length. */
+export const MODULE_GAP_RATIO = 0.025 as const;
+
 /** Aspect ratio of a single cell, for image crops (`aspect-module`). */
 export const MODULE_ASPECT = "5 / 2";
 
 /** Aspect ratio of two cells stacked vertically (`aspect-module-stacked`). */
-export const MODULE_ASPECT_STACKED = "5 / 4";
-
-/**
- * Total width of `cells` whole cells laid side by side, including the joining
- * gaps between them. All dimensions in the same unit.
- */
-export function moduleWidth(cells: number, cellWidth: number, gap: number): number {
-  return cells * cellWidth + Math.max(0, cells - 1) * gap;
-}
+export const MODULE_ASPECT_STACKED = "5 / 4.125";
