@@ -240,7 +240,11 @@ Every field has a persistent visible label. Placeholder-as-label is forbidden.
 
 ### The Module Grid (signature system)
 
-The layout grid is not a generic 12-column scaffold. It is derived from the real dimensions of the containers urbanbricks builds from: a 20ft module is 20×8ft, a 40ft module is 40×8ft. The page grid uses a **5:2 base cell** (the 20ft footprint) with a gutter proportional to the joining gap between stacked modules, and every major composition resolves to whole cells — a 40ft model occupies two cells, a stacked two-storey build occupies two cells vertically.
+The layout grid is not a generic 12-column scaffold. It is derived from the real dimensions of the containers urbanbricks builds from: a 20ft module is 20×8ft, a 40ft module is 40×8ft. The page grid uses a **5:2 base cell** (the 20ft footprint), and every major composition resolves to whole cells — a 40ft model occupies two cells, a stacked two-storey build occupies two cells vertically.
+
+**Gutter ratio: `0.025` of the cell width** — the joining gap between mated modules, taken as 1/40 of the module length (six inches on a twenty-foot module). Every derived measure follows from this one number, including the stacked crop: two cells plus one gutter is `2 + 2 + 5r` cell-height units, so `aspect-module-stacked` is `5 / 4.125`. Change the ratio and both follow; do not hand-tune either.
+
+**Column counts are fixed per breakpoint, never `auto-fit`.** `auto-fit` makes the number of tracks depend on available width, which leaves cell boundaries unaddressable — and an addressable boundary is the whole point, because hairline rules land on cell boundaries and process steps step across cells. A grid whose cells cannot be named is a generic grid wearing this system's vocabulary.
 
 This is what the brand actually owns. The palette is a reasonable answer to "not industrial, not Scandinavian"; the grid is an answer nobody else in this category has, because it is derived from the product rather than chosen from a mood board. It must therefore be **visible, not merely underlying**: hairline rules land on cell boundaries, image crops obey the 5:2 ratio, the model grid's cards are literal module footprints, and the process band's steps step across cells rather than sitting in equal thirds.
 
