@@ -13,6 +13,8 @@ colors:
   stroke: "oklch(0.64 0.006 75)"
   ink-muted-on-dark: "oklch(0.74 0.006 75)"
   on-dark: "oklch(0.96 0.004 75)"
+  line-on-dark: "oklch(0.32 0.008 75)"
+  stroke-on-dark: "oklch(0.52 0.008 75)"
   destructive: "oklch(0.577 0.245 27.325)"
   destructive-on-dark: "oklch(0.68 0.19 27.325)"
   success: "oklch(0.50 0.13 150)"
@@ -130,6 +132,8 @@ An achromatic system — pure white and near-black — interrupted by a single w
 - **Ink Surface** (`oklch(0.21 0.012 75)`): full-bleed dark sections used for rhythm — the delivery-process band, the closing quote block. Body text on it lifts to **On Dark** (`oklch(0.96 0.004 75)`, 15.78:1) with line-height raised by 0.05.
 - **Muted On Dark** (`oklch(0.74 0.006 75)`, 7.68:1): the dark-surface counterpart to Muted Ink. Spec labels and captions inside an Ink Surface band use this. Muted Ink itself measures 2.28:1 on Ink Surface and is prohibited there.
 - **Line** (`oklch(0.90 0.004 75)`): purely decorative hairlines — spec-table dividers, section rules, card edges. 1px, always. At 1.35:1 against white it is deliberately below the UI-component threshold, which is permitted only because it never carries meaning or bounds a control.
+- **Line On Dark** (`oklch(0.32 0.008 75)`, 1.40:1 against Ink Surface): the dark-surface counterpart to Line. Decorative hairlines only, same exemption and same prohibition — it never bounds a control. Reusing Line itself inside a dark band produces a ~13.9:1 near-white rule where a hairline was intended, which is a visual defect even though it passes contrast.
+- **Stroke On Dark** (`oklch(0.52 0.008 75)`, 3.22:1 against Ink Surface): the dark-surface boundary for anything interactive. Clears the 3:1 WCAG 1.4.11 threshold on Ink Surface, which the light Stroke does not (2.28:1 there).
 - **Stroke** (`oklch(0.64 0.006 75)`): the boundary of anything interactive — input fields, select triggers, checkbox and radio outlines, secondary button borders. Clears 3:1 against white (3.37:1) as WCAG 1.4.11 requires for UI component boundaries. Line is never substituted here; a 1.35:1 field border is a failure, not a lighter aesthetic.
 
 ### State
