@@ -2,6 +2,12 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* Never scan the pact ledger for utility candidates: it is append-only
+   protocol text (evidence, reviews) and any class-shaped string in it —
+   e.g. a utility name quoted in a review comment — would otherwise be
+   emitted into the production CSS as dead bytes. */
+@source not "../../.pact";
+
 /* urbanbricks design tokens — DESIGN.md is normative. All values OKLCH as specified.
    No light/dark theme toggle: "Ink Surface" is a section treatment, not a theme.
    Dark sections opt in via the `.ink-surface` scope below (see the Every-Surface Rule). */
@@ -13,34 +19,17 @@
    to `prefers-color-scheme` no matter what later markup ships. */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Fallback metric overrides (DESIGN.md § Typography, implementation gate 2).
-   Next 16's Turbopack build does not emit next/font's automatic adjusted
-   fallback face (verified: no ascent-override/size-adjust in the built CSS —
-   the injection lives in a webpack-only postcss pass, next-font-loader), so
-   the overrides are declared explicitly. Metrics are Next's own precalculated
-   capsize values for these families (next/dist/server/capsize-font-metrics.json).
-   The next/font calls in layout.tsx deliberately omit `fallback:` so the CSS
-   variables hold ONLY the real family name — the override face must sit
-   immediately after it and before any generic family, or it is unreachable
-   (a generic always matches, so anything after `sans-serif` is dead). */
-@font-face {
-  font-family: "Archivo Fallback";
-  src: local("Arial");
-  ascent-override: 88.96%;
-  descent-override: 21.28%;
-  line-gap-override: 0%;
-  size-adjust: 98.7%;
-}
-
-@font-face {
-  font-family: "Schibsted Grotesk Fallback";
-  src: local("Arial");
-  ascent-override: 93.46%;
-  descent-override: 24.67%;
-  line-gap-override: 0%;
-  size-adjust: 104.49%;
-}
-
+/* Fallback metric overrides (DESIGN.md § Typography, implementation gate 2)
+   are emitted by next/font itself in this build: with `fallback:` omitted in
+   layout.tsx, the production CSS carries next/font's own adjusted faces
+   ("Archivo Fallback" at size-adjust 98.7%, "Schibsted Grotesk Fallback" at
+   104.49% — Next's precalculated capsize metrics) and sets each CSS variable
+   to the real family immediately followed by that adjusted face. The stacks
+   in @theme below therefore go straight from the variable to generic
+   families. An earlier revision declared these faces by hand under the
+   belief that Turbopack never emitted them; that was true of the then-current
+   configuration (which passed `fallback:`), not of this one — the hand-declared
+   duplicates were removed. */
 @theme inline {
   /* Brand palette */
   --color-brass: var(--brass);
@@ -97,10 +86,13 @@
 
   /* Typography — display face is Archivo with the variable `wdth` axis, rendered
      expanded at 125 (font-stretch is applied where the display face is used).
-     Body face is Schibsted Grotesk. Each stack puts its metric-adjusted
-     fallback face immediately after the real family, before any generic. */
-  --font-sans: var(--font-schibsted), "Schibsted Grotesk Fallback", "Helvetica Neue", sans-serif;
-  --font-display: var(--font-archivo), "Archivo Fallback", Archivo, "Helvetica Neue", sans-serif;
+     Body face is Schibsted Grotesk. next/font already sets each variable to the
+     real family followed by its metric-adjusted fallback face (see the comment
+     above @theme), so each stack goes straight from the variable to generic
+     families — re-adding the fallback name here would only double it in the
+     computed stack. */
+  --font-sans: var(--font-schibsted), "Helvetica Neue", sans-serif;
+  --font-display: var(--font-archivo), "Helvetica Neue", sans-serif;
   --font-heading: var(--font-display);
 
   /* Type scale (DESIGN.md § Typography → Hierarchy) */
@@ -200,7 +192,23 @@
   --input: var(--stroke-on-dark);
   background-color: var(--surface-ink);
   color: var(--on-dark);
-  /* DESIGN.md §2: body text on Ink Surface raises line-height by 0.05 (1.6 → 1.65). */
+  /* DESIGN.md §2: body text on Ink Surface raises line-height by 0.05 (1.6 → 1.65).
+     This declaration only reaches text that INHERITS its line-height — see the
+     companion rule below for elements carrying the Body utility. */
+  line-height: 1.65;
+}
+
+/* The §2 raise must survive the Body utility, not just inheritance. Because the
+   type scale lives under `@theme inline`, Tailwind 4 compiles `.text-body` to a
+   LITERAL `line-height: var(--tw-leading, 1.6)` on the element itself, and an
+   element's own declaration always beats an inherited one — so the 1.65 above
+   never reached real body copy. This explicit scoped override targets the
+   element (unlayered author CSS outranks `@layer utilities`, whatever the
+   specificity). Chosen over scoping Tailwind's internal `--tw-leading`, which
+   would work (`var(--tw-leading, 1.6)` reads the variable first) but couples
+   the design system to a framework implementation detail that can change in
+   any minor release. */
+.ink-surface .text-body {
   line-height: 1.65;
 }
 
@@ -211,8 +219,9 @@
   /* Focus ring (DESIGN.md §5): a 2px ring offset 2px, Ink on light surfaces.
      `.ink-surface` redefines --ring to --on-dark, so the surface decides the
      ring — an ink ring on Ink Surface is 1.06:1 and invisible. Full alpha:
-     shadcn's stock `outline-ring/50` dilutes Ink to ~1.9:1 on white, below
-     the 3:1 that WCAG 1.4.11 / 2.4.11 require of a focus indicator. */
+     shadcn's stock focus ring draws the outline color at half alpha, which
+     dilutes Ink to ~1.9:1 on white, below the 3:1 that WCAG 1.4.11 / 2.4.11
+     require of a focus indicator. */
   *:focus-visible {
     outline: 2px solid var(--ring);
     outline-offset: 2px;
@@ -260,8 +269,13 @@
     display: grid;
     grid-template-columns: repeat(var(--module-cols), minmax(0, 1fr));
     column-gap: var(--_module-gutter);
-    /* Cancels the last row's gutter margin below. Exact while the grid fills
-       its containing block inline size, which is how this primitive is used. */
+    /* Cancels the last row's gutter margin below. CONSTRAINT for f4-shell:
+       this percentage margin resolves against the grid's CONTAINING block,
+       while the item margins it cancels resolve against each item's grid
+       AREA — the cancellation is exact only while .grid-modules fills its
+       containing block's inline size. Never constrain the grid element
+       itself (no max-width / inline-size on .grid-modules); wrap it in a
+       constraining parent instead. */
     margin-block-end: calc(-1 * var(--_module-gutter));
   }
 

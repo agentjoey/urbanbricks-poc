@@ -50,6 +50,27 @@ font-gates-mobile.json       Module grid at 400px: collapses to 1 column;
 
 font-gates-dom.html          DOM dump of the harness page (pre-CDP run; kept for
                              the rendered source).
+
+ink-surface-text-body.json   ROUND 3, item 1 proof — the line-height raise
+                             measured on the REAL path: a production build
+                             (pnpm build && next start) serving a route whose
+                             elements carry the .text-body utility inside
+                             .ink-surface. Element with class text-body inside
+                             .ink-surface computes 17px/28.05px (ratio 1.65);
+                             the same utility on the default surface computes
+                             27.2px (1.6); a plain inheriting element inside
+                             .ink-surface computes 16px/26.4px (1.65). Also
+                             shows the computed body stack with exactly one
+                             "Schibsted Grotesk Fallback" (round-3 dedupe).
+                             The compiled utility itself reads
+                             line-height: var(--tw-leading, 1.6) — a literal,
+                             because the type scale sits under @theme inline —
+                             which is why the raise needed the explicit scoped
+                             override .ink-surface .text-body (unlayered author
+                             CSS outranks @layer utilities) instead of an
+                             inherited value. The probe route
+                             (src/app/probe-f1/) was deleted after the run.
+
 golos-tnum-analysis.txt      Previous round: the Golos Text finding that led to
                              the font swap. Kept for the record.
 

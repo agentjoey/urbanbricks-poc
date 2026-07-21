@@ -7,13 +7,16 @@ import "./globals.css";
 // and the width-contrast hierarchy disappears. The expanded rendering
 // (font-stretch: 125%) is applied in globals.css.
 //
-// `fallback` is deliberately omitted on both faces so each CSS variable holds
-// ONLY the real family name. Next 16's Turbopack build does not emit
-// next/font's automatic metric-adjusted fallback face (the injection is a
-// webpack-only postcss pass), so the adjusted faces are declared by hand in
-// globals.css and must sit immediately after the real family in the stack —
-// passing `fallback: [...]` here would bake generic families into the variable
-// and push the adjusted face behind `sans-serif`, where it is unreachable.
+// `fallback` is deliberately omitted on both faces. With it omitted, THIS
+// build has next/font emit its own metric-adjusted fallback faces
+// ("Archivo Fallback", "Schibsted Grotesk Fallback" — local Arial with
+// ascent/descent/line-gap overrides and Next's precalculated size-adjust)
+// and sets each CSS variable to the real family immediately followed by that
+// adjusted face (verified in the production CSS: --font-schibsted resolves to
+// "Schibsted Grotesk", "Schibsted Grotesk Fallback"). Passing `fallback: [...]`
+// would instead bake generic families into the variable and push the adjusted
+// face behind `sans-serif`, where it is unreachable — a generic always
+// matches, so anything after it is dead.
 const archivo = Archivo({
   variable: "--font-archivo",
   subsets: ["latin"],
