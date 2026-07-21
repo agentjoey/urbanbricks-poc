@@ -86,10 +86,14 @@ PRODUCT.md 要求「一套叙事覆盖两类客户」，且不得让任一客群
 未核实的事实性数值必须显式包裹才能通过类型检查：
 
 ```ts
-priceBand:     unverified({ from: 45000, to: 65000 }),  // 货币来自 site.ts 单一配置
-leadTimeWeeks: unverified({ from: 8, to: 14 }),
+factoryBuildDays: 30,                                   // 已由 Human Owner 确认，无需包裹
+priceBand:        unverified({ from: 45000, to: 65000 }), // 货币来自 site.ts 单一配置
 name: 'The Harbor 40',   // 品牌命名，非事实声明，无需包裹
 ```
+
+**交付周期的类型必须强制口径。**原 `leadTimeWeeks` 字段名会诱导出"总工期"的错误表述。改为 `factoryBuildDays`，且渲染交付信息的组件**在类型层面要求同时传入口径说明**——只给数字无法通过编译。这样"30 天"不可能被单独渲染成一个孤立的大数字。
+
+地基、审批与市政接入属客户侧，**不进产品数据、不出现在任何承诺里**，只在 `/how-it-works` 作为并行时间线的另一条轨道呈现。
 
 - 字段类型声明为 `Unverified<T>`，**漏标即编译失败**
 - `pnpm verify:content` 扫描全部未核实值，输出带文件路径的清单 —— 上线前核实清单自动生成，无需人工维护

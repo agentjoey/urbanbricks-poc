@@ -24,15 +24,19 @@ The site is a market experiment before it is a brochure. Success is not traffic;
 
 ## Positioning
 
-Open in weeks, not years.
+Your building takes 30 days — and it is being built while your site is.
 
-Everything else about the company — the price, the finish, the warranty — is argued in service of that claim. This is a commitment with a cost: the delivery-window numbers are currently unverified placeholders, and the brand cannot ship on real traffic until they are confirmed. If the true lead time is measured in seasons rather than weeks, the positioning changes, not the copy.
+Everything else about the company — the price, the finish, the warranty — is argued in service of that claim.
+
+The precision matters more than the punchiness. Factory build time is 30 days (confirmed by Human Owner, 2026-07-21); groundwork, planning and connections are the customer's side of the schedule and are **not** included. Conventional construction runs those two phases in sequence, which is why it is measured in years. Modular runs them in parallel, so the building itself stops being the thing that takes the time.
+
+**A headline that states a duration without stating what it covers is prohibited.** "Open in 30 days" is a claim urbanbricks cannot keep and a customer will hold it to; "built in 30 days, while your groundwork happens" is both true and a stronger argument, because it names the mechanism instead of asserting speed. Any copy that lets a visitor conclude they can move in 30 days after signing is a defect, not a shortcut.
 
 ## Conversion & proof
 
 - Primary CTA: request a quote. Available inline on model pages, not only on the contact page — intent peaks while a visitor is looking at a specific building.
 - Secondary CTA: browse the model library. For the visitor who is interested but not ready to hand over their details.
-- The line a visitor remembers after 10 seconds: it can be open in weeks, and someone will still be answering the phone afterwards.
+- The line a visitor remembers after 10 seconds: the building takes 30 days, it is made while the site is prepared, and someone is still answering the phone afterwards.
 - Belief ladder, in order:
   1. This is a real category of building, not a novelty.
   2. It applies to my project specifically — my home, or my bar.
