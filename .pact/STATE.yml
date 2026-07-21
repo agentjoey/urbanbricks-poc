@@ -21,3 +21,9 @@ features:
         reviewer: review
         spec: .pact/tasks/_DECOMPOSITION.md
         evidence: null
+      - id: f3-db
+        owner: build
+        status: assigned
+        reviewer: review
+        spec: .pact/tasks/_DECOMPOSITION.md
+        evidence: null
