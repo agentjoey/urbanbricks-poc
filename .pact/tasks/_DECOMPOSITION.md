@@ -5,14 +5,31 @@ Tier: **T3**（全新路由 · 认证边界 · 个人敏感数据 · 核心转�
 
 ## 座位
 
-| seat | 角色 | harness | 职责 |
-|---|---|---|---|
-| `lead` | orchestrator | Claude Code (Opus 4.8) | 拆任务、assign、merge、维护 charter |
-| `build` | worker | Kimi Code (K3) | 实现、checkpoint、留证据 |
-| `review` | reviewer | Gemini CLI | 审 diff 与证据、accept / changes |
+| seat | 角色 | harness | 模型 | 职责 |
+|---|---|---|---|---|
+| `lead` | orchestrator | Claude Code | Opus 4.8 | 拆任务、assign、merge、维护 charter |
+| `build` | worker | Kimi Code | K3 | 实现、checkpoint、留证据 |
+| `review` | reviewer | Claude Code | Opus 4.8 | 审 diff 与证据、accept / changes |
 
-三家 vendor 互不相同，满足 v3.1 §2「T3 应当换 harness 降低共同盲点」。
 worker 不得自我 accept —— 由 pact 状态机强制，非靠自觉。
+
+**独立性状态（Human Owner 决定，2026-07-22）**：reviewer 由 Gemini 改为 Claude Opus 4.8，取其更强的审查能力。
+
+- ✅ **worker ↔ reviewer 仍为异构**（Moonshot / Anthropic）。v3.1 §2「T3 应当换 harness 降低共同盲点」在最关键的这一对上仍然成立。
+- ⚠️ **reviewer 与 orchestrator 同 harness 同模型**。orchestrator 撰写了 PRODUCT.md / DESIGN.md / spec / 本分解文档，因此 reviewer 对**这些文档本身是否正确**存在共模盲区 —— 它擅长发现「实现不符合 spec」，不擅长发现「spec 本身就错了」。
+- 缓解：设计方向层已由异构模型（Kimi K3）独立复核并闭环（见 git 历史，commit 35f8a60）。**若 spec 发生重大变更，该层复核须重做，不可由 reviewer 代替。**
+
+### ⚠️ reviewer 启动方式（必读）
+
+`lead` 与 `review` 同为 `claude-code`，而 pactify 的入口接线按 kind 绑定 —— 两者都指向 `CLAUDE.md`，**后写的会静默覆盖先写的**。当前 `CLAUDE.md` 与 `.mcp.json` 均接线到 `lead`，以保证交互会话的身份正确。
+
+因此 **reviewer 必须由 orchestrator 显式注入座位启动**，不能依赖冷启动自动接线：
+
+```bash
+PACT_AGENT_ID=review claude ...
+```
+
+reviewer 会话读到的 `CLAUDE.md` 会声称自己是 `lead` —— 这是已知的接线限制，**以环境变量为准**。orchestrator 派发 review 时必须在提示词中明确告知其座位为 `review`，否则它可能尝试执行 orchestrator 动作而被状态机拒绝。
 
 ## 依赖图
 

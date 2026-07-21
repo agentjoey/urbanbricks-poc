@@ -14,9 +14,9 @@ This repo uses the **pact protocol** (v1). Any agent that can read files + run g
 2. A feature cannot merge until all its tasks are accepted.
 
 ## Seats
-- `lead` — roles: orchestrator — entry: CLAUDE.md
-- `review` — roles: reviewer — entry: GEMINI.md
+- `review` — roles: reviewer — entry: CLAUDE.md
 - `build` — roles: worker — entry: AGENTS.md
+- `lead` — roles: orchestrator — entry: CLAUDE.md
 
 ## Commands
 Run `pactify help` for the verb reference.
