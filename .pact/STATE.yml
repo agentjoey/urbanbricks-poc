@@ -15,3 +15,9 @@ features:
         reviewer: review
         spec: .pact/tasks/_DECOMPOSITION.md
         evidence: null
+      - id: f2-content
+        owner: build
+        status: assigned
+        reviewer: review
+        spec: .pact/tasks/_DECOMPOSITION.md
+        evidence: null
