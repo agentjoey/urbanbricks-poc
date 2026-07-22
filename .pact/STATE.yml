@@ -36,7 +36,7 @@ features:
         deps: [f1-tokens, f2-content]
       - id: c1-form
         owner: build
-        status: assigned
+        status: in_progress
         reviewer: review
         spec: .pact/tasks/_DECOMPOSITION.md
         evidence: null
