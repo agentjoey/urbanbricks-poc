@@ -104,6 +104,24 @@ Orchestrator 独立验证的类型强制（三探针，均按要求编译失败�
 | O4 | 换 opencode + MiniMax-M3 接手，两进程挂死 | bootstrap 完成后无任何模型响应，CPU 0%、会话存储 2 小时零写入。短提示词可用，2–3KB 长提示词卡住 | 换 harness 前应先用**等量长度**的提示词试探，短探针通过不代表可用 |
 | O5 | 残留 `next-server` 进程运行 1.5+ 小时占用端口 | 探针路由测试后未清理 | 曾导致一次测量误连过期服务器（worker 主动上报）。**每轮结束清理探针进程与路由** |
 
+| O6 | 4 个 worker 共用工作树，`c2` 的 `git add -A` 卷走 `c1`/`c3` 未提交的工作 | 违反 v3.1 §4「并发 agent MUST 使用独立 branch/worktree」。后果：c3 的修复横跨两个提交，评审与回滚都变复杂；c3 被迫另建临时树，因为 c2 的探针破坏了主树类型检查 | **并发必须用真 worktree**。已验证流程见下 |
+| O7 | 把主仓库 `node_modules` 软链进 worktree，结果主仓库的 `node_modules` 变成指向自身的符号链接，`pnpm` 报 ELOOP | 软链方向在某环节被反向覆盖 | **不要软链 `node_modules`**。pnpm 的内容寻址存储让每个 worktree 独立 `pnpm install` 极快，直接装 |
+
+### 已验证的 worktree 并发流程
+
+```bash
+git worktree add <path> -b wt/<task>      # 各任务独立分支
+(cd <path> && pnpm install --frozen-lockfile)   # 不要软链 node_modules
+cp .env.local <path>/                     # 需要数据库的任务
+# worker 在此工作、提交、checkpoint，分配独立端口
+git merge wt/<task>                       # 逐个合并回 feat/poc
+# .pact/log.jsonl 会冲突 —— 追加型账本，取并集按 ts 排序
+pactify log --replay                      # 从账本重建 STATE.yml
+pactify validate                          # 确认一致
+```
+
+已在 `c1-form` / `c3-image` 两个任务上实测通过：账本 57 条记录合并无损，18 个任务状态完整，`validate` 退出 0。
+
 **探针路由的系统性问题**：多个任务都需要临时路由做验证，而它们会进入生产构建的路由表。当前约定是"提交前删除"，依赖 worker 自觉。若后续再次遗留，应改为构建期检查强制拦截。
 
 ## 回滚
