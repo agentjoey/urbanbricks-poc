@@ -7,6 +7,8 @@
  * Server Actions and RSC payloads are exactly the one-shot shape it is built
  * for, and there is no persistent TCP connection to exhaust on Vercel.
  */
+
+import "server-only";
 import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 
