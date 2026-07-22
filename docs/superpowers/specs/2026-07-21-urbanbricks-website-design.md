@@ -343,7 +343,8 @@ leads
 | 工厂/工艺过程实拍 | Human Owner | 待办 —— 当前唯一 100% 真实的素材，直接论证「快」的机制 |
 | 结果目标（Baseline → Target 与测量窗口） | Human Owner | 暂缓，首批数据后补齐 |
 | Kimi model pin 是否改为 K3 | Human Owner | 待确认 |
-| Neon 项目开通、连接串写入 Vercel | Primary Agent | 待办 |
+| Neon 项目开通 | Primary Agent | ✅ `urbanbricks-poc` / `morning-bread-90534781` / us-east-1 / PG18。连接串在本地 `.env.local`（已被 gitignore 覆盖，历史零泄露）|
+| 连接串写入 Vercel 环境变量 | Human Owner | 待办 —— 部署前必须完成，且**只走环境变量**，仓库是 public 的 |
 | GA4 property 与 Search Console 开通 | Human Owner | 待办 |
 | 真实品牌资产（logo / 色彩 / 字体） | 无，由设计阶段产出 | 已决 |
 | 真实客户评价 / 项目案例 / 认证 | Human Owner | 缺失，相关区块保持空槽位 |
