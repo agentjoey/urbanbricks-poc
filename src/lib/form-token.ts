@@ -16,6 +16,26 @@ const TOKEN_SEPARATOR = ".";
 
 const encoder = new TextEncoder();
 
+const secret = process.env.QUOTE_COOKIE_SECRET;
+
+if (!secret) {
+  throw new Error(
+    "QUOTE_COOKIE_SECRET is not set, so the quote-form timing cookie cannot be signed. " +
+      "Locally: copy .env.example to .env.local and set QUOTE_COOKIE_SECRET to a strong secret (at least 32 bytes). " +
+      "On Vercel: set QUOTE_COOKIE_SECRET in the project environment variables.",
+  );
+}
+
+if (secret.length < 32) {
+  throw new Error(
+    "QUOTE_COOKIE_SECRET is too short (fewer than 32 characters). " +
+      "Generate a stronger secret and set QUOTE_COOKIE_SECRET to at least 32 bytes.",
+  );
+}
+
+/** Validated signing secret, guaranteed present and long enough after the guards above. */
+export const QUOTE_COOKIE_SECRET = secret;
+
 function hexToBuffer(hex: string): ArrayBuffer {
   const bytes = new Uint8Array(hex.length / 2);
   for (let i = 0; i < bytes.length; i++) {

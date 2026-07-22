@@ -8,7 +8,8 @@
  *   2. Submit-timing trap via a signed cookie issued by middleware. Too fast
  *      (< 3s from the real page load) is a bot → silent fake success. A
  *      missing, forged, or too-old cookie fails closed with a clear reload
- *      message, because a real visitor in that state just needs to refresh.
+ *      message and the submitted values are returned so the visitor does not
+ *      lose what they typed; a real visitor in that state just needs to refresh.
  *   3. zod re-validation (never trust the client — the schema is shared,
  *      but this pass is the one that counts). Errors on VISIBLE fields go
  *      back to the user; errors on HIDDEN fields (model_slug, utm_*,
@@ -33,7 +34,7 @@ import "server-only";
 import { cookies, headers } from "next/headers";
 
 import { site } from "@/content/site";
-import { COOKIE_NAME, verifyIssueTime } from "@/lib/form-token";
+import { COOKIE_NAME, QUOTE_COOKIE_SECRET, verifyIssueTime } from "@/lib/form-token";
 import { consumeRateLimit } from "@/lib/rate-limit";
 import {
   QUOTE_FORM_FIELDS,
@@ -46,8 +47,17 @@ import type { NewLead } from "@/db";
 /** A submission faster than this was not filled in by a human. */
 const MIN_FILL_TIME_MS = 3000;
 
-/** Maximum age of a quote-form cookie before we ask the visitor to reload. */
-const MAX_FORM_AGE_MS = 10 * 60 * 1000;
+/**
+ * Maximum age of a quote-form cookie before we ask the visitor to reload.
+ *
+ * The 3-second MIN_FILL_TIME_MS floor is what catches bots. A low ceiling
+ * previously destroyed real leads: the cookie was issued on the first page view
+ * (which could be a model page browsed for minutes before the visitor opened the
+ * form), and any submission after ten minutes wiped the form and told the user
+ * to reload. Four hours is far beyond any plausible human fill time while still
+ * bounding replay of very old cookies.
+ */
+const MAX_FORM_AGE_MS = 4 * 60 * 60 * 1000;
 
 const FALLBACK_EMAIL = site.contact.email.value;
 
@@ -123,19 +133,9 @@ export async function submitQuote(
   //      reload message; a real visitor just needs to refresh.
   const cookieStore = await cookies();
   const tokenCookie = cookieStore.get(COOKIE_NAME);
-  const secret = process.env.QUOTE_COOKIE_SECRET;
-
-  if (!secret) {
-    logEvent("quote_form_missing_secret", { filledFields: filledFieldNames(formData) });
-    return {
-      status: "stale",
-      attempt: attempt + 1,
-      message: STALE_COOKIE_MESSAGE,
-    };
-  }
 
   const issue = tokenCookie?.value
-    ? await verifyIssueTime(secret, tokenCookie.value)
+    ? await verifyIssueTime(QUOTE_COOKIE_SECRET, tokenCookie.value)
     : null;
 
   if (!issue) {
@@ -143,6 +143,7 @@ export async function submitQuote(
       status: "stale",
       attempt: attempt + 1,
       message: STALE_COOKIE_MESSAGE,
+      values: submittedValues(formData),
     };
   }
 
@@ -160,6 +161,7 @@ export async function submitQuote(
       status: "stale",
       attempt: attempt + 1,
       message: STALE_COOKIE_MESSAGE,
+      values: submittedValues(formData),
     };
   }
 

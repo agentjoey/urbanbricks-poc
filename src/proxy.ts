@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-import { COOKIE_NAME, signIssueTime } from "@/lib/form-token";
+import { COOKIE_NAME, QUOTE_COOKIE_SECRET, signIssueTime } from "@/lib/form-token";
 
 /**
  * Quote-form timing cookie (C1-form).
@@ -29,22 +29,20 @@ export async function proxy(request: NextRequest) {
     return response;
   }
 
-  const secret = process.env.QUOTE_COOKIE_SECRET;
-  if (!secret) {
-    // Fail closed: no cookie means the Server Action will reject the
-    // submission. This should only happen if the environment is misconfigured.
-    return response;
-  }
-
   const issueTime = Date.now();
-  const token = await signIssueTime(secret, issueTime);
+  const token = await signIssueTime(QUOTE_COOKIE_SECRET, issueTime);
 
   response.cookies.set(COOKIE_NAME, token, {
     httpOnly: true,
     secure: true,
     sameSite: "lax",
     path: "/",
-    maxAge: 10 * 60, // 10 minutes, matching the stale-window check server-side.
+    // The server-side timing trap only enforces a minimum fill time (bots fill
+    // instantly). A maximum age ceiling previously wiped real leads who spent
+    // more than ten minutes on the form, so the cookie lifetime is now long
+    // enough that ordinary humans never hit it, while still bounding old-cookie
+    // replay. See src/app/actions/quote.ts for the matching server-side check.
+    maxAge: 4 * 60 * 60, // 4 hours
   });
 
   return response;
