@@ -117,7 +117,7 @@ export type QuoteFormField = (typeof QUOTE_FORM_FIELDS)[number];
  * instead of wiping them.
  */
 export interface QuoteFormState {
-  status: "idle" | "validation-error" | "success" | "error" | "rate-limited";
+  status: "idle" | "validation-error" | "success" | "error" | "rate-limited" | "stale";
   /** Monotonic counter — remounts the form fields so defaultValue reapplies. */
   attempt: number;
   fieldErrors?: Partial<Record<QuoteFormField, string>>;

@@ -19,7 +19,7 @@
  * without JS. `required` attributes stay for assistive technology.
  */
 import Link from "next/link";
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { CircleAlert, LoaderCircle } from "lucide-react";
 
 import { submitQuote } from "@/app/actions/quote";
@@ -71,11 +71,7 @@ function FieldError({ id, message }: { id: string; message?: string }) {
 export function QuoteForm({ sourcePath, modelSlug, utm }: QuoteFormProps) {
   const [state, formAction, pending] = useActionState(submitQuote, initialQuoteFormState);
 
-  // Stamped once per mount; the server rejects submissions under 3s old.
-  // suppressHydrationWarning: SSR stamps the server clock and hydration
-  // stamps a different one — the DOM keeps the server value, which is the
-  // one the timing trap measures against (same clock as the action).
-  const [renderedAt] = useState(() => Date.now());
+
 
   // Analytics: quote_form_start once per mount, generate_lead once per
   // accepted submission. The shim is a no-op until x2-analytics wires GA.
@@ -139,7 +135,7 @@ export function QuoteForm({ sourcePath, modelSlug, utm }: QuoteFormProps) {
       className="flex flex-col gap-6"
     >
       {/* Failure banners — icon + text, never colour alone. */}
-      {(state.status === "error" || state.status === "rate-limited") && (
+      {(state.status === "error" || state.status === "rate-limited" || state.status === "stale") && (
         <div role="alert" className="flex items-start gap-2 rounded-md border border-destructive p-4">
           <CircleAlert aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-destructive" />
           <p className="text-sm text-foreground">{state.message}</p>
@@ -332,8 +328,7 @@ export function QuoteForm({ sourcePath, modelSlug, utm }: QuoteFormProps) {
         <FieldError id="qf-consent-error" message={errors.consent} />
       </div>
 
-      {/* Spam controls: honeypot (invisible to humans) + render timestamp
-          for the <3s timing trap. Neither affects a real submission. */}
+      {/* Spam control: honeypot (invisible to humans). */}
       <div aria-hidden="true" className="absolute -left-[9999px] top-auto size-px overflow-hidden">
         <label htmlFor="qf-website">Website</label>
         <input
@@ -344,7 +339,6 @@ export function QuoteForm({ sourcePath, modelSlug, utm }: QuoteFormProps) {
           autoComplete="off"
         />
       </div>
-      <input type="hidden" name="rendered_at" defaultValue={renderedAt} suppressHydrationWarning />
       <input type="hidden" name="source_path" value={sourcePath} readOnly />
       {modelSlug && <input type="hidden" name="model_slug" value={modelSlug} readOnly />}
       {utm?.source && <input type="hidden" name="utm_source" value={utm.source} readOnly />}

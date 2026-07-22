@@ -5,8 +5,10 @@
  *
  * Defence order (cheapest and quietest first):
  *   1. Honeypot ("website") filled → silent fake success, nothing stored.
- *   2. Submit-timing trap (< 3s from render, or a missing/unparseable
- *      stamp) → silent fake success.
+ *   2. Submit-timing trap via a signed cookie issued by middleware. Too fast
+ *      (< 3s from the real page load) is a bot → silent fake success. A
+ *      missing, forged, or too-old cookie fails closed with a clear reload
+ *      message, because a real visitor in that state just needs to refresh.
  *   3. zod re-validation (never trust the client — the schema is shared,
  *      but this pass is the one that counts). Errors on VISIBLE fields go
  *      back to the user; errors on HIDDEN fields (model_slug, utm_*,
@@ -28,9 +30,10 @@
  */
 import "server-only";
 
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 
 import { site } from "@/content/site";
+import { COOKIE_NAME, verifyIssueTime } from "@/lib/form-token";
 import { consumeRateLimit } from "@/lib/rate-limit";
 import {
   QUOTE_FORM_FIELDS,
@@ -43,7 +46,13 @@ import type { NewLead } from "@/db";
 /** A submission faster than this was not filled in by a human. */
 const MIN_FILL_TIME_MS = 3000;
 
+/** Maximum age of a quote-form cookie before we ask the visitor to reload. */
+const MAX_FORM_AGE_MS = 10 * 60 * 1000;
+
 const FALLBACK_EMAIL = site.contact.email.value;
+
+const STALE_COOKIE_MESSAGE =
+  "This page has been open a while. Please reload the page and try again.";
 
 function fakeSuccess(attempt: number): QuoteFormState {
   return { status: "success", attempt: attempt + 1 };
@@ -106,24 +115,52 @@ export async function submitQuote(
     });
   }
 
-  // 2. Submit-timing trap. rendered_at is stamped by the server at render;
-  //    both clocks are the server's, so there is no skew to excuse. The stamp
-  //    must be PRESENT and parseable: Number(null) and Number("") are both 0,
-  //    which is finite — so a POST scripted around the form with the field
-  //    deleted would PASS a bare Number() check. Coerce a missing or blank
-  //    stamp to NaN explicitly so it fails closed.
-  const renderedAtRaw = formData.get("rendered_at");
-  const renderedAt =
-    typeof renderedAtRaw === "string" && renderedAtRaw.trim() !== ""
-      ? Number(renderedAtRaw)
-      : NaN;
-  if (!Number.isFinite(renderedAt) || Date.now() - renderedAt < MIN_FILL_TIME_MS) {
+  // 2. Submit-timing trap via a signed cookie. Middleware issues the cookie
+  //    on the GET that serves the page, so the timestamp is the real visit
+  //    time even when the page is statically prerendered.
+  //    - Too fast (< 3s) is a bot → silent fake success.
+  //    - Missing, forged, or too-old (> 10 min) cookie → fail closed with a
+  //      reload message; a real visitor just needs to refresh.
+  const cookieStore = await cookies();
+  const tokenCookie = cookieStore.get(COOKIE_NAME);
+  const secret = process.env.QUOTE_COOKIE_SECRET;
+
+  if (!secret) {
+    logEvent("quote_form_missing_secret", { filledFields: filledFieldNames(formData) });
+    return {
+      status: "stale",
+      attempt: attempt + 1,
+      message: STALE_COOKIE_MESSAGE,
+    };
+  }
+
+  const issue = tokenCookie?.value
+    ? await verifyIssueTime(secret, tokenCookie.value)
+    : null;
+
+  if (!issue) {
+    return {
+      status: "stale",
+      attempt: attempt + 1,
+      message: STALE_COOKIE_MESSAGE,
+    };
+  }
+
+  const ageMs = Date.now() - issue.issueTime;
+  if (ageMs < MIN_FILL_TIME_MS) {
     return rejectWithTrap(attempt, "timing", {
-      renderedAt:
-        typeof renderedAtRaw === "string" ? renderedAtRaw.slice(0, 40) : null,
-      ageMs: Number.isFinite(renderedAt) ? Date.now() - renderedAt : null,
+      issueTime: issue.issueTime,
+      ageMs,
       filledFields: filledFieldNames(formData),
     });
+  }
+
+  if (ageMs > MAX_FORM_AGE_MS) {
+    return {
+      status: "stale",
+      attempt: attempt + 1,
+      message: STALE_COOKIE_MESSAGE,
+    };
   }
 
   // 3. Server-side validation — the authoritative pass. Issues are split by
