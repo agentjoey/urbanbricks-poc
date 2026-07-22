@@ -68,7 +68,6 @@ export function SiteHeader() {
 
   return (
     <header
-      data-debug-pathname={pathname}
       className={cn(
         "sticky top-0 z-40 bg-background transition-shadow duration-150 ease-out motion-reduce:transition-none",
         scrolled && "shadow-[0_1px_0_var(--line)]"
