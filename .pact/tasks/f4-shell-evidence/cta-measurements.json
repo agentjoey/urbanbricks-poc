@@ -1,0 +1,28 @@
+{
+  "expected": "CTA spans the sheet footer (sheet w 85% of 390 = 331.5, minus 2x16 padding -> ~299.5px wide), h-12 = 48px tall, pinned 16px from the viewport bottom by mt-auto",
+  "cta": {
+    "viewport": {
+      "w": 390,
+      "h": 844
+    },
+    "sheetRect": {
+      "x": 58.5,
+      "w": 331.5,
+      "h": 844
+    },
+    "footerTop": 763,
+    "ctaRect": {
+      "x": 76,
+      "y": 780,
+      "w": 299,
+      "h": 48
+    },
+    "ctaGapToViewportBottom": 16,
+    "ctaFontSize": "14px",
+    "ctaDisplay": "flex",
+    "sheetScroll": {
+      "scrollHeight": 844,
+      "clientHeight": 844
+    }
+  }
+}

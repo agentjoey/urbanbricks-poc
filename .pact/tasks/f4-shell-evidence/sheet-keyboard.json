@@ -1,0 +1,224 @@
+{
+  "expected": "dialog role + aria-labelledby -> SheetTitle 'Menu'; focus enters sheet on open; 12x Tab never leaves the sheet and cycles; Shift+Tab stays inside; Escape removes the sheet and returns focus to the Menu trigger",
+  "sheetA11y": {
+    "role": "dialog",
+    "ariaLabelledby": "radix-_R_1lbH1_",
+    "titleId": "radix-_R_1lbH1_",
+    "titleText": "Menu"
+  },
+  "focusAfterOpen": {
+    "tag": "BUTTON",
+    "text": "Close",
+    "href": null,
+    "slot": "sheet-close",
+    "inSheet": true,
+    "inFooterInk": false,
+    "rect": {
+      "x": 350,
+      "y": 12,
+      "w": 28,
+      "h": 28
+    }
+  },
+  "trapWalk": [
+    {
+      "tag": "A",
+      "text": "Models",
+      "href": "/models",
+      "slot": null,
+      "inSheet": true,
+      "inFooterInk": false,
+      "rect": {
+        "x": 60,
+        "y": 57,
+        "w": 331,
+        "h": 49
+      }
+    },
+    {
+      "tag": "A",
+      "text": "How it works",
+      "href": "/how-it-works",
+      "slot": null,
+      "inSheet": true,
+      "inFooterInk": false,
+      "rect": {
+        "x": 60,
+        "y": 106,
+        "w": 331,
+        "h": 49
+      }
+    },
+    {
+      "tag": "A",
+      "text": "About",
+      "href": "/about",
+      "slot": null,
+      "inSheet": true,
+      "inFooterInk": false,
+      "rect": {
+        "x": 60,
+        "y": 155,
+        "w": 331,
+        "h": 49
+      }
+    },
+    {
+      "tag": "A",
+      "text": "Get a quote",
+      "href": "/contact",
+      "slot": "button",
+      "inSheet": true,
+      "inFooterInk": false,
+      "rect": {
+        "x": 76,
+        "y": 780,
+        "w": 299,
+        "h": 48
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Close",
+      "href": null,
+      "slot": "sheet-close",
+      "inSheet": true,
+      "inFooterInk": false,
+      "rect": {
+        "x": 350,
+        "y": 12,
+        "w": 28,
+        "h": 28
+      }
+    },
+    {
+      "tag": "A",
+      "text": "Models",
+      "href": "/models",
+      "slot": null,
+      "inSheet": true,
+      "inFooterInk": false,
+      "rect": {
+        "x": 60,
+        "y": 57,
+        "w": 331,
+        "h": 49
+      }
+    },
+    {
+      "tag": "A",
+      "text": "How it works",
+      "href": "/how-it-works",
+      "slot": null,
+      "inSheet": true,
+      "inFooterInk": false,
+      "rect": {
+        "x": 60,
+        "y": 106,
+        "w": 331,
+        "h": 49
+      }
+    },
+    {
+      "tag": "A",
+      "text": "About",
+      "href": "/about",
+      "slot": null,
+      "inSheet": true,
+      "inFooterInk": false,
+      "rect": {
+        "x": 60,
+        "y": 155,
+        "w": 331,
+        "h": 49
+      }
+    },
+    {
+      "tag": "A",
+      "text": "Get a quote",
+      "href": "/contact",
+      "slot": "button",
+      "inSheet": true,
+      "inFooterInk": false,
+      "rect": {
+        "x": 76,
+        "y": 780,
+        "w": 299,
+        "h": 48
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Close",
+      "href": null,
+      "slot": "sheet-close",
+      "inSheet": true,
+      "inFooterInk": false,
+      "rect": {
+        "x": 350,
+        "y": 12,
+        "w": 28,
+        "h": 28
+      }
+    },
+    {
+      "tag": "A",
+      "text": "Models",
+      "href": "/models",
+      "slot": null,
+      "inSheet": true,
+      "inFooterInk": false,
+      "rect": {
+        "x": 60,
+        "y": 57,
+        "w": 331,
+        "h": 49
+      }
+    },
+    {
+      "tag": "A",
+      "text": "How it works",
+      "href": "/how-it-works",
+      "slot": null,
+      "inSheet": true,
+      "inFooterInk": false,
+      "rect": {
+        "x": 60,
+        "y": 106,
+        "w": 331,
+        "h": 49
+      }
+    }
+  ],
+  "shiftTabProbe": {
+    "tag": "A",
+    "text": "Models",
+    "href": "/models",
+    "slot": null,
+    "inSheet": true,
+    "inFooterInk": false,
+    "rect": {
+      "x": 60,
+      "y": 57,
+      "w": 331,
+      "h": 49
+    }
+  },
+  "afterEscape": {
+    "sheetStillInDom": false,
+    "active": {
+      "tag": "BUTTON",
+      "text": "Menu",
+      "href": null,
+      "slot": "sheet-trigger",
+      "inSheet": false,
+      "inFooterInk": false,
+      "rect": {
+        "x": 300,
+        "y": 18,
+        "w": 74,
+        "h": 28
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "expected": "899px: desktop nav display none, Menu button visible; 900px: desktop nav flex, Menu button none",
+  "at899": {
+    "innerWidth": 899,
+    "desktopNavDisplay": "none",
+    "menuButtonDisplay": "flex"
+  },
+  "at900": {
+    "innerWidth": 900,
+    "desktopNavDisplay": "flex",
+    "menuButtonDisplay": "none"
+  }
+}

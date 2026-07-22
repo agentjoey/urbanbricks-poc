@@ -1,0 +1,14 @@
+{
+  "expected": "at rest: box-shadow none; scrolled: 0px 1px 0px <Line oklch(0.9 0.004 75)> — a 1px hairline, no blur, no spread, never a soft shadow",
+  "headerAtRest": {
+    "scrollY": 0,
+    "boxShadow": "none",
+    "canScroll": true,
+    "scrollHeight": 1621,
+    "innerHeight": 900
+  },
+  "headerScrolled": {
+    "scrollY": 721,
+    "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, lab(88.4072 0.34073 1.47692) 0px 1px 0px 0px"
+  }
+}

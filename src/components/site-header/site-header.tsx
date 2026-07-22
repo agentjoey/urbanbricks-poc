@@ -121,10 +121,22 @@ export function SiteHeader() {
               Menu
             </Button>
           </SheetTrigger>
+          {/* `max-w-[24rem]`, not `max-w-sm`: f1's @theme defines --spacing-sm/md
+              (DESIGN.md spacing scale), and Tailwind resolves the named
+              max-w-xs/sm/md utilities from that namespace — max-w-sm compiles
+              to 16px, not 24rem, which collapsed this sheet to min-content
+              (measured 16px wide at 390px viewport, CTA 22px). 24rem is the
+              stock Tailwind max-w-sm value, so the design intent is unchanged.
+              Both data-[side=right]: overrides are required: tailwind-merge
+              only dedupes classes with identical variant stacks, so the plain
+              w-[85%] / max-w-[24rem] alone left the primitive's own
+              data-[side=right]:w-3/4 (measured winning: sheet 293px, not
+              331.5px, at 390) and data-[side=right]:sm:max-w-sm (16px) in
+              force. The variant-matched twins replace them. */}
           <SheetContent
             side="right"
             aria-describedby={undefined}
-            className="w-[85%] max-w-sm gap-0 border-l border-line p-0 shadow-none"
+            className="w-[85%] max-w-[24rem] gap-0 border-l border-line p-0 shadow-none data-[side=right]:w-[85%] data-[side=right]:sm:max-w-[24rem]"
           >
             <SheetHeader className="border-b border-line p-4">
               {/* Same span pattern as the CTA: SheetTitle's own `text-base`
