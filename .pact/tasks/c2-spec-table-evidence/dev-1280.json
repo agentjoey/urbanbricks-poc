@@ -1,0 +1,56 @@
+{
+  "badgeCount": 12,
+  "badgeTextSample": [
+    "Unverified",
+    "Unverified"
+  ],
+  "bodyIncludesBadgeLabel": true,
+  "white": {
+    "labelColor": "lab(35.0499 0.527039 2.22568)",
+    "valueColor": "lab(5.27514 0.590012 2.10143)",
+    "valueFontVariantNumeric": "tabular-nums",
+    "accentColor": "lab(39.487 15.2605 41.6949)",
+    "accentWeight": "600",
+    "deliveryColor": "lab(39.487 15.2605 41.6949)",
+    "deliveryText": "30 days (factory build)",
+    "dividerColor": "lab(88.4072 0.34073 1.47692)",
+    "dividerWidth": "1px"
+  },
+  "dark": {
+    "sectionBg": "lab(8.37179 1.19996 4.20676)",
+    "labelColor": "lab(69.8504 0.517428 2.2194)",
+    "valueColor": "lab(95.3672 0.340372 1.47672)",
+    "accentColor": "lab(69.9155 11.131 49.2584)",
+    "accentWeight": "600",
+    "deliveryColor": "lab(69.9155 11.131 49.2584)",
+    "dividerColor": "lab(21.1318 0.728652 2.98569)",
+    "dividerWidth": "1px"
+  },
+  "tnum": {
+    "componentWidths": [
+      50.78125,
+      50.78125,
+      50.78125,
+      50.78125,
+      50.78125
+    ],
+    "controlWidths": [
+      29.1875,
+      49.34375,
+      50.34375,
+      51.1875,
+      45.390625
+    ],
+    "componentFontVariantNumeric": "tabular-nums",
+    "controlFontVariantNumeric": "normal"
+  },
+  "overflow": {
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "noHorizontalScroll": true
+  },
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  }
+}
