@@ -20,16 +20,15 @@ import { factoryDelivery, type FactoryDelivery } from "../lib/delivery";
  * CONFIRMED (Human Owner, 2026-07-21): the factory build takes 30 days.
  *
  * Factory build time only. Groundwork, planning permission and connections
- * are the customer's side of the schedule and are NOT included. The scope is
- * part of the value — see src/lib/delivery.ts for why the number can never
- * be rendered without it.
+ * are the customer's side of the schedule and are NOT included. The scope
+ * sentences interpolate the figure instead of re-typing it, so they cannot
+ * drift from it — see src/lib/delivery.ts for why no bare number exists on
+ * the public surface at all.
  */
-export const FACTORY_BUILD_TIME: FactoryDelivery = factoryDelivery(30, {
-  covers:
-    "The 30 days covers the factory build: fabrication, fit-out and inspection of the building itself.",
-  customerSide:
-    "Groundwork, planning permission and utility connections are arranged by the customer, run alongside the factory build, and are not included in the 30 days.",
-});
+export const FACTORY_BUILD_TIME: FactoryDelivery = factoryDelivery(30, (days) => ({
+  covers: `The ${days} days covers the factory build: fabrication, fit-out and inspection of the building itself.`,
+  customerSide: `Groundwork, planning permission and utility connections are arranged by the customer, run alongside the factory build, and are not included in the ${days} days.`,
+}));
 
 export interface CurrencyConfig {
   /** ISO 4217 code. */

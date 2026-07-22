@@ -13,10 +13,7 @@
     "sourceMap": false
   },
   "include": [
-    "../src/content/site.ts",
-    "../src/content/models.ts",
-    "../src/content/process.ts",
-    "../src/content/faq.ts",
+    "../src/content/*.ts",
     "../src/lib/unverified.ts",
     "../src/lib/delivery.ts"
   ]

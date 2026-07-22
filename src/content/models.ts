@@ -2,8 +2,10 @@
  * content/models.ts — the seven-model library.
  *
  * Model line-up matches docs/render-prompts.md exactly, so data and imagery
- * stay in step: four residential (Harbor 20, Harbor 40, Meridian, Meridian
- * Stack), three commercial (Counter, Workroom, Basecamp).
+ * stay in step: four residential (The Harbor 20, The Harbor 40, The Meridian,
+ * The Meridian Stack), three commercial (The Counter, The Workroom,
+ * The Basecamp). Display names carry the article, matching
+ * docs/render-prompts.md.
  *
  * Every numeric spec, price and material claim is a plausible placeholder
  * wrapped in unverified() — the product line is not yet final, and
@@ -64,8 +66,9 @@ export interface Model {
   priceBand: Unverified<PriceBand>;
   /**
    * CONFIRMED 30-day factory build — always with its scope. Every model
-   * shares the same confirmed figure; the type (FactoryDelivery) makes the
-   * scope inseparable from the number.
+   * shares the same confirmed figure; the type (FactoryDelivery) holds no
+   * readable number at all, so the only renderings available are the
+   * self-scoping strings from deliveryStatement().
    */
   factoryBuildDays: FactoryDelivery;
   features: string[];
@@ -90,7 +93,7 @@ const RESIDENTIAL_INTERIOR: ModelImageSlot = {
 export const models: Model[] = [
   {
     slug: "harbor-20",
-    name: "Harbor 20",
+    name: "The Harbor 20",
     category: "20ft",
     useCase: "residential",
     summary:
@@ -126,7 +129,7 @@ export const models: Model[] = [
   },
   {
     slug: "harbor-40",
-    name: "Harbor 40",
+    name: "The Harbor 40",
     category: "40ft",
     useCase: "residential",
     summary:
@@ -163,7 +166,7 @@ export const models: Model[] = [
   },
   {
     slug: "meridian",
-    name: "Meridian",
+    name: "The Meridian",
     category: "multi-unit",
     useCase: "residential",
     summary:
@@ -200,7 +203,7 @@ export const models: Model[] = [
   },
   {
     slug: "meridian-stack",
-    name: "Meridian Stack",
+    name: "The Meridian Stack",
     category: "multi-unit",
     useCase: "residential",
     summary:
@@ -237,7 +240,7 @@ export const models: Model[] = [
   },
   {
     slug: "counter",
-    name: "Counter",
+    name: "The Counter",
     category: "20ft",
     useCase: "commercial",
     summary:
@@ -273,7 +276,7 @@ export const models: Model[] = [
   },
   {
     slug: "workroom",
-    name: "Workroom",
+    name: "The Workroom",
     category: "multi-unit",
     useCase: "commercial",
     summary:
@@ -309,7 +312,7 @@ export const models: Model[] = [
   },
   {
     slug: "basecamp",
-    name: "Basecamp",
+    name: "The Basecamp",
     category: "20ft",
     useCase: "commercial",
     summary:
