@@ -55,11 +55,11 @@ rounded:
   md: "4px"
   lg: "8px"
 spacing:
-  xs: "8px"
-  sm: "16px"
-  md: "32px"
-  lg: "64px"
-  xl: "120px"
+  inline: "8px"
+  stack: "16px"
+  group: "32px"
+  section: "64px"
+  band: "120px"
 components:
   button-primary:
     backgroundColor: "{colors.brass}"
@@ -237,6 +237,12 @@ Every field has a persistent visible label. Placeholder-as-label is forbidden.
 
 ### Navigation
 - Schibsted Grotesk at Label size, ink, sentence case. The active item carries a 2px **Deep Brass** underline plus a weight step to 600 — Deep Brass rather than Brass because an active-state indicator is a UI component under WCAG 1.4.11 and needs 3:1 (Brass on white is only 2.33:1), and the weight step means the state survives for anyone who cannot see the colour at all. Sticky on scroll with the hairline rule, never a shadow. Below 900px it collapses to a full-height sheet with the quote CTA pinned to the bottom, thumb-reachable.
+
+### Spacing
+
+Keys are **semantic, never t-shirt sizes**: `inline` (8px, within a component) · `stack` (16px, between related elements) · `group` (32px, between groups) · `section` (64px, between sections) · `band` (120px, between full-bleed bands). Vary them for rhythm — generous separations against tight groupings — rather than applying one step uniformly.
+
+Two reasons for the naming, and the second is not stylistic. The names say *when* to reach for each. And Tailwind 4 resolves named `max-w-*` / `w-*` utilities from the spacing namespace as well, so declaring a `--spacing-sm` silently redefines `max-w-sm` from 24rem to 16px. `f4-shell` lost a mobile navigation sheet to exactly that — clamped to 16px wide, and the failure looked like a layout bug rather than a token bug. **Reintroducing `xs`/`sm`/`md`/`lg`/`xl` here breaks every named width utility in the project.**
 
 ### The Module Grid (signature system)
 

@@ -74,12 +74,17 @@
   --radius-md: 4px;
   --radius-lg: 8px;
 
-  /* Spacing scale (DESIGN.md `spacing`) — utilities: p-xs, m-md, gap-xl, … */
-  --spacing-xs: 8px;
-  --spacing-sm: 16px;
-  --spacing-md: 32px;
-  --spacing-lg: 64px;
-  --spacing-xl: 120px;
+  /* Spacing scale (DESIGN.md `spacing`).
+     Keys are SEMANTIC, not t-shirt sizes, and that is deliberate: Tailwind 4
+     resolves named `max-w-*` / `w-*` from the spacing namespace too, so a
+     `--spacing-sm` silently turns `max-w-sm` into 16px instead of 24rem.
+     f4-shell lost a sheet to exactly that (clamped to 16px wide). Never
+     reintroduce xs/sm/md/lg/xl here. Utilities: p-inline, gap-group, m-band. */
+  --spacing-inline: 8px;
+  --spacing-stack: 16px;
+  --spacing-group: 32px;
+  --spacing-section: 64px;
+  --spacing-band: 120px;
 
   /* Elevation — "Detached" is the only shadow in the system (DESIGN.md §4) */
   --shadow-detached: 0 8px 32px oklch(0.18 0.008 75 / 0.12);
