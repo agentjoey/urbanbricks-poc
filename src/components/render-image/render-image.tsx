@@ -12,15 +12,27 @@
  *    inside this file. They are NOT props, so there is nothing to pass,
  *    override, or set to false — a call site attempting `showLabel={false}`
  *    or `label="…"` fails type-checking (proven permanently in type-tests.tsx).
+ *  - `className` is NOT a string. It is a closed union of Module Grid
+ *    cell-span classes — the only layout input a call site legitimately
+ *    needs. This closes the one real escape route to stripping the label:
+ *    `className="[&_figcaption]:hidden"` is a compile error, not a review
+ *    finding (DESIGN.md:101 — "not removable by a page author"; :293 —
+ *    "don't strip the Visualisation label off a render"). A layout that
+ *    needs a class outside the union edits this file to add it, with the
+ *    label in view. (The alternative — applying the caller's class to an
+ *    inner wrapper the caption is not a descendant of — was rejected: the
+ *    class exists for grid placement, and cell spans only work on the grid
+ *    item itself, which is the <figure>.)
  *  - Both labels are required by DESIGN.md to be visible in EVERY state, so
  *    the <figcaption> sits outside the image box and renders whether the
  *    image is loading, loaded, failed, or not yet provided.
  *  - Alt text is a required prop — a render without alt does not compile.
- *
- * What the type system cannot reach (recorded honestly): a page author could
- * still hide the caption with CSS (e.g. `[&_figcaption]:hidden`). That is a
- * review-level red line (DESIGN.md Don'ts: "don't strip the Visualisation
- * label off a render"), not something a component API can prevent.
+ *  - Visibility never depends on JavaScript. SSR ships the image fully
+ *    opaque with no overlay; the loading placeholder and fade-in are armed
+ *    only after hydration, and only while the image is still loading. With
+ *    scripts disabled — or hydration failed — the image, caption, and
+ *    pending/error placeholders are simply there. The fade enhances an
+ *    already-visible default; it never gates it.
  *
  * Missing imagery is NEVER replaced by a coloured panel, gradient block, or
  * CSS illustration (DESIGN.md § Imagery policy) — the placeholder states
@@ -35,7 +47,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 /** Module-private. Never exported, never a prop — this is what makes the
@@ -54,6 +66,13 @@ const ASPECT_CLASS: Record<RenderAspect, string> = {
   "4:3": "aspect-4/3",
   stacked: "aspect-module-stacked",
 };
+
+/** The ONLY classes a call site may add, applied to the outer <figure>:
+ *  whole-cell spans from the Module Grid (globals.css). A closed union —
+ *  not `string` — so a Tailwind arbitrary variant that reaches the caption
+ *  (`"[&_figcaption]:hidden"`) fails type-checking. Anything else a layout
+ *  needs is added here deliberately, in this file. */
+export type RenderImageClassName = "cell-span-2" | "cell-span-3";
 
 interface ImageShellProps {
   /**
@@ -74,9 +93,9 @@ interface ImageShellProps {
   sizes?: string;
   /** LCP opt-in: preloads the image (Next 16 replaces `priority` with `preload`). */
   preload?: boolean;
-  /** Layout classes for the outer <figure> (e.g. cell-span-2). Cannot reach
-   *  the caption or the image box. */
-  className?: string;
+  /** Grid placement for the outer <figure>. Closed union — see
+   *  RenderImageClassName; descendant selectors cannot compile. */
+  className?: RenderImageClassName;
 }
 
 export type RenderImageProps = ImageShellProps;
@@ -112,6 +131,28 @@ function ImageShell({
   errorNote,
 }: ImageShellProps & { label: string; loadingNote: string; pendingNote: string; errorNote: string }) {
   const [status, setStatus] = useState<LoadStatus>(src ? "loading" : "missing");
+  /** Whether the JS-only loading treatment (placeholder + fade) is armed.
+   *  SSR and the no-JS path render the image fully visible with no overlay;
+   *  this flips true only after hydration AND only if the image is still
+   *  in flight, so the fade enhances — never gates — visibility. */
+  const [fadeArmed, setFadeArmed] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    if (status !== "loading") return;
+    const img = imgRef.current;
+    if (!img) return;
+    if (img.complete) {
+      // Settled before hydration (load and error events do not re-fire for
+      // listeners attached afterwards): record the outcome, no fade needed.
+      // naturalWidth 0 on a complete image means the request failed.
+      setStatus(img.naturalWidth > 0 ? "loaded" : "error");
+    } else {
+      setFadeArmed(true);
+    }
+  }, [status]);
+
+  const awaitingLoad = fadeArmed && status === "loading";
 
   return (
     <figure className={cn("m-0", className)}>
@@ -120,8 +161,9 @@ function ImageShell({
           <Placeholder note={!src ? pendingNote : errorNote} />
         ) : (
           <>
-            {status === "loading" && <Placeholder note={loadingNote} />}
+            {awaitingLoad && <Placeholder note={loadingNote} />}
             <Image
+              ref={imgRef}
               src={src}
               alt={alt}
               fill
@@ -130,10 +172,8 @@ function ImageShell({
               onLoad={() => setStatus("loaded")}
               onError={() => setStatus("error")}
               className={cn(
-                "object-cover",
-                status === "loading"
-                  ? "opacity-0"
-                  : "opacity-100 motion-safe:transition-opacity motion-safe:duration-300",
+                "object-cover motion-safe:transition-opacity motion-safe:duration-300",
+                awaitingLoad ? "opacity-0" : "opacity-100",
               )}
             />
           </>

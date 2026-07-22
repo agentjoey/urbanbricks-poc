@@ -12,6 +12,9 @@
  *  3. Aspect ratios are the Module Grid set only — no "16:9".
  *  4. A stock context photograph must have a real src — stock may never be
  *     a pending placeholder pretending to exist.
+ *  5. className is a closed union of Module Grid cell-span classes — the
+ *     CSS escape route to hiding the caption ("[&_figcaption]:hidden", or
+ *     ANY class outside the union) is a compile error, not a review finding.
  */
 import { RenderImage, ContextPhoto } from "./render-image";
 
@@ -22,6 +25,7 @@ const okRender = <RenderImage src="/images/models/harbor-20-hero.png" alt="Visua
 const okPending = <RenderImage alt="Visualisation of the Harbor 20." aspect="3:2" />;
 const okStacked = <RenderImage src="/images/models/meridian-stack-hero.png" alt="Visualisation of the Meridian Stack." aspect="stacked" />;
 const okContext = <ContextPhoto src="/images/context/site.png" alt="A grassy rural plot bordered by birch trees." aspect="3:2" />;
+const okSpan = <RenderImage src="/images/models/harbor-20-hero.png" alt="Visualisation of the Harbor 20." aspect="5:2" className="cell-span-2" />;
 
 // ── Red line 1: the label is not a prop ──
 
@@ -66,10 +70,28 @@ const stockNoSrc = (
   <ContextPhoto alt="A grassy plot." aspect="3:2" />
 );
 
+// ── Red line 5: className cannot express a caption-hiding selector ──
+
+const hideCaptionViaCss = (
+  // @ts-expect-error — "[&_figcaption]:hidden" is not in the closed className union
+  <RenderImage src="/x.png" alt="x" aspect="5:2" className="[&_figcaption]:hidden" />
+);
+
+const arbitraryClass = (
+  // @ts-expect-error — no string outside the cell-span union compiles
+  <RenderImage src="/x.png" alt="x" aspect="5:2" className="mt-8" />
+);
+
+const hideCaptionViaCssContext = (
+  // @ts-expect-error — the same union guards ContextPhoto's label
+  <ContextPhoto src="/x.png" alt="x" aspect="3:2" className="[&_figcaption]:hidden" />
+);
+
 void okRender;
 void okPending;
 void okStacked;
 void okContext;
+void okSpan;
 void suppressLabel;
 void rewordLabel;
 void hideCaption;
@@ -77,3 +99,6 @@ void noAlt;
 void noAltContext;
 void wrongAspect;
 void stockNoSrc;
+void hideCaptionViaCss;
+void arbitraryClass;
+void hideCaptionViaCssContext;
