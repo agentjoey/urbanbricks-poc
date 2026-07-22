@@ -18,17 +18,21 @@
  *    cannot pass `className="[&_figcaption]:hidden"` because it will not
  *    type-check (DESIGN.md:101 — "not removable by a page author"; :293 —
  *    "don't strip the Visualisation label off a render"). It does NOT block
- *    an author from wrapping the component in a div that hides the caption
- *    with Tailwind idioms such as `[&_figcaption]:hidden`, `sr-only`,
- *    `opacity-0`, `text-[0px]`, `hidden!`, or a fixed-height
- *    `overflow-hidden` box. Those are caught by `verify:image-label`, which
- *    scans ancestor className strings at build time and fails loudly with
- *    file and line. The <figcaption> itself is hardened with `block!`
- *    `visible!` `opacity-100!` `text-label!` so descendant-selectors like
- *    `[&_figcaption]:hidden` and inherited opacity / zero-font-size tricks
- *    cannot suppress it. Residual gaps remain: runtime className expressions,
- *    inline styles, injected <style> blocks, and non-ancestor DOM changes can
- *    still hide the label. This is documented, not claimed complete.
+ *    an author from wrapping the component in a div that hides the caption.
+ *    Some Tailwind idioms can be defeated inside this file by hardening the
+ *    <figcaption> (`block!`, `visible!`, `opacity-100!`, `text-label!`,
+ *    `not-sr-only!`, `text-muted-foreground!`): descendant-selectors such as
+ *    `[&_figcaption]:hidden`, `[&_figcaption]:invisible`,
+ *    `[&_figcaption]:text-[0px]`, `[&_figcaption]:sr-only`, and
+ *    `[&_figcaption]:text-transparent` cannot suppress the label. Idioms
+ *    that act on the whole subtree (ancestor `hidden`, `sr-only`,
+ *    `opacity-0`, and fixed-height `overflow-hidden` clipping) cannot be
+ *    defeated by child CSS and are caught by `verify:image-label`, which
+ *    scans static ancestor className strings at build time and fails loudly
+ *    with file and line. Scanner coverage is limited to literals and common
+ *    helper arguments it can read; runtime expressions, inline styles,
+ *    injected <style> blocks, and non-ancestor DOM manipulation remain
+ *    possible escape routes. This is documented, not claimed complete.
  *  - Both labels are required by DESIGN.md to be visible in EVERY state, so
  *    the <figcaption> sits outside the image box and renders whether the
  *    image is loading, loaded, failed, or not yet provided.
@@ -192,7 +196,7 @@ function ImageShell({
       </div>
       {/* The non-waivable label (DESIGN.md § Imagery policy). Unconditional:
           no prop, no state branch, no render path that skips it. */}
-      <figcaption className="mt-2 text-label! block! visible! opacity-100! text-muted-foreground">{label}</figcaption>
+      <figcaption className="mt-2 text-label! block! visible! opacity-100! not-sr-only! text-muted-foreground!">{label}</figcaption>
     </figure>
   );
 }
