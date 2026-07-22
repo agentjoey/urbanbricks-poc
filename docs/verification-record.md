@@ -59,7 +59,24 @@
 3. **给 `c1-form`**：`*:focus-visible` 位于 `@layer base`，特指度 0,1,0；任何带 `focus-visible:ring-*` 的 shadcn 组件都会盖过它 —— 表单任务必须重新测量
 4. 跨浏览器未验（见 E5）
 
-### `f2-content` — awaiting_review
+### `f3-db` — accepted 2026-07-22
+
+**1 轮通过。** Reviewer 未止步于 `pnpm verify:db`（那只证明脚本路径可用），而是自建临时路由、跑真实生产构建 + `next start`，通过 HTTP 以**无 JS 渐进增强路径**（multipart + `$ACTION_ID`）驱动 Server Action —— 确认 `neon-http` + Drizzle 在 Next 16 生产服务器中、以 `c1-form` 将要使用的完全相同形态工作。
+
+**Orchestrator 直连 Neon 独立核验**：16 列与 spec 完全一致 · 无 IP / 无 user-agent · `timeline` 枚举冷→热排序（排序即意愿强度）· `budget_band` 升序 · 三个枚举均可空（"未回答"可表示，表单不会被逼进死角）· 测试数据 0 行残留。
+
+**密钥**：提交与源文件均 0 命中；`.env.local` 确认被忽略；`.env.example` 仅占位符。
+
+**移交 `c1-form` 的建议**（非 f3 缺陷，但 c1 必须处理）：
+1. `src/db/index.ts` 靠**注释**阻止客户端引入 —— 应加 `import "server-only"` 使其成为构建错误。无凭证泄露风险（`DATABASE_URL` 非 `NEXT_PUBLIC_`），但失败模式很差。`Lead`/`NewLead` 用 `import type`
+2. `verify:db` 的探针行内联删除 —— insert 与 delete 之间抛错会残留一行，应用 `try/finally`
+3. 否定测试断言的是错误文本而非 SQLSTATE `23502`，跨版本脆弱
+4. `budget_band` 标签不带货币，而站点货币仍为 `unverified()` —— 已文档化为后续项，0 行时改动成本低
+5. `@next/env` 在 `dependencies` 中，但只有 `drizzle.config.ts` 与 `scripts/verify-db.ts` 使用
+
+**踩坑记录（移交 `c1-form`）**：App Router 将**下划线开头的文件夹视为私有目录，整个路由不渲染**。Reviewer 为此损失一个构建周期。
+
+### `f2-content` — awaiting_review（第 2 轮）
 
 Orchestrator 独立验证的类型强制（三探针，均按要求编译失败）：
 
