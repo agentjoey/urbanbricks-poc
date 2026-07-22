@@ -26,13 +26,17 @@
  *    `[&_figcaption]:text-[0px]`, `[&_figcaption]:sr-only`, and
  *    `[&_figcaption]:text-transparent` cannot suppress the label. Idioms
  *    that act on the whole subtree (ancestor `hidden`, `sr-only`,
- *    `opacity-0`, and fixed-height `overflow-hidden` clipping) cannot be
- *    defeated by child CSS and are caught by `verify:image-label`, which
- *    scans static ancestor className strings at build time and fails loudly
- *    with file and line. Scanner coverage is limited to literals and common
- *    helper arguments it can read; runtime expressions, inline styles,
- *    injected <style> blocks, and non-ancestor DOM manipulation remain
- *    possible escape routes. This is documented, not claimed complete.
+ *    `opacity-0`, etc.) cannot be defeated by child CSS. They are caught by
+ *    `verify:image-label`, which maintains a closed allowlist of safe
+ *    ancestor class tokens rather than enumerating bad ones. Any class on an
+ *    ancestor of a labelled image that is not on the allowlist is rejected at
+ *    build time with file and line. Honest limits: it only reads static
+ *    className strings (literals and cn/clsx/classNames arguments it can
+ *    parse); it follows an element hoisted into a same-file variable and the
+ *    root of a same-file wrapper component, but it does not cross file
+ *    boundaries, descend into props/state-built classNames, or see runtime
+ *    expressions, inline styles, or injected <style> blocks. The escape
+ *    hatch `data-image-label-exempt` is greppable for legitimate exceptions.
  *  - Both labels are required by DESIGN.md to be visible in EVERY state, so
  *    the <figcaption> sits outside the image box and renders whether the
  *    image is loading, loaded, failed, or not yet provided.
