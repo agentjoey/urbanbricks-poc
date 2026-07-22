@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "verify:contrast": "node scripts/verify-contrast.mjs"
+    "verify:contrast": "node scripts/verify-contrast.mjs",
+    "verify:content": "node scripts/verify-content.mjs"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
