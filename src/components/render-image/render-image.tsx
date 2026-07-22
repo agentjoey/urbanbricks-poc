@@ -161,7 +161,11 @@ function ImageShell({
           <Placeholder note={!src ? pendingNote : errorNote} />
         ) : (
           <>
-            {awaitingLoad && <Placeholder note={loadingNote} />}
+            {/* Image FIRST among siblings: when the loading placeholder is
+                removed on load, React keeps child 0 stable. (Placeholder
+                first would unmount the just-loaded <img> and mount a fresh
+                one — a redundant re-request.) The placeholder is absolutely
+                positioned, so DOM order decides the paint order. */}
             <Image
               ref={imgRef}
               src={src}
@@ -176,6 +180,7 @@ function ImageShell({
                 awaitingLoad ? "opacity-0" : "opacity-100",
               )}
             />
+            {awaitingLoad && <Placeholder note={loadingNote} />}
           </>
         )}
       </div>
