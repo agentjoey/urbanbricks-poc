@@ -18,9 +18,19 @@ import {
 import { NAV_ITEMS, QUOTE_CTA, isNavItemActive } from "./nav-items";
 import { Wordmark } from "./wordmark";
 
-/** Class hooks shared by the desktop and sheet nav links. */
+/**
+ * Class hooks shared by the desktop and sheet nav links.
+ *
+ * These are concatenated by hand, NOT passed through cn()/tailwind-merge:
+ * tailwind-merge cannot know that the custom `text-label` utility (a font-size
+ * token from @theme) is a font-size class, so it files it as a text colour and
+ * deletes it in favour of `text-ink` — the link would silently render at body
+ * size. The three sets are mutually exclusive by construction: the inactive
+ * and active decoration classes never appear together, so no merge is needed.
+ */
 const navLinkBase =
-  "text-label text-ink underline decoration-transparent decoration-2 underline-offset-8 transition-colors duration-150 ease-out motion-reduce:transition-none hover:decoration-ink";
+  "text-label text-ink underline decoration-2 underline-offset-8 transition-colors duration-150 ease-out motion-reduce:transition-none";
+const navLinkInactive = "decoration-transparent hover:decoration-ink";
 const navLinkActive = "font-semibold decoration-brass-deep";
 
 /**
@@ -80,7 +90,7 @@ export function SiteHeader() {
                     <Link
                       href={item.href}
                       aria-current={active ? "page" : undefined}
-                      className={cn(navLinkBase, active && navLinkActive)}
+                      className={`${navLinkBase} ${active ? navLinkActive : navLinkInactive}`}
                     >
                       {item.label}
                     </Link>
@@ -89,12 +99,18 @@ export function SiteHeader() {
               })}
             </ul>
           </nav>
+          {/* The Label type lives on an inner <span>: the Button primitive
+              carries `text-sm`, which sits later in the stylesheet than the
+              custom `text-label` utility and would otherwise win. An element's
+              own font-size always beats an inherited one. */}
           <Button
             asChild
             size="lg"
-            className="rounded-md px-5 text-label duration-150 ease-out motion-reduce:transition-none hover:bg-brass-hover"
+            className="rounded-md px-5 duration-150 ease-out motion-reduce:transition-none hover:bg-brass-hover"
           >
-            <Link href={QUOTE_CTA.href}>{QUOTE_CTA.label}</Link>
+            <Link href={QUOTE_CTA.href}>
+              <span className="text-label">{QUOTE_CTA.label}</span>
+            </Link>
           </Button>
         </div>
 
@@ -112,7 +128,11 @@ export function SiteHeader() {
             className="w-[85%] max-w-sm gap-0 border-l border-line p-0 shadow-none"
           >
             <SheetHeader className="border-b border-line p-4">
-              <SheetTitle className="font-sans text-label text-ink">Menu</SheetTitle>
+              {/* Same span pattern as the CTA: SheetTitle's own `text-base`
+                  would override `text-label` in the cascade. */}
+              <SheetTitle className="font-sans text-ink">
+                <span className="text-label">Menu</span>
+              </SheetTitle>
             </SheetHeader>
             <nav aria-label="Mobile" className="flex-1 overflow-y-auto">
               <ul>
@@ -124,7 +144,7 @@ export function SiteHeader() {
                         href={item.href}
                         aria-current={active ? "page" : undefined}
                         onClick={() => setSheetOpen(false)}
-                        className={cn("block px-4 py-4", navLinkBase, active && navLinkActive)}
+                        className={`block px-4 py-4 ${navLinkBase} ${active ? navLinkActive : navLinkInactive}`}
                       >
                         {item.label}
                       </Link>
@@ -136,10 +156,10 @@ export function SiteHeader() {
             <SheetFooter className="border-t border-line p-4">
               <Button
                 asChild
-                className="h-12 w-full rounded-md text-label duration-150 ease-out motion-reduce:transition-none hover:bg-brass-hover"
+                className="h-12 w-full rounded-md duration-150 ease-out motion-reduce:transition-none hover:bg-brass-hover"
               >
                 <Link href={QUOTE_CTA.href} onClick={() => setSheetOpen(false)}>
-                  {QUOTE_CTA.label}
+                  <span className="text-label">{QUOTE_CTA.label}</span>
                 </Link>
               </Button>
             </SheetFooter>
