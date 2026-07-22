@@ -43,7 +43,7 @@ features:
         deps: [f1-tokens, f2-content, f3-db]
       - id: c2-spec-table
         owner: build
-        status: assigned
+        status: in_progress
         reviewer: review
         spec: .pact/tasks/_DECOMPOSITION.md
         evidence: null
