@@ -1,7 +1,12 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-import { COOKIE_NAME, QUOTE_COOKIE_SECRET, signIssueTime } from "@/lib/form-token";
+import {
+  COOKIE_NAME,
+  QUOTE_COOKIE_SECRET,
+  signIssueTime,
+  verifyIssueTime,
+} from "@/lib/form-token";
 
 /**
  * Quote-form timing cookie (C1-form).
@@ -24,9 +29,15 @@ export async function proxy(request: NextRequest) {
   }
 
   // If the visitor already has a valid cookie, keep it so the clock keeps
-  // running from the first request of this visit.
-  if (request.cookies.get(COOKIE_NAME)) {
-    return response;
+  // running from the first request of this visit. A missing or unverifiable
+  // cookie is reissued so a secret rotation or tampered cookie is recovered
+  // on the next page load.
+  const existing = request.cookies.get(COOKIE_NAME);
+  if (existing) {
+    const verified = await verifyIssueTime(QUOTE_COOKIE_SECRET, existing.value);
+    if (verified) {
+      return response;
+    }
   }
 
   const issueTime = Date.now();
@@ -40,8 +51,8 @@ export async function proxy(request: NextRequest) {
     // The server-side timing trap only enforces a minimum fill time (bots fill
     // instantly). A maximum age ceiling previously wiped real leads who spent
     // more than ten minutes on the form, so the cookie lifetime is now long
-    // enough that ordinary humans never hit it, while still bounding old-cookie
-    // replay. See src/app/actions/quote.ts for the matching server-side check.
+    // enough that ordinary humans never hit it. See src/app/actions/quote.ts
+    // for the matching server-side check.
     maxAge: 4 * 60 * 60, // 4 hours
   });
 

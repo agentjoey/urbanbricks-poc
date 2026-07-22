@@ -54,8 +54,7 @@ const MIN_FILL_TIME_MS = 3000;
  * previously destroyed real leads: the cookie was issued on the first page view
  * (which could be a model page browsed for minutes before the visitor opened the
  * form), and any submission after ten minutes wiped the form and told the user
- * to reload. Four hours is far beyond any plausible human fill time while still
- * bounding replay of very old cookies.
+ * to reload. Four hours is far beyond any plausible human fill time.
  */
 const MAX_FORM_AGE_MS = 4 * 60 * 60 * 1000;
 
@@ -129,7 +128,7 @@ export async function submitQuote(
   //    on the GET that serves the page, so the timestamp is the real visit
   //    time even when the page is statically prerendered.
   //    - Too fast (< 3s) is a bot → silent fake success.
-  //    - Missing, forged, or too-old (> 10 min) cookie → fail closed with a
+  //    - Missing, forged, or too-old (> 4 hours) cookie → fail closed with a
   //      reload message; a real visitor just needs to refresh.
   const cookieStore = await cookies();
   const tokenCookie = cookieStore.get(COOKIE_NAME);
