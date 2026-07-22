@@ -5,21 +5,25 @@
  *
  * The component itself already hardens the <figcaption> and closes the prop
  * surface (RenderImageClassName is a closed union, labels are private
- * constants). Those defences are compile-time. This scanner catches the
- * runtime escape routes an author can still write around the component:
+ * constants). Those defences are compile-time. This scanner catches some of
+ * the static escape routes an author can still write around the component:
  * ancestor wrappers that suppress the caption with Tailwind idioms such as
- * `[&_figcaption]:hidden`, `sr-only`, `opacity-0`, `text-[0px]`, or a
- * fixed-height `overflow-hidden` clip box.
+ * `[&_figcaption]:hidden`, `sr-only`, `text-transparent`, `opacity-0`,
+ * `text-[0px]`, `hidden`, or a fixed-height `overflow-hidden` clip box.
  *
  * It walks the JSX source, finds every <RenderImage> and <ContextPhoto>,
  * inspects ancestor JSX elements' className attributes, and fails loudly
  * with file and line. Exits non-zero on any match; safe for CI.
  *
  * Honest limits:
- *   - Only static className strings are inspected (string literals, plus the
- *     common cn/clsx/classNames helpers with literal arguments). A className
- *     built from a runtime expression or imported variable can still hide the
- *     caption; this check is a coarse net, not a theorem prover.
+ *   - Only static className content is inspected: string literals, and the
+ *     literal class names that appear inside cn/clsx/classNames arguments
+ *     (including string literals in conditionals and object-literal keys).
+ *     Anything built from a runtime expression, imported variable, or value
+ *     this walker cannot read can still hide the caption; this check is a
+ *     coarse net, not a theorem prover.
+ *   - Responsive display stacks such as `hidden md:block` are treated as
+ *     legitimate layout and are not flagged; an unconditional `hidden` is.
  *   - Inline styles, runtime injected <style> blocks, and non-ancestor DOM
  *     manipulation are out of scope. Those are documented as residual gaps
  *     in render-image.tsx so the next reviewer does not assume completeness.
@@ -35,6 +39,16 @@ const scanRoots = [path.join(root, "src")];
 const TARGETS = new Set(["RenderImage", "ContextPhoto"]);
 
 /**
+ * Return a RegExp that matches a Tailwind class token, optionally preceded by
+ * the `[&_figcaption]:` arbitrary-variant prefix. Tokens are space-delimited,
+ * so we anchor on whitespace/start/end rather than \b (which fails after
+ * characters such as `]` in arbitrary values).
+ */
+function tokenPattern(token) {
+  return new RegExp(`(?:^|\\s|\\[&_figcaption\\]:)${token}(?=\\s|$)`);
+}
+
+/**
  * Idioms that hide or clip the mandatory caption when applied to an ancestor
  * of a labelled image component.
  */
@@ -45,25 +59,43 @@ const IDIOMS = [
   },
   {
     name: "sr-only",
-    test: (cls) => /(^|\s)sr-only(\s|$)/.test(cls),
+    test: (cls) =>
+      tokenPattern("sr-only").test(cls) &&
+      !tokenPattern("(?:sm|md|lg|xl|2xl):not-sr-only").test(cls),
+  },
+  {
+    name: "text-transparent",
+    test: (cls) => tokenPattern("text-transparent").test(cls),
   },
   {
     name: "opacity-0",
-    test: (cls) => /(^|\s)opacity-0(\s|$)/.test(cls),
+    test: (cls) => tokenPattern("opacity-0").test(cls),
   },
   {
     name: "text-[0px]",
-    test: (cls) => /(^|\s)text-\[0px\](\s|$)/.test(cls),
+    test: (cls) => tokenPattern("text-\\[0px\\]").test(cls),
   },
   {
-    name: "hidden / hidden!",
-    test: (cls) => /(^|\s)hidden!?(\s|$)/.test(cls),
+    name: "hidden / hidden! (unconditional)",
+    test: (cls) => {
+      // Match an ancestor `hidden`/`hidden!` as a whole class token. The
+      // descendant-selector form `[&_figcaption]:hidden` has its own idiom
+      // above; `overflow-hidden` must not be treated as `hidden`. Responsive
+      // stacks such as `hidden md:block` are legitimate layout.
+      const match = cls.match(/(?:^|\s)hidden!?(?=\s|$)/);
+      if (!match) return false;
+      return !tokenPattern("(?:sm|md|lg|xl|2xl):(block|inline|inline-block|flex|inline-flex|grid|inline-grid|table|contents)").test(cls);
+    },
   },
   {
     name: "fixed-height overflow-hidden wrapper",
-    test: (cls) =>
-      /(^|\s)overflow-hidden(\s|$)/.test(cls) &&
-      /(^|\s)(?!h-(full|screen|dvh|svh|min|max|fit|auto)\b)(h-\S+|(?!max-h-(full|screen|dvh|svh|min|max|fit|auto|none)\b)max-h-\S+)(\s|$)/.test(cls),
+    test: (cls) => {
+      const hasOverflow = tokenPattern("overflow-hidden").test(cls);
+      if (!hasOverflow) return false;
+      const fixedHeight = tokenPattern("(?!h-(?:full|screen|dvh|svh|min|max|fit|auto)\\b)h-\\S+");
+      const fixedMaxHeight = tokenPattern("(?!max-h-(?:full|screen|dvh|svh|min|max|fit|auto|none)\\b)max-h-\\S+");
+      return fixedHeight.test(cls) || fixedMaxHeight.test(cls);
+    },
   },
 ];
 
@@ -81,8 +113,9 @@ function* walk(dir) {
 
 /**
  * Extract a static className string from a JSX attribute. Handles string
- * literals, cn/clsx/classNames calls with literal arguments, array literals,
- * plus-joined strings, and template literals (static spans only).
+ * literals, cn/clsx/classNames calls whose arguments contain literal class
+ * names (including inside conditionals and object-literal keys), array
+ * literals, plus-joined strings, and template literals (static spans only).
  */
 function staticClassName(attr, sourceFile) {
   if (!attr.initializer) return null;
@@ -96,6 +129,10 @@ function staticClassName(attr, sourceFile) {
     }
     if (ts.isJsxExpression(expr)) {
       collect(expr.expression);
+      return;
+    }
+    if (ts.isNoSubstitutionTemplateLiteral(expr)) {
+      parts.push(expr.text);
       return;
     }
     if (ts.isTemplateExpression(expr)) {
@@ -118,9 +155,39 @@ function staticClassName(attr, sourceFile) {
       for (const elem of expr.elements) collect(elem);
       return;
     }
-    if (ts.isBinaryExpression(expr) && expr.operatorToken.kind === ts.SyntaxKind.PlusToken) {
-      collect(expr.left);
-      collect(expr.right);
+    if (ts.isBinaryExpression(expr)) {
+      const kind = expr.operatorToken.kind;
+      if (kind === ts.SyntaxKind.PlusToken) {
+        collect(expr.left);
+        collect(expr.right);
+      } else if (
+        kind === ts.SyntaxKind.AmpersandAmpersandToken ||
+        kind === ts.SyntaxKind.BarBarToken
+      ) {
+        // Logical expressions like `flag && 'sr-only'`: the literal may be
+        // applied, so collect string literals from either side.
+        collect(expr.left);
+        collect(expr.right);
+      }
+      return;
+    }
+    if (ts.isConditionalExpression(expr)) {
+      collect(expr.whenTrue);
+      collect(expr.whenFalse);
+      return;
+    }
+    if (ts.isObjectLiteralExpression(expr)) {
+      // clsx/cn object form: { 'sr-only': flag, block: other } — keys are
+      // the candidate class names.
+      for (const prop of expr.properties) {
+        if (!ts.isPropertyAssignment(prop)) continue;
+        const key = prop.name;
+        if (!key) continue;
+        if (ts.isIdentifier(key) || ts.isStringLiteral(key)) {
+          parts.push(key.text);
+        }
+      }
+      return;
     }
   }
 
