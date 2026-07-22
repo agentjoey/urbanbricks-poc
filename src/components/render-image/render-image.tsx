@@ -14,15 +14,21 @@
  *    or `label="…"` fails type-checking (proven permanently in type-tests.tsx).
  *  - `className` is NOT a string. It is a closed union of Module Grid
  *    cell-span classes — the only layout input a call site legitimately
- *    needs. This closes the one real escape route to stripping the label:
- *    `className="[&_figcaption]:hidden"` is a compile error, not a review
- *    finding (DESIGN.md:101 — "not removable by a page author"; :293 —
- *    "don't strip the Visualisation label off a render"). A layout that
- *    needs a class outside the union edits this file to add it, with the
- *    label in view. (The alternative — applying the caller's class to an
- *    inner wrapper the caption is not a descendant of — was rejected: the
- *    class exists for grid placement, and cell spans only work on the grid
- *    item itself, which is the <figure>.)
+ *    needs. That union blocks the prop-level escape route: a call site
+ *    cannot pass `className="[&_figcaption]:hidden"` because it will not
+ *    type-check (DESIGN.md:101 — "not removable by a page author"; :293 —
+ *    "don't strip the Visualisation label off a render"). It does NOT block
+ *    an author from wrapping the component in a div that hides the caption
+ *    with Tailwind idioms such as `[&_figcaption]:hidden`, `sr-only`,
+ *    `opacity-0`, `text-[0px]`, `hidden!`, or a fixed-height
+ *    `overflow-hidden` box. Those are caught by `verify:image-label`, which
+ *    scans ancestor className strings at build time and fails loudly with
+ *    file and line. The <figcaption> itself is hardened with `block!`
+ *    `visible!` `opacity-100!` `text-label!` so descendant-selectors like
+ *    `[&_figcaption]:hidden` and inherited opacity / zero-font-size tricks
+ *    cannot suppress it. Residual gaps remain: runtime className expressions,
+ *    inline styles, injected <style> blocks, and non-ancestor DOM changes can
+ *    still hide the label. This is documented, not claimed complete.
  *  - Both labels are required by DESIGN.md to be visible in EVERY state, so
  *    the <figcaption> sits outside the image box and renders whether the
  *    image is loading, loaded, failed, or not yet provided.
@@ -186,7 +192,7 @@ function ImageShell({
       </div>
       {/* The non-waivable label (DESIGN.md § Imagery policy). Unconditional:
           no prop, no state branch, no render path that skips it. */}
-      <figcaption className="mt-2 text-label text-muted-foreground">{label}</figcaption>
+      <figcaption className="mt-2 text-label! block! visible! opacity-100! text-muted-foreground">{label}</figcaption>
     </figure>
   );
 }
