@@ -1,6 +1,15 @@
 c2-spec-table evidence — which file proves what
 ===============================================
 
+RE-RUN 2026-07-22 (post changes_requested): the only change vs the original
+run is spec-table.tsx `gap-x-sm` -> `gap-x-stack` (lead renamed the spacing
+scale xs/sm/md/lg/xl -> inline/stack/group/section/band after the first
+submission; `--spacing-sm` no longer existed, so the row grid computed
+`column-gap: normal` and the two columns touched — measured 0px by review).
+All six files below were recaptured from the FIXED build; every figure in
+the JSONs is current. The gap section is new — the original JSONs predate
+the rename and recorded no gap measurement at all.
+
 All screenshots/measurements were taken with headless Chrome 150 over CDP
 (Emulation deviceMetrics 2x, document.fonts.ready awaited before measuring)
 against a temporary route src/app/probe-c2 (deleted after the runs). The
@@ -10,9 +19,18 @@ band formatted via site.currency, and the delivery row passed as the
 FactoryDelivery itself. Colors below are lab() conversions of the OKLCH
 tokens as reported by getComputedStyle (Chrome serializes oklch as lab).
 
+GAP (the defect under review) — dev-1280.json, prod-1280.json, prod-400.json
+  `gap` section per surface: computed columnGap "16px" on every row
+  (gap-x-stack = --spacing-stack = 16px, the renamed equivalent of the old
+  sm), dt.right -> dd.left distance 16px on EVERY row of the spec table on
+  BOTH surfaces (minDtToDdDistance 16), and on the long-label stress row
+  whose label wraps to three lines (longLabelRow.dtToDdDistance 16,
+  labelWrapped true) — at 1280px AND at 400px, in dev AND prod. The
+  screenshots show the gap visibly; at 400px label and value no longer
+  touch.
+
 dev-1280.png / dev-1280.json
-  next dev (NODE_ENV=development, the other seat's already-running server
-  on :3101 serving this working tree — read-only GETs only).
+  next dev (NODE_ENV=development) on :3522, this working tree.
   - 12 "Unverified" badges in the DOM (6 wrapped values x 2 surfaces);
     bodyIncludesBadgeLabel true. Screenshot shows the bordered badge on
     both surfaces.
@@ -27,18 +45,21 @@ dev-1280.png / dev-1280.json
     no bare figure.
 
 prod-1280.png / prod-1280.json
-  pnpm build && pnpm start on a verified-free port (:3467). Route was
-  prerendered static (build output: "○ /probe-c2").
+  pnpm build && pnpm start on :3521 (started by me immediately after my own
+  build; page 200 and the served CSS chunk verified 200 AND grep-verified to
+  contain `gap-x-stack` before any measurement — the served stylesheet is
+  the fixed one). Route was prerendered static (build output: "○ /probe-c2").
   - badgeCount 0, bodyIncludesBadgeLabel false — the dev marker is absent
     from the production build; footer contact values also render bare.
   - Same computed colors/weights as dev on both surfaces (mechanism is the
     CSS tokens, not dev-only code).
 
 prod-400.png / prod-400.json
-  Production build at 400px viewport. scrollWidth == clientWidth == 400
-  (no horizontal scroll); two-column layout holds; long label wraps, long
-  sentence value wraps, the unbroken 70-char string breaks mid-word
-  (break-words); tabular widths still identical at mobile size.
+  Same production server at 400px viewport. scrollWidth == clientWidth == 400
+  (no horizontal scroll); two-column layout holds with the 16px gap intact;
+  long label wraps, long sentence value wraps, the unbroken 70-char string
+  breaks mid-word (break-words); tabular widths still identical at mobile
+  size.
 
 tnum proof (in dev-1280.json and prod-1280.json, identical numbers)
   Five five-digit values of maximally mixed digit widths (11111 / 22222 /
@@ -58,10 +79,9 @@ Known rendering note
   not a markup bug — the unstyled render shows no gap.
 
 Environment note
-  Three other workers were live in this tree during the run. An early
-  production screenshot accidentally hit ANOTHER seat's `next start`
-  (port 3413) serving a build whose CSS chunk hashes my rebuild had
-  replaced — the page rendered unstyled and the measurements honestly
-  reported black/default everything. That run was discarded; the final
-  numbers above come from a server I started myself on a verified-free
-  port immediately after my own build (CSS asset checked 200 first).
+  Other workers were live in this tree during the re-run (next start on
+  :3411 and :3466, both serving OTHER directories — left untouched). My prod
+  figures come from a server I started myself on :3521 immediately after my
+  own build, CSS asset checked 200 and content-checked for `gap-x-stack`
+  first; my dev figures from my own next dev on :3522. Both were killed
+  after the runs; no server of mine is left running.

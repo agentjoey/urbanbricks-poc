@@ -103,7 +103,7 @@ export function SpecTable({ rows, className }: SpecTableProps) {
         return (
           <div
             key={row.label}
-            className="grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-x-sm py-3.5"
+            className="grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-x-stack py-3.5"
           >
             <dt className="min-w-0 break-words text-label text-muted-foreground">
               {row.label}
