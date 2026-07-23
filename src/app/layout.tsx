@@ -4,6 +4,7 @@ import { FACTORY_BUILD_TIME, site } from "@/content/site";
 import { deliveryStatement } from "@/lib/delivery";
 import { SiteHeader } from "@/components/site-header/site-header";
 import { SiteFooter } from "@/components/site-footer/site-footer";
+import { ConsentProvider } from "@/components/consent/consent-provider";
 import "./globals.css";
 
 // Display face (DESIGN.md § Typography): Archivo with its variable `wdth` axis
@@ -96,6 +97,8 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
+        {/* Consent-gated analytics (x2-analytics): client-only, default-off. */}
+        <ConsentProvider />
       </body>
     </html>
   );
