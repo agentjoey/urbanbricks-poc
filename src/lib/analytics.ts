@@ -15,6 +15,8 @@ export const ANALYTICS_EVENTS = {
   quoteFormStart: "quote_form_start",
   /** A quote submission was accepted by the server. */
   generateLead: "generate_lead",
+  /** A model detail page (/models/[slug]) was viewed — carries model_slug. */
+  viewModel: "view_model",
 } as const;
 
 export type AnalyticsEventName =

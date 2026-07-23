@@ -1,0 +1,16 @@
+{
+  "viewModelDataLayer": "[{\"event\":\"view_model\",\"model_slug\":\"harbor-20\"}]",
+  "h1": "The Harbor 20",
+  "hiddenModelSlug": "harbor-20",
+  "figcaptions": [
+    "Visualisation — not a photograph of a delivered building.",
+    "Visualisation — not a photograph of a delivered building.",
+    "Visualisation — not a photograph of a delivered building."
+  ],
+  "priceRowText": "£34,000 – £46,000",
+  "deliveryRowText": "30 days (factory build)",
+  "formFill": "{\"name\":\"ok\",\"email\":\"ok\",\"project_type\":\"ok\",\"timeline\":\"ok\",\"budget_band\":\"ok\",\"message\":\"ok\",\"consent\":true,\"model_slug\":\"harbor-20\"}",
+  "submitSuccess": true,
+  "generateLeadDataLayer": "[{\"event\":\"view_model\",\"model_slug\":\"harbor-20\"},{\"event\":\"generate_lead\",\"model_slug\":\"harbor-20\",\"source_path\":\"/models/harbor-20\"}]",
+  "uniqueEmail": "p2-detail-verify-1784772732836@example.com"
+}
