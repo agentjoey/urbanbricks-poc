@@ -36,7 +36,7 @@ features:
         deps: [f1-tokens, f2-content]
       - id: c1-form
         owner: build
-        status: awaiting_review
+        status: accepted
         reviewer: review
         spec: .pact/tasks/_DECOMPOSITION.md
         evidence: Commit 3597e13 on wt/c1. REGRESSION FIX: src/proxy.ts now verifies the existing ub_quote_issue cookie with verifyIssueTime and reissues it when the cookie is absent OR the signature fails verification (secret rotation / tampering). Previously it only reissued when absent, stranding visitors with a bad cookie until Max-Age expired. CLEANUPS: removed the false claim that the 4-hour Max-Age bounds replay (the 3-second floor is the effective guard); updated stale '> 10 min' comment in src/app/actions/quote.ts to '> 4 hours'. CHECKS on final clean tree: npx tsc --noEmit PASS; pnpm lint PASS; pnpm build PASS (routes / and /_not-found only, no probe survives); pnpm verify:contrast ALL PASS; pnpm verify:content exits 1 on the same 47 pre-existing unverified() placeholders (not introduced). PROOF exercises the visitor path: production build (pnpm build + pnpm start -p 3631), temporary non-underscore probe route src/app/contact/page.tsx rendering QuoteForm, deleted before commit. Playwright Chromium: loaded /contact, captured cookie, tampered the HMAC signature, reloaded once — server responded with Set-Cookie containing a fresh ub_quote_issue value. After waiting >3s, filled and submitted the real form; page showed 'Request received'. The one test row written to Neon (email c1-regression@example.com) was deleted immediately after the run via a raw drizzle/neon cleanup script. Server killed after verification.
