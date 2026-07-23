@@ -68,6 +68,12 @@ const delivery = deliveryStatement(FACTORY_BUILD_TIME);
 // one of each, and the single-column stack alternates. Two of each segment =
 // equal count, equal card size, equal ordering.
 const FEATURED_SLUGS = ["harbor-40", "counter", "meridian", "workroom"] as const;
+// The homepage hero isn't a specific model page, so it borrows the strongest
+// residential render as the brand's representative image (dark 20ft container
+// home, birch, dawn light). The RenderImage "Visualisation" label keeps it
+// honest — it's a render of an urbanbricks design, not a photo of a delivery.
+const heroModel = models.find((model) => model.slug === "harbor-20")!;
+
 const featuredModels = FEATURED_SLUGS.map(
   (slug) => models.find((model) => model.slug === slug)!,
 );
@@ -156,8 +162,10 @@ export default function Home() {
               image ancestor and stays allowlist-clean. */}
           <RenderImage
             aspect="5:2"
+            src={heroModel.images.hero.src}
+            preload
             sizes="(min-width: 64rem) 44vw, 100vw"
-            alt="Visualisation of an urbanbricks modular building on a prepared plot."
+            alt="Visualisation of an urbanbricks container home on a prepared plot at dawn."
           />
         </div>
       </section>
@@ -187,6 +195,7 @@ export default function Home() {
             >
               <RenderImage
                 aspect="3:2"
+                src={model.images.card.src}
                 sizes="(min-width: 80rem) 22vw, (min-width: 48rem) 44vw, 92vw"
                 alt={model.images.card.alt}
               />
