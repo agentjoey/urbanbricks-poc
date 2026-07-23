@@ -36,10 +36,18 @@ const CSV_HEADER = CSV_COLUMNS.join(",");
 
 function csvCell(value: unknown): string {
   const text = value === null || value === undefined ? "" : String(value);
-  if (/[",\n\r]/.test(text)) {
-    return `"${text.replace(/"/g, '""')}"`;
+
+  // Neutralise spreadsheet formula triggers at the start of a cell.
+  // Excel / Google Sheets / LibreOffice evaluate cells that begin with
+  // =, +, -, @, tab or carriage return. A leading apostrophe forces the
+  // cell to be treated as plain text (OWASP CSV Injection guidance).
+  const needsFormulaGuard = /^[\t\r=+\-@]/.test(text);
+  const safeText = needsFormulaGuard ? `'${text}` : text;
+
+  if (/[",\n\r]/.test(safeText)) {
+    return `"${safeText.replace(/"/g, '""')}"`;
   }
-  return text;
+  return safeText;
 }
 
 function leadToRow(lead: Lead): string {
