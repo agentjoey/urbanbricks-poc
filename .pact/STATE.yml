@@ -72,7 +72,7 @@ features:
         deps: [f4-shell, c3-image]
       - id: p7-privacy
         owner: build
-        status: awaiting_review
+        status: accepted
         reviewer: review
         spec: .pact/tasks/_DECOMPOSITION.md
         evidence: Commit c158136 on wt/p7.  BLOCKER fix (src/app/privacy/page.tsx): replaced the false 'no admin-auth cookie' denial with an accurate disclosure of ub_admin_session. Attributes taken directly from src/lib/admin-auth.ts (ADMIN_COOKIE_OPTIONS, ADMIN_SESSION_MAX_AGE_MS) and src/app/admin/actions.ts: HttpOnly, Secure, SameSite=Lax, path=/admin, HMAC-signed (SHA-256), up to 8 hours, set only on successful /admin login, scoped to internal staff, no visitor PII, not analytics/tracking.  Secondary fix: replaced 'Last updated: {new Date()...}' with hand-maintained const LAST_UPDATED = '2026-07-23' so the date no longer tracks the build date.  Nit fix: removed the internal pact codename from the public heading; 'C1-form — quote-form timing token' is now 'Quote-form timing token'.  Automated checks on final clean tree: npx tsc --noEmit PASS; pnpm lint PASS; pnpm build PASS (Turbopack, /privacy prerendered); pnpm verify:contrast ALL PASS; pnpm verify:image-label PASS.  Real-path proof from production build (pnpm build + pnpm start -p 3707): screenshots at .evidence/p7-privacy/privacy-cookies.png and .evidence/p7-privacy/privacy-full.png show the corrected Cookies section and Last updated: 2026-07-23. Rendered page text extracted via Playwright confirms both cookies are disclosed and no C1-form or admin-cookie denial language remains. curl grep of the rendered HTML returned only ub_quote_issue and ub_admin_session cookie names. Server and probe files torn down.
