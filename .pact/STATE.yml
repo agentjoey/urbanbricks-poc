@@ -8,7 +8,7 @@ agents:
 features:
   - id: poc
     branch: feat/poc
-    status: in_progress
+    status: shipped
     tasks:
       - id: f1-tokens
         owner: build
