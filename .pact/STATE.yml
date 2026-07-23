@@ -93,10 +93,10 @@ features:
         deps: [p1-models, p2-detail, p3-process, p4-home, p5-contact, p6-about, p7-privacy]
       - id: x2-analytics
         owner: build
-        status: assigned
+        status: awaiting_review
         reviewer: review
         spec: .pact/tasks/_DECOMPOSITION.md
-        evidence: null
+        evidence: Production build passed (pnpm build); lint and tsc clean. Verified on pnpm start -p 3902 via Playwright: (1) fresh /models/harbor-20 visit shows consent banner, 0 GA/gtag requests, no _ga cookie; (2) Accept sets ub_analytics_consent=granted, loads https://www.googletagmanager.com/gtag/js?id=G-PLACEHOLDER0, sets _ga cookie, and view_model with model_slug=harbor-20 reaches dataLayer; (3) pre-set denied cookie hides banner and produces 0 GA requests; (4) only placeholder ID G-PLACEHOLDER0 is referenced. Evidence: .pact/tasks/x2-analytics-evidence/ (screenshots + verification.log + verify.mjs).
         deps: [p2-detail, c1-form, p7-privacy]
       - id: x3-verify
         owner: build
