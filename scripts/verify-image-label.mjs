@@ -82,6 +82,13 @@ const ALLOWED_VARIANTS = [
 const ALLOWED_BASE = [
   /^cell-span-\d+$/,
   /^grid-modules$/,
+  // Project primitives that hide nothing. ink-surface is the dark-band scope
+  // this component is explicitly designed to sit inside (see render-image.tsx);
+  // group/peer as bare base tokens mark a hover/focus scope for descendants.
+  // Rejecting these forced authors toward data-image-label-exempt on ordinary
+  // dark heroes and hover cards, which trains the check into being disabled.
+  /^ink-surface$/,
+  /^(group|peer)$/,
   /^(block|inline|inline-block|flex|inline-flex|grid|inline-grid|table|table-caption|table-cell|table-column|table-column-group|table-footer-group|table-header-group|table-row-group|table-row|list-item|contents|flow-root)$/,
   /^flex-.*$/,
   /^grid-.*$/,
