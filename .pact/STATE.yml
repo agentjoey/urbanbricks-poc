@@ -58,7 +58,7 @@ features:
         deps: [f1-tokens]
       - id: p5-contact
         owner: build
-        status: assigned
+        status: in_progress
         reviewer: review
         spec: .pact/tasks/_DECOMPOSITION.md
         evidence: null
