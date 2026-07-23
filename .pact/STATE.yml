@@ -86,10 +86,10 @@ features:
         deps: [f3-db, f4-shell]
       - id: x1-seo
         owner: build
-        status: assigned
+        status: awaiting_review
         reviewer: review
         spec: .pact/tasks/_DECOMPOSITION.md
-        evidence: null
+        evidence: Implemented site-wide SEO on wt/x1. Added src/app/sitemap.ts (public routes + 7 models from content/models.ts, no /admin), src/app/robots.ts (allow /, disallow /admin, sitemap reference, host urbanbricks.uk), src/components/json-ld.tsx, and per-page metadata exports (title, description, canonical, Open Graph) on /, /models, /models/[slug], /how-it-works, /contact, /about, /privacy. Added FAQPage JSON-LD to homepage; left p2-detail's Product+Offer and BreadcrumbList in place (no duplicate). Root Organization JSON-LD from f4-shell untouched and verified exactly once. Production build passed (Next 16.2.10 Turbopack, ADMIN_PASSWORD from .env.local); static routes prerendered including /sitemap.xml and /robots.txt. Verification script ran against pnpm start on port 3901: sitemap lists all 6 public pages + all 7 model slugs and excludes /admin; robots disallows /admin and references https://urbanbricks.uk/sitemap.xml; every public page has canonical https://urbanbricks.uk/<path>, og:url, title and description; JSON-LD is valid on home (Organization + FAQPage) and /models/meridian (Organization + Product + BreadcrumbList). Gates: npx tsc --noEmit clean, pnpm lint clean, pnpm build clean, pnpm verify:contrast ALL PASS, pnpm verify:content exits 1 with the same pre-existing 47 unverified() placeholders (not introduced). Evidence saved to .pact/tasks/x1-seo-evidence/.
         deps: [p1-models, p2-detail, p3-process, p4-home, p5-contact, p6-about, p7-privacy]
       - id: x2-analytics
         owner: build
