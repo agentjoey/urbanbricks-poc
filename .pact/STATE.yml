@@ -65,7 +65,7 @@ features:
         deps: [f4-shell, c1-form]
       - id: p6-about
         owner: build
-        status: awaiting_review
+        status: accepted
         reviewer: review
         spec: .pact/tasks/_DECOMPOSITION.md
         evidence: Built /about (src/app/about/page.tsx + _components/*) on branch wt/p6. Page sections: hero with RenderImage placeholder + tagline; story with factory-delivery scope sentences; process preview on .ink-surface using processTracks/parallelNote (no prohibited numbering); craft detail with two RenderImage placeholders; warranty terms rendered through SpecTable; explicit empty proof slots for testimonials/case studies/certifications/delivered count; inline QuoteForm sourcePath=/about. Proof: npx tsc --noEmit PASS; pnpm lint PASS; pnpm build PASS (Next 16.2.10 Turbopack, route /about prerendered); pnpm verify:image-label PASS; pnpm verify:contrast ALL PASS. Production server port 3706; screenshots at 1440x900 and 390x844 full-page committed to .evidence/about/. Server killed; no Neon rows written. Design compliance: reused RenderImage/SpecTable/QuoteForm; .ink-surface used; no fabricated proof; figures from unverified()/deliveryStatement(). Unverified: pnpm verify:content exits 1 with same 47 pre-existing unverified() placeholders (not introduced).
