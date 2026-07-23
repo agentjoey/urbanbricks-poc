@@ -16,6 +16,9 @@ export const metadata: Metadata = {
  */
 const RETENTION_PLACEHOLDER = "[RETENTION PERIOD — TO BE CONFIRMED BY LEGAL/OWNER]";
 
+/** Hand-maintained date; update only when the policy content actually changes. */
+const LAST_UPDATED = "2026-07-23";
+
 function Section({
   children,
   className = "",
@@ -137,7 +140,7 @@ export default function PrivacyPage() {
 
             <div className="mt-group space-y-stack">
               <div>
-                <h3 className="text-title text-ink">C1-form — quote-form timing token</h3>
+                <h3 className="text-title text-ink">Quote-form timing token</h3>
                 <p className="mt-inline text-ink-muted">
                   When you load a page that hosts the quote form, our middleware sets
                   a strictly functional cookie called{" "}
@@ -161,9 +164,26 @@ export default function PrivacyPage() {
               <div>
                 <h3 className="text-title text-ink">Admin authentication</h3>
                 <p className="mt-inline text-ink-muted">
-                  There is currently no admin-auth cookie on the visitor-facing site.
-                  If we later add an administration area, this notice will be updated
-                  before any admin cookie is deployed.
+                  The internal staff area at{" "}
+                  <code className="rounded-sm bg-line px-1 py-0.5 text-label text-ink">
+                    /admin
+                  </code>{" "}
+                  sets a session cookie called{" "}
+                  <code className="rounded-sm bg-line px-1 py-0.5 text-label text-ink">
+                    ub_admin_session
+                  </code>{" "}
+                  only when an administrator successfully signs in. It is:
+                </p>
+                <ul className="mt-stack space-y-inline text-ink-muted">
+                  <li>HttpOnly and Secure;</li>
+                  <li>SameSite=Lax, path=/admin;</li>
+                  <li>HMAC-signed (SHA-256) and valid for up to 8 hours;</li>
+                  <li>scoped to the internal admin area, never set for visitors.</li>
+                </ul>
+                <p className="mt-stack text-ink-muted">
+                  The cookie carries only a signed session token; it contains no
+                  personal data and is not used for analytics, advertising, or
+                  tracking.
                 </p>
               </div>
 
@@ -251,7 +271,7 @@ export default function PrivacyPage() {
               UK GDPR where they apply.
             </p>
             <p className="mt-stack text-ink-muted">
-              Last updated: {new Date().toISOString().split("T")[0]}.
+              Last updated: {LAST_UPDATED}.
             </p>
           </Prose>
         </div>
