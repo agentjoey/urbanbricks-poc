@@ -72,7 +72,7 @@ features:
         deps: [f4-shell, c3-image]
       - id: p7-privacy
         owner: build
-        status: awaiting_review
+        status: changes_requested
         reviewer: review
         spec: .pact/tasks/_DECOMPOSITION.md
         evidence: Built /privacy at src/app/privacy/page.tsx. Content: UK GDPR + PECR privacy notice covering (1) quote-form data collected (name/email/phone/country/project type/timeline/budget band/message/model page/source path/UTM params/consent timestamp), (2) explicit statement that IP and user-agent are NOT stored, (3) lawful basis (consent for lead data; legitimate interest for the strictly necessary anti-bot cookie), (4) retention placeholder '[RETENTION PERIOD — TO BE CONFIRMED BY LEGAL/OWNER]' instead of an invented period, (5) visitor rights incl. ICO complaint, (6) all cookies existing in the codebase disclosed: C1-form ub_quote_issue (HttpOnly/Secure/SameSite=Lax/path=/, 4h), current absence of visitor-facing admin-auth cookies, and consent-gated Google Analytics 4. Design follows DESIGN.md: semantic spacing, one ink-surface rights band, body width capped at 75ch, no eyebrows/numbering/hero metrics/gradients/glassmorphism. Automated checks on final clean tree: npx tsc --noEmit PASS; pnpm lint PASS; pnpm build PASS (Turbopack, /privacy prerendered); pnpm verify:contrast ALL PASS. pnpm verify:content exits 1 on the same 47 pre-existing unverified() placeholders in src/content/*.ts (models/process/site contact) — not introduced by this task. Evidence from production build (pnpm build + pnpm start -p 3707): screenshots captured at 390px, 834px, 1440px. No Neon rows written. Server killed after verification.
