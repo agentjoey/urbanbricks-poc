@@ -43,8 +43,16 @@ const canonicalHost = `https://${site.domain}`;
 // The default title carries the delivery figure through the sanctioned
 // accessor — every string deliveryStatement() returns is self-scoping
 // ("Built in 30 days in our factory"), never a bare number.
+// Indexing is off until the placeholder facts are verified and SITE_INDEXABLE
+// is set to "true" (see src/app/robots.ts for the rationale). This meta tag is
+// the stronger, per-page signal that backs up robots.txt — a search engine may
+// index a URL it discovers elsewhere despite a robots.txt Disallow, but
+// `noindex` here keeps it out of results regardless.
+const siteIndexable = process.env.SITE_INDEXABLE === "true";
+
 export const metadata: Metadata = {
   metadataBase: new URL(canonicalHost),
+  robots: siteIndexable ? undefined : { index: false, follow: false },
   title: {
     default: `${site.name} — ${deliveryStatement(FACTORY_BUILD_TIME).headline}`,
     template: `%s — ${site.name}`,
