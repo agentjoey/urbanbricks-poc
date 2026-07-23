@@ -1,0 +1,12 @@
+=== All cookie names set in src/ ===
+ub_admin_session
+ub_analytics_consent
+ub_quote_issue
+
+=== Cookie disclosures in /privacy ===
+156:                    ub_quote_issue
+178:                    ub_analytics_consent
+209:                    ub_admin_session
+
+=== False claim check ===
+No false claim remains.

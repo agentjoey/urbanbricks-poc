@@ -143,8 +143,7 @@ export default function PrivacyPage() {
           <h2 className="text-headline text-ink">Cookies</h2>
           <Prose>
             <p className="mt-stack text-ink-muted">
-              This site uses the following cookies. We do not use any other
-              first-party cookies on visitor-facing pages.
+              This site uses the following cookies.
             </p>
 
             <div className="mt-group space-y-stack">
@@ -167,6 +166,34 @@ export default function PrivacyPage() {
                 <p className="mt-stack text-ink-muted">
                   It contains no personal data and is not used for analytics,
                   advertising, or tracking.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-title text-ink">Analytics consent preference</h3>
+                <p className="mt-inline text-ink-muted">
+                  When you accept or reject analytics cookies on the consent banner,
+                  the site sets a first-party preference cookie called{" "}
+                  <code className="rounded-sm bg-line px-1 py-0.5 text-label text-ink">
+                    ub_analytics_consent
+                  </code>
+                  . It remembers your choice so that Google Analytics is only loaded
+                  when you have granted consent, and so the banner does not ask again
+                  on your next visit. The cookie is:
+                </p>
+                <ul className="mt-stack space-y-inline text-ink-muted">
+                  <li>Secure and SameSite=Lax, path=/;</li>
+                  <li>kept for up to 1 year, then discarded;</li>
+                  <li>
+                    set to <code className="text-ink">granted</code> if you accept,
+                    or <code className="text-ink">denied</code> if you reject.
+                  </li>
+                </ul>
+                <p className="mt-stack text-ink-muted">
+                  This cookie is strictly functional: it is the consent mechanism
+                  itself, so it does not require separate consent under PECR. It
+                  carries no personal data and is not used for analytics, advertising,
+                  or tracking.
                 </p>
               </div>
 
