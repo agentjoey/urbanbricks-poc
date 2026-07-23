@@ -107,7 +107,7 @@ features:
         deps: [x1-seo, x2-analytics, a1-admin]
       - id: p1-models-b
         owner: build2
-        status: assigned
+        status: in_progress
         reviewer: review
         spec: .pact/tasks/_DECOMPOSITION.md
         evidence: null
