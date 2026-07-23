@@ -1,13 +1,14 @@
 /**
- * Analytics shim (C1-form) — the ONLY module form code talks to.
+ * Analytics transport (C1-form + x2-analytics) — the ONLY module form code talks to.
  *
- * GA4 itself is task x2-analytics and is gated behind cookie consent (PECR);
- * nothing here loads GA. This shim forwards events to whatever x2 wires up
- * (a window.dataLayer / gtag if present) and is otherwise a deliberate no-op,
- * so emitting events from the form is always safe — SSR included.
+ * GA4 is gated behind cookie consent (PECR). The call surface is fixed:
+ *   ANALYTICS_EVENTS and trackEvent(name, params?).
  *
- * Keep the call surface this small: trackEvent(name, params?). x2 replaces
- * the transport, not the call sites.
+ * Before gtag is available, events are held in a small in-memory queue. Once
+ * the visitor consents and the GA loader initialises gtag, the queue flushes
+ * and new events go straight through. Before consent, emitting an event is
+ * still a safe no-op from the caller's perspective — no network, no storage,
+ * no throw — ever.
  */
 
 export const ANALYTICS_EVENTS = {
@@ -28,17 +29,50 @@ declare global {
   interface Window {
     dataLayer?: unknown[];
     gtag?: (...args: unknown[]) => void;
+    /** Hook the GA loader calls once gtag has been configured. */
+    __ubAnalyticsReady?: () => void;
   }
+}
+
+const MAX_QUEUE_SIZE = 50;
+const EVENT_QUEUE: Array<{ name: AnalyticsEventName; params?: AnalyticsParams }> = [];
+let gtagReady = false;
+
+function sendToGtag(name: AnalyticsEventName, params?: AnalyticsParams): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.dataLayer?.push({ event: name, ...params });
+    window.gtag?.("event", name, params);
+  } catch {
+    // Analytics must never break the conversion path that carries it.
+  }
+}
+
+function flushQueue(): void {
+  while (EVENT_QUEUE.length > 0) {
+    const item = EVENT_QUEUE.shift();
+    if (item) sendToGtag(item.name, item.params);
+  }
+}
+
+/** Called by the GA loader once gtag has been configured. */
+function markGtagReady(): void {
+  gtagReady = true;
+  flushQueue();
+}
+
+if (typeof window !== "undefined") {
+  window.__ubAnalyticsReady = markGtagReady;
 }
 
 export function trackEvent(name: AnalyticsEventName, params?: AnalyticsParams): void {
   if (typeof window === "undefined") return;
   try {
-    // Transport placeholder for x2-analytics: forward to GA if it is already
-    // on the page (it will not be, until x2 lands the consent gate); silently
-    // do nothing otherwise. No network, no storage, no throw — ever.
-    window.dataLayer?.push({ event: name, ...params });
-    window.gtag?.("event", name, params);
+    if (gtagReady) {
+      sendToGtag(name, params);
+    } else if (EVENT_QUEUE.length < MAX_QUEUE_SIZE) {
+      EVENT_QUEUE.push({ name, params });
+    }
   } catch {
     // Analytics must never break the conversion path that carries it.
   }
