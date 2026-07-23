@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 import {
+  ADMIN_COOKIE_OPTIONS,
+  verifyAdminSession,
+} from "@/lib/admin-auth";
+import {
   COOKIE_NAME,
   QUOTE_COOKIE_SECRET,
   signIssueTime,
@@ -9,17 +13,17 @@ import {
 } from "@/lib/form-token";
 
 /**
- * Quote-form timing cookie (C1-form).
+ * Issue or refresh the quote-form timing cookie (C1-form).
  *
  * The form pages are statically prerendered, so any timestamp baked into the
  * HTML would be a build-time stamp and the timing trap would never fire on a
- * real visit. Middleware runs per request, even for static pages, so it can
- * issue a fresh signed cookie carrying the real visit time while keeping the
- * page itself static and the no-JavaScript path intact.
+ * real visit. Proxy runs per request, even for static pages, so it can issue a
+ * fresh signed cookie carrying the real visit time while keeping the page
+ * itself static and the no-JavaScript path intact.
  *
  * The cookie is HttpOnly, Secure, SameSite=Lax, and path=/.
  */
-export async function proxy(request: NextRequest) {
+async function issueQuoteCookie(request: NextRequest): Promise<NextResponse> {
   const response = NextResponse.next();
 
   // Only issue the cookie on page loads. Refreshing it on other methods would
@@ -59,6 +63,43 @@ export async function proxy(request: NextRequest) {
   return response;
 }
 
+/**
+ * App-level admin gate.
+ *
+ * Unauthenticated visitors to any /admin path other than /admin/login are
+ * redirected to /admin/login (GET) or receive 401 (everything else). The login
+ * page and its Server Action are intentionally left ungated so the password
+ * can be checked there.
+ */
+async function guardAdminRoute(request: NextRequest): Promise<NextResponse> {
+  const session = request.cookies.get(ADMIN_COOKIE_OPTIONS.name);
+  const valid = session ? await verifyAdminSession(session.value) : false;
+
+  if (valid) {
+    return NextResponse.next();
+  }
+
+  if (request.method === "GET") {
+    return NextResponse.redirect(new URL("/admin/login", request.url));
+  }
+
+  return new NextResponse("Unauthorized", { status: 401 });
+}
+
+export async function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // Admin area: password-gated. Leave /admin/login open so the login action
+  // can run.
+  if (pathname.startsWith("/admin/") && !pathname.startsWith("/admin/login")) {
+    return guardAdminRoute(request);
+  }
+
+  // Everything else (including /admin/login): keep the quote-form timing
+  // cookie fresh on the public pages that host the form.
+  return issueQuoteCookie(request);
+}
+
 export const config = {
-  matcher: ["/contact", "/models/:slug*"],
+  matcher: ["/contact", "/models/:slug*", "/admin/:path*"],
 };
