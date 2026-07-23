@@ -13,7 +13,8 @@
     "verify:image-label": "node scripts/verify-image-label.mjs",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "verify:db": "tsx scripts/verify-db.ts"
+    "verify:db": "tsx scripts/verify-db.ts",
+    "verify:image-ratios": "node scripts/verify-image-ratios.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",

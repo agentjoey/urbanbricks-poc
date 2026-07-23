@@ -68,6 +68,12 @@ import { cn } from "@/lib/utils";
  *  label non-removable at the type level. */
 const RENDER_LABEL = "Visualisation — not a photograph of a delivered building.";
 const CONTEXT_LABEL = "Context photograph — not an urbanbricks building.";
+/** POC placeholder imagery: a licensed stock photo standing in for a product
+ *  shot until real renders/photography exist. Its label is deliberately blunt
+ *  — it is NOT an urbanbricks build and must be replaced before the site is
+ *  shown to real prospects (Human Owner decision, "1+2" plan). Module-private
+ *  like the others: non-removable at the type level. */
+const REFERENCE_LABEL = "Reference image — not an urbanbricks build. Placeholder pending final artwork.";
 
 export type RenderAspect = "5:2" | "3:2" | "4:3" | "stacked";
 
@@ -236,6 +242,27 @@ export function ContextPhoto(props: ContextPhotoProps) {
       loadingNote="Loading photograph…"
       pendingNote="Photograph unavailable"
       errorNote="Photograph unavailable"
+    />
+  );
+}
+
+/**
+ * A licensed stock photograph used as a TEMPORARY placeholder in a product
+ * slot (hero / card) while real renders or photography are produced. Always
+ * carries the "Reference image — not an urbanbricks build" label so it can
+ * never read as an actual urbanbricks building — the Not-Ours Rule holds even
+ * for placeholders. src is required (a stock file must exist). This variant is
+ * expected to disappear before launch; grep for ReferenceImage to find every
+ * slot still on placeholder art.
+ */
+export function ReferenceImage(props: ContextPhotoProps) {
+  return (
+    <ImageShell
+      {...props}
+      label={REFERENCE_LABEL}
+      loadingNote="Loading reference image…"
+      pendingNote="Reference image pending"
+      errorNote="Reference image unavailable"
     />
   );
 }
