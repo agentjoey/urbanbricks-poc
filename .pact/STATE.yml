@@ -79,7 +79,7 @@ features:
         deps: [f4-shell]
       - id: a1-admin
         owner: build
-        status: awaiting_review
+        status: changes_requested
         reviewer: review
         spec: .pact/tasks/_DECOMPOSITION.md
         evidence: Implemented /admin/leads password-gated lead list + CSV export on branch wt/a1, commit f812d34. FILES: src/lib/admin-auth.ts (ADMIN_PASSWORD env guard, constant-time compare, HMAC session cookie), src/app/admin/actions.ts (login/logout/session helpers), src/proxy.ts (/admin matcher + redirect), src/app/admin/login/page.tsx, src/app/admin/leads/page.tsx + loading.tsx, src/app/admin/leads/csv/route.ts, .env.example. GATES: npx tsc --noEmit PASS, pnpm lint PASS, pnpm build PASS, verify:image-label PASS. EVIDENCE: production build + Playwright screenshots in .pact/tasks/a1-admin-evidence/ covering unauthenticated redirect, wrong password, loading, has-data, empty, query-failure states; CSV export verified with seeded test lead; unauthenticated CSV blocked; test lead deleted; ADMIN_PASSWORD loud-failure verified.
