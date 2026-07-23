@@ -85,6 +85,15 @@ export async function generateMetadata({
   return {
     title: model.name,
     description: model.summary,
+    alternates: { canonical: `/models/${slug}` },
+    openGraph: {
+      type: "website",
+      locale: "en_GB",
+      url: `/models/${slug}`,
+      siteName: site.name,
+      title: model.name,
+      description: model.summary,
+    },
   };
 }
 

@@ -6,6 +6,15 @@ import { site } from "@/content/site";
 export const metadata: Metadata = {
   title: "Privacy",
   description: `How ${site.name} collects, uses and stores your personal data, and the cookies this site uses.`,
+  alternates: { canonical: "/privacy" },
+  openGraph: {
+    type: "website",
+    locale: "en_GB",
+    url: "/privacy",
+    siteName: site.name,
+    title: "Privacy",
+    description: `How ${site.name} collects, uses and stores your personal data, and the cookies this site uses.`,
+  },
 };
 
 /**

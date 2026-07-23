@@ -29,12 +29,22 @@ import {
   parseFilters,
 } from "@/components/models-index/filters";
 import { models } from "@/content/models";
+import { site } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Models",
   description:
     "Seven modular buildings for homes and businesses — filter by size or use, and see the price band and specification of each. Every model is built in the factory while your site is prepared.",
   alternates: { canonical: "/models" },
+  openGraph: {
+    type: "website",
+    locale: "en_GB",
+    url: "/models",
+    siteName: site.name,
+    title: "Models",
+    description:
+      "Seven modular buildings for homes and businesses — filter by size or use, and see the price band and specification of each. Every model is built in the factory while your site is prepared.",
+  },
 };
 
 const TOTAL = models.length;

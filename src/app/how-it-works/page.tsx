@@ -22,7 +22,7 @@ import { SpecTable, type SpecTableRow } from "@/components/spec-table";
 import { RenderImage } from "@/components/render-image";
 import { deliveryStatement } from "@/lib/delivery";
 import { isUnverified, UNVERIFIED_BADGE_LABEL } from "@/lib/unverified";
-import { FACTORY_BUILD_TIME } from "@/content/site";
+import { FACTORY_BUILD_TIME, site } from "@/content/site";
 import { processTracks, warranty } from "@/content/process";
 import { ParallelTimeline } from "./parallel-timeline";
 
@@ -31,6 +31,15 @@ const delivery = deliveryStatement(FACTORY_BUILD_TIME);
 export const metadata: Metadata = {
   title: "How it works",
   description: `${delivery.headline}, while your site is prepared. See the two schedules that run in parallel, the delivery sequence, and the warranty terms we put in writing.`,
+  alternates: { canonical: "/how-it-works" },
+  openGraph: {
+    type: "website",
+    locale: "en_GB",
+    url: "/how-it-works",
+    siteName: site.name,
+    title: "How it works",
+    description: `${delivery.headline}, while your site is prepared. See the two schedules that run in parallel, the delivery sequence, and the warranty terms we put in writing.`,
+  },
 };
 
 /** The install duration lives on the factory track's craning step (content-owned,

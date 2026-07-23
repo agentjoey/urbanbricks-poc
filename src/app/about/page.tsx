@@ -12,6 +12,15 @@ import { QuoteSection } from "./_components/quote-section";
 export const metadata: Metadata = {
   title: "About",
   description: `How ${site.name} builds modular homes and businesses in 30 days, and what we put our name to.`,
+  alternates: { canonical: "/about" },
+  openGraph: {
+    type: "website",
+    locale: "en_GB",
+    url: "/about",
+    siteName: site.name,
+    title: "About",
+    description: `How ${site.name} builds modular homes and businesses in 30 days, and what we put our name to.`,
+  },
 };
 
 export default function AboutPage() {

@@ -9,6 +9,16 @@ export const metadata: Metadata = {
   title: "Get a quote",
   description:
     "Request a quote from urbanbricks. We reply within one working day with a line-by-line breakdown of what is included.",
+  alternates: { canonical: "/contact" },
+  openGraph: {
+    type: "website",
+    locale: "en_GB",
+    url: "/contact",
+    siteName: site.name,
+    title: "Get a quote",
+    description:
+      "Request a quote from urbanbricks. We reply within one working day with a line-by-line breakdown of what is included.",
+  },
 };
 
 /**

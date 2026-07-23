@@ -33,9 +33,11 @@
  * is structural and cannot be dropped; every wrapper here stays on the
  * verify:image-label allowlist (standard breakpoints, no hiding utilities).
  */
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, ChevronDown } from "lucide-react";
 
+import { JsonLd, faqPageJsonLd } from "@/components/json-ld";
 import { Button } from "@/components/ui/button";
 import { RenderImage } from "@/components/render-image";
 import { FACTORY_BUILD_TIME, site } from "@/content/site";
@@ -43,6 +45,20 @@ import { models, type UseCase } from "@/content/models";
 import { parallelNote, processTracks } from "@/content/process";
 import { faqItems } from "@/content/faq";
 import { deliveryStatement } from "@/lib/delivery";
+
+export const metadata: Metadata = {
+  title: "Open in weeks, not years",
+  description: site.description,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "en_GB",
+    url: "/",
+    siteName: site.name,
+    title: "Open in weeks, not years",
+    description: site.description,
+  },
+};
 
 // The delivery claim, only ever via the sanctioned self-scoping accessor.
 const delivery = deliveryStatement(FACTORY_BUILD_TIME);
@@ -322,6 +338,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <JsonLd data={faqPageJsonLd(homeFaqs)} />
     </>
   );
 }
