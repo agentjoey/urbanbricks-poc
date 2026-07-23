@@ -4,6 +4,7 @@ agents:
   - { id: review, roles: [reviewer] }
   - { id: build, roles: [worker] }
   - { id: lead, roles: [orchestrator] }
+  - { id: build2, roles: [worker] }
 features:
   - id: poc
     branch: feat/poc
