@@ -100,7 +100,7 @@ features:
         deps: [p2-detail, c1-form, p7-privacy]
       - id: x3-verify
         owner: build
-        status: awaiting_review
+        status: accepted
         reviewer: review
         spec: .pact/tasks/_DECOMPOSITION.md
         evidence: Final integration fix: disclosed the third first-party cookie ub_analytics_consent in /privacy and removed the false 'no other first-party cookies' claim (x2 added the cookie after p7 was written). All three cookies now disclosed. The independent E2E verification (3 journeys JS+no-JS, a11y 0 violations, CSV injection-safe, SEO, GA consent gate, no red lines) passed; this closes its one blocker. Screenshots + grep proof in .pact/tasks/x3-verify-evidence/.
