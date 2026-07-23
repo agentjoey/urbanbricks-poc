@@ -30,7 +30,7 @@ import { isUnverified, UNVERIFIED_BADGE_LABEL } from "@/lib/unverified";
 const CARD_SIZES =
   "(min-width: 80rem) 21rem, (min-width: 48rem) 45vw, calc(100vw - 2rem)";
 
-const { code, locale } = site.currency.value;
+const { code, locale } = site.currency;
 const priceFormatter = new Intl.NumberFormat(locale, {
   style: "currency",
   currency: code,

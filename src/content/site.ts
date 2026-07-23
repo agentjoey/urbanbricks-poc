@@ -86,17 +86,16 @@ export const site = {
     ),
   },
 
-  /** Single source for currency — spec §5. Prices in models.ts are bare numbers in this currency. */
-  currency: unverified(
-    { code: "GBP", symbol: "£", locale: "en-GB" } satisfies CurrencyConfig,
-    "Final currency pending Human Owner decision (spec §5, global English market on a .uk domain)."
-  ),
+  /** Single source for currency — spec §5. Prices in models.ts are bare numbers in this currency.
+   *  Human Owner decision 2026-07-23: USD. Note the tension recorded in the
+   *  spec — USD pricing on a .uk domain with UK GDPR/PECR copy points at a
+   *  North-American/international audience the domain works against; revisit
+   *  domain strategy after the first traffic. */
+  currency: { code: "USD", symbol: "$", locale: "en-US" } satisfies CurrencyConfig,
 
-  /** Single source for measurement units. Floor areas in models.ts are in this unit. */
-  units: unverified(
-    { floorArea: "sqm" } satisfies UnitsConfig,
-    "Final units pending Human Owner decision alongside currency."
-  ),
+  /** Single source for measurement units. Floor areas in models.ts are in this unit.
+   *  Human Owner decision 2026-07-23: square feet. */
+  units: { floorArea: "sqft" } satisfies UnitsConfig,
 
   /** The three selling points (spec §1): fast delivery, value, aftercare. */
   sellingPoints: [

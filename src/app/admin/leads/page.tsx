@@ -21,7 +21,7 @@ import { logout, requireAdminSession } from "../actions";
  * - CSV export is a plain link to the /admin/leads/csv Route Handler.
  */
 
-const currencySymbol = site.currency.value.symbol;
+const currencySymbol = site.currency.symbol;
 const budgetLabels = budgetBandLabels(currencySymbol);
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {

@@ -58,7 +58,7 @@ const canonicalHost = `https://${site.domain}`;
 
 /** Price range formatted in the single-source currency (site.ts). */
 function formatPriceRange(from: number, to: number): string {
-  const { code, locale } = site.currency.value;
+  const { code, locale } = site.currency;
   const format = new Intl.NumberFormat(locale, {
     style: "currency",
     currency: code,
@@ -70,7 +70,7 @@ function formatPriceRange(from: number, to: number): string {
 /** Floor-area unit label from the single-source units config (site.ts). */
 const FLOOR_AREA_UNIT_LABEL = { sqm: "m²", sqft: "sq ft" } as const;
 function floorAreaUnit(): string {
-  return FLOOR_AREA_UNIT_LABEL[site.units.value.floorArea];
+  return FLOOR_AREA_UNIT_LABEL[site.units.floorArea];
 }
 
 export async function generateMetadata({
@@ -169,7 +169,7 @@ function productJsonLd(model: Model) {
     ],
     offers: {
       "@type": "AggregateOffer",
-      priceCurrency: site.currency.value.code,
+      priceCurrency: site.currency.code,
       lowPrice: model.priceBand.value.from,
       highPrice: model.priceBand.value.to,
       url: `${canonicalHost}/models/${model.slug}`,

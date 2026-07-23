@@ -54,7 +54,7 @@ export interface QuoteFormProps {
 const fieldClasses =
   "h-auto w-full rounded-md border border-input bg-transparent px-4 py-3.5 text-base text-foreground transition-colors aria-invalid:border-destructive";
 
-const budgetLabels = budgetBandLabels(site.currency.value.symbol);
+const budgetLabels = budgetBandLabels(site.currency.symbol);
 
 function FieldError({ id, message }: { id: string; message?: string }) {
   if (!message) return null;

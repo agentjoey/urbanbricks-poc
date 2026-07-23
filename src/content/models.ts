@@ -101,7 +101,7 @@ export const models: Model[] = [
     layout: "Studio",
     specs: {
       modules: unverified(1, SPEC_NOTE),
-      floorArea: unverified(14, SPEC_NOTE),
+      floorArea: unverified(150, SPEC_NOTE),
       bathrooms: unverified(1, SPEC_NOTE),
       cladding: unverified("Dark charcoal composite panels", CLADDING_NOTE),
     },
@@ -137,7 +137,7 @@ export const models: Model[] = [
     layout: "One bedroom",
     specs: {
       modules: unverified(1, SPEC_NOTE),
-      floorArea: unverified(28, SPEC_NOTE),
+      floorArea: unverified(300, SPEC_NOTE),
       bedrooms: unverified(1, SPEC_NOTE),
       bathrooms: unverified(1, SPEC_NOTE),
       cladding: unverified("Matte off-white composite panels", CLADDING_NOTE),
@@ -174,7 +174,7 @@ export const models: Model[] = [
     layout: "Two bedrooms",
     specs: {
       modules: unverified(2, SPEC_NOTE),
-      floorArea: unverified(56, SPEC_NOTE),
+      floorArea: unverified(600, SPEC_NOTE),
       bedrooms: unverified(2, SPEC_NOTE),
       bathrooms: unverified(2, SPEC_NOTE),
       cladding: unverified("Deep graphite composite panels", CLADDING_NOTE),
@@ -211,7 +211,7 @@ export const models: Model[] = [
     layout: "Two bedrooms over two storeys",
     specs: {
       modules: unverified(2, SPEC_NOTE),
-      floorArea: unverified(56, SPEC_NOTE),
+      floorArea: unverified(600, SPEC_NOTE),
       bedrooms: unverified(2, SPEC_NOTE),
       bathrooms: unverified(2, SPEC_NOTE),
       cladding: unverified("Warm grey composite panels with dark vertical battens", CLADDING_NOTE),
@@ -248,7 +248,7 @@ export const models: Model[] = [
     layout: "Servery",
     specs: {
       modules: unverified(1, SPEC_NOTE),
-      floorArea: unverified(14, SPEC_NOTE),
+      floorArea: unverified(150, SPEC_NOTE),
       capacity: unverified("Servery for 1–2 staff", SPEC_NOTE),
       cladding: unverified("Matte deep-green composite panels", CLADDING_NOTE),
     },
@@ -284,7 +284,7 @@ export const models: Model[] = [
     layout: "Open office",
     specs: {
       modules: unverified(2, SPEC_NOTE),
-      floorArea: unverified(56, SPEC_NOTE),
+      floorArea: unverified(600, SPEC_NOTE),
       capacity: unverified("6–8 desks", SPEC_NOTE),
       cladding: unverified("Light warm-grey composite panels", CLADDING_NOTE),
     },
@@ -320,7 +320,7 @@ export const models: Model[] = [
     layout: "Cabin",
     specs: {
       modules: unverified(1, SPEC_NOTE),
-      floorArea: unverified(14, SPEC_NOTE),
+      floorArea: unverified(150, SPEC_NOTE),
       capacity: unverified("Sleeps 2", SPEC_NOTE),
       cladding: unverified("Dark matte composite panels", CLADDING_NOTE),
     },
