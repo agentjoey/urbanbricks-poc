@@ -340,10 +340,11 @@ leads
 | 货币与计量单位最终取值 | Human Owner | 待定（`content/site.ts` 单一配置，改动成本低）|
 | **交付周期真实数值** | Human Owner | **最高优先级** —— 定位「Open in weeks, not years」整个压在它上面；若真实工期以月/季计，是推翻定位而非改文案 |
 | 3D 渲染图（自有户型） | Human Owner | 待办 —— 图像政策第 1 级，页面主视觉依赖它 |
-| 工厂/工艺过程实拍 | Human Owner | 待办 —— 当前唯一 100% 真实的素材，直接论证「快」的机制 |
+| 工厂/工艺过程实拍 | Human Owner | **已从「待办」升级为业务流程产物**（2026-07-22）：Human Owner 确认 urbanbricks 会向客户提供其建筑在工厂生产过程的照片。该承诺保留在 FAQ 中，同时意味着图像政策第 2 级素材会自然产生。首批订单开始即应归档，用于网站 —— 这是唯一 100% 真实、且直接论证「快」的机制的素材。 |
 | 结果目标（Baseline → Target 与测量窗口） | Human Owner | 暂缓，首批数据后补齐 |
 | Kimi model pin 是否改为 K3 | Human Owner | 待确认 |
-| Neon 项目开通、连接串写入 Vercel | Primary Agent | 待办 |
+| Neon 项目开通 | Primary Agent | ✅ `urbanbricks-poc` / `morning-bread-90534781` / us-east-1 / PG18。连接串在本地 `.env.local`（已被 gitignore 覆盖，历史零泄露）|
+| 连接串写入 Vercel 环境变量 | Human Owner | 待办 —— 部署前必须完成，且**只走环境变量**，仓库是 public 的 |
 | GA4 property 与 Search Console 开通 | Human Owner | 待办 |
 | 真实品牌资产（logo / 色彩 / 字体） | 无，由设计阶段产出 | 已决 |
 | 真实客户评价 / 项目案例 / 认证 | Human Owner | 缺失，相关区块保持空槽位 |

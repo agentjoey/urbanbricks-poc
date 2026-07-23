@@ -1,0 +1,38 @@
+
+[SERVED (next/font woff2 from .next/static/media)]  family='Schibsted Grotesk'  version=Version 1.100;gftools[0.9.25]
+  GSUB features: ['ccmp', 'ccmp', 'dnom', 'frac', 'liga', 'locl', 'locl', 'locl', 'locl', 'locl', 'locl', 'numr', 'pnum', 'tnum']
+  digit advances under tnum (units, upm=2048):
+    0: zero aw=1252  ->tnum->  zero.tf aw=1300
+    1: one aw=703  ->tnum->  one.tf aw=1300
+    2: two aw=1172  ->tnum->  two.tf aw=1300
+    3: three aw=1179  ->tnum->  three.tf aw=1300
+    4: four aw=1197  ->tnum->  four.tf aw=1300
+    5: five aw=1188  ->tnum->  five.tf aw=1300
+    6: six aw=1218  ->tnum->  six.tf aw=1300
+    7: seven aw=1087  ->tnum->  seven.tf aw=1300
+    8: eight aw=1186  ->tnum->  eight.tf aw=1300
+    9: nine aw=1216  ->tnum->  nine.tf aw=1300
+  distinct .tf advances: [1300]  spread: 0
+
+[UPSTREAM (google/fonts main)]  family='Schibsted Grotesk'  version=Version 1.100;gftools[0.9.25]
+  GSUB features: ['aalt', 'calt', 'case', 'ccmp', 'ccmp', 'dlig', 'dnom', 'frac', 'liga', 'locl', 'locl', 'locl', 'locl', 'locl', 'locl', 'locl', 'locl', 'numr', 'ordn', 'pnum', 'sups', 'tnum', 'zero']
+  digit advances under tnum (units, upm=2048):
+    0: zero aw=1252  ->tnum->  zero.tf aw=1300
+    1: one aw=703  ->tnum->  one.tf aw=1300
+    2: two aw=1172  ->tnum->  two.tf aw=1300
+    3: three aw=1179  ->tnum->  three.tf aw=1300
+    4: four aw=1197  ->tnum->  four.tf aw=1300
+    5: five aw=1188  ->tnum->  five.tf aw=1300
+    6: six aw=1218  ->tnum->  six.tf aw=1300
+    7: seven aw=1087  ->tnum->  seven.tf aw=1300
+    8: eight aw=1186  ->tnum->  eight.tf aw=1300
+    9: nine aw=1216  ->tnum->  nine.tf aw=1300
+  distinct .tf advances: [1300]  spread: 0
+
+VERDICT: PASS — served woff2 and upstream both carry all ten tabular digits at ONE advance (served=[1300], upstream=[1300]), spread 0. Identical tables: True.
+
+[note] The second served Schibsted woff2 (latin-ext subset,
+481eac7be1c268b7-s.1shg3f9j2jih-.woff2) carries 9 of 10 digits in its cmap
+(the tenth lives in the latin subset); its present .tf digits all measure
+1300, spread 0. The primary gate above runs on the latin subset
+(31a9145ccb84606d-s.p.3j3x29wbycqkn.woff2) — the file that ships the digits.

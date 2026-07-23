@@ -1,0 +1,33 @@
+{
+  "url": "/models/probe-f4",
+  "expected": "Models active: Deep Brass oklch(0.48 0.095 70) 2px underline + weight 600; others weight 500 transparent underline",
+  "links": [
+    {
+      "text": "Models",
+      "ariaCurrent": "page",
+      "fontWeight": "600",
+      "textDecorationLine": "underline",
+      "textDecorationColor": "lab(39.487 15.2605 41.6949)",
+      "textDecorationThickness": "2px",
+      "textUnderlineOffset": "8px"
+    },
+    {
+      "text": "How it works",
+      "ariaCurrent": null,
+      "fontWeight": "500",
+      "textDecorationLine": "underline",
+      "textDecorationColor": "rgba(0, 0, 0, 0)",
+      "textDecorationThickness": "2px",
+      "textUnderlineOffset": "8px"
+    },
+    {
+      "text": "About",
+      "ariaCurrent": null,
+      "fontWeight": "500",
+      "textDecorationLine": "underline",
+      "textDecorationColor": "rgba(0, 0, 0, 0)",
+      "textDecorationThickness": "2px",
+      "textUnderlineOffset": "8px"
+    }
+  ]
+}

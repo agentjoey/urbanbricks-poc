@@ -1,0 +1,45 @@
+
+> scaffold@0.1.0 verify:contrast /Users/xtation/AgentWorks/CodeSpace/urbanbricks-poc
+> node scripts/verify-contrast.mjs
+
+== token fidelity: DESIGN.md -> globals.css ==
+PASS  --brass                #d1a24f
+PASS  --brass-deep           #7f5314
+PASS  --ink                  #14110e
+PASS  --ink-muted            #54524f
+PASS  --surface-white        #ffffff
+PASS  --surface-ink          #1c1812
+PASS  --line                 #dfdedb
+PASS  --stroke               #8e8c88
+PASS  --ink-muted-on-dark    #adaaa7
+PASS  --on-dark              #f3f1ef
+PASS  --line-on-dark         #35322e
+PASS  --stroke-on-dark       #6c6864
+PASS  --destructive          #e7000b
+PASS  --destructive-on-dark  #f75e53
+PASS  --success              #137738
+PASS  --success-on-dark      #5dc879
+
+== WCAG pairings ==
+PASS  ink on white                         18.81:1 (min 4.5)
+PASS  ink-muted on white                   7.77:1 (min 4.5)
+PASS  brass-deep on white                  6.68:1 (min 4.5)
+PASS  stroke on white (UI boundary)        3.37:1 (min 3)
+PASS  destructive on white                 4.76:1 (min 4.5)
+PASS  success on white                     5.65:1 (min 4.5)
+PASS  ink on brass (primary button)        8.07:1 (min 4.5)
+PASS  on-dark on surface-ink               15.78:1 (min 4.5)
+PASS  ink-muted-on-dark on surface-ink     7.68:1 (min 4.5)
+PASS  brass on surface-ink (figures)       7.60:1 (min 4.5)
+PASS  on-dark ring on surface-ink (UI)     15.78:1 (min 3)
+PASS  destructive-on-dark on surface-ink   5.65:1 (min 4.5)
+PASS  success-on-dark on surface-ink       8.45:1 (min 4.5)
+PASS  stroke-on-dark on surface-ink (UI)   3.22:1 (min 3)
+
+== system rules ==
+PASS  brass stays below the text/state threshold on white (2.33:1) -- use brass-deep
+PASS  brass -> brass-hover shift 1.53:1 (min 1.5)
+PASS  ink label on brass-hover 5.29:1 (min 4.5)
+PASS  surface-white is pure white, chroma 0 (No-Cream Rule)
+
+ALL PASS

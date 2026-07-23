@@ -1,0 +1,98 @@
+{
+  "status": "done",
+  "gate1_wdth": {
+    "computedFontStretch": "125%",
+    "computedFontFamily": "Archivo, \"Archivo Fallback\", \"Archivo Fallback\", Archivo, \"Helvetica Neue\", sans-serif",
+    "expandedWidthPx": 81.63,
+    "normalWidthPx": 81.63
+  },
+  "gate2_fallbackThroughCascade": {
+    "sansComputedStack": "\"Schibsted Grotesk\", \"Schibsted Grotesk Fallback\", \"Schibsted Grotesk Fallback\", \"Helvetica Neue\", sans-serif",
+    "displayComputedStack": "Archivo, \"Archivo Fallback\", \"Archivo Fallback\", Archivo, \"Helvetica Neue\", sans-serif",
+    "schibstedFaceAvailable": false,
+    "archivoFaceAvailable": false,
+    "schibstedFallbackAvailable": true,
+    "archivoFallbackAvailable": true,
+    "rawArialWidthPx": 393.69,
+    "sansInheritWidthPx": 411.34,
+    "sansUtilWidthPx": 411.34,
+    "displayWidthPx": 388.53,
+    "sansOverArial": 1.04,
+    "sansInheritOverArial": 1.04,
+    "displayOverArial": 0.99,
+    "expectedSansRatio": 1.0449,
+    "expectedDisplayRatio": 0.987
+  },
+  "gate3_tnum": {
+    "perDigitWidthTnumOn": {
+      "0": 37.2,
+      "1": 37.2,
+      "2": 37.2,
+      "3": 37.2,
+      "4": 37.2,
+      "5": 37.2,
+      "6": 37.2,
+      "7": 37.2,
+      "8": 37.2,
+      "9": 37.2
+    },
+    "perDigitMaxDeltaPx": 0,
+    "proportional11111": 254.09,
+    "proportional88888": 278.92,
+    "tabular11111": 254.09,
+    "tabular88888": 278.92
+  },
+  "moduleGrid": {
+    "columnCount": 4,
+    "cellWidthPx": 341.59,
+    "colGapPx": 8.53,
+    "gutterOverCell": 0.025,
+    "rowGapPx": 8.53,
+    "rowGapOverCell": 0.025,
+    "rowEqualsCol": true,
+    "span2WidthPx": 691.73,
+    "span2ExpectedPx": 691.72,
+    "span3WidthPx": 1041.86,
+    "span3ExpectedPx": 1041.84,
+    "trailingResiduePx": 0
+  },
+  "inkSurface": {
+    "bodyLineHeight": "28.05px",
+    "bodyFontSize": "17px",
+    "hairlineBorderColor": "lab(21.1318 0.728652 2.98569)",
+    "lineOnDarkControl": "lab(21.1318 0.728652 2.98569)",
+    "backgroundColor": "lab(8.37179 1.19996 4.20676)"
+  },
+  "focusRing": {
+    "light": {
+      "matchesFocusVisible": true,
+      "outlineWidth": "2px",
+      "outlineStyle": "solid",
+      "outlineColor": "lab(5.27514 0.590012 2.10143)",
+      "outlineOffset": "2px"
+    },
+    "dark": {
+      "matchesFocusVisible": true,
+      "outlineWidth": "2px",
+      "outlineStyle": "solid",
+      "outlineColor": "lab(95.3672 0.340372 1.47672)",
+      "outlineOffset": "2px"
+    }
+  },
+  "darkMediaRuleCount": 0,
+  "fontFacesBeforeDelete": [
+    "Archivo error",
+    "Archivo error",
+    "Archivo error",
+    "Archivo Fallback loaded",
+    "Schibsted Grotesk error",
+    "Schibsted Grotesk error",
+    "Schibsted Grotesk Fallback loaded",
+    "Archivo Fallback loaded",
+    "Schibsted Grotesk Fallback loaded",
+    "__nextjs-Geist unloaded",
+    "__nextjs-Geist Mono unloaded",
+    "__nextjs-Geist unloaded",
+    "__nextjs-Geist Mono unloaded"
+  ]
+}

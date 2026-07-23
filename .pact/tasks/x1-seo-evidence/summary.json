@@ -1,0 +1,30 @@
+{
+  "checkedAt": "2026-07-23T06:58:57.709Z",
+  "sitemapModelCount": 7,
+  "publicPaths": [
+    "/",
+    "/models",
+    "/how-it-works",
+    "/contact",
+    "/about",
+    "/privacy"
+  ],
+  "modelSlugs": [
+    "harbor-20",
+    "harbor-40",
+    "meridian",
+    "meridian-stack",
+    "counter",
+    "workroom",
+    "basecamp"
+  ],
+  "homeLdTypes": [
+    "FAQPage",
+    "Organization"
+  ],
+  "modelLdTypes": [
+    "Product",
+    "BreadcrumbList",
+    "Organization"
+  ]
+}

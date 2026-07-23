@@ -2,129 +2,345 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
+/* Never scan the pact ledger for utility candidates: it is append-only
+   protocol text (evidence, reviews) and any class-shaped string in it —
+   e.g. a utility name quoted in a review comment — would otherwise be
+   emitted into the production CSS as dead bytes. */
+@source not "../../.pact";
 
+/* urbanbricks design tokens — DESIGN.md is normative. All values OKLCH as specified.
+   No light/dark theme toggle: "Ink Surface" is a section treatment, not a theme.
+   Dark sections opt in via the `.ink-surface` scope below (see the Every-Surface Rule). */
+
+/* Structural dark-mode prohibition (DESIGN.md forbids a light/dark theme).
+   Tailwind's `dark:` variant is media-based by default; redefining it to the
+   class strategy makes `dark:*` utilities inert unless a `.dark` class exists —
+   and nothing in this system ever adds one. This keeps the app from responding
+   to `prefers-color-scheme` no matter what later markup ships. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Fallback metric overrides (DESIGN.md § Typography, implementation gate 2)
+   are emitted by next/font itself in this build: with `fallback:` omitted in
+   layout.tsx, the production CSS carries next/font's own adjusted faces
+   ("Archivo Fallback" at size-adjust 98.7%, "Schibsted Grotesk Fallback" at
+   104.49% — Next's precalculated capsize metrics) and sets each CSS variable
+   to the real family immediately followed by that adjusted face. The stacks
+   in @theme below therefore go straight from the variable to generic
+   families. An earlier revision declared these faces by hand under the
+   belief that Turbopack never emitted them; that was true of the then-current
+   configuration (which passed `fallback:`), not of this one — the hand-declared
+   duplicates were removed. */
 @theme inline {
+  /* Brand palette */
+  --color-brass: var(--brass);
+  --color-brass-deep: var(--brass-deep);
+  --color-brass-hover: var(--brass-hover);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-surface-white: var(--surface-white);
+  --color-surface-ink: var(--surface-ink);
+  --color-line: var(--line);
+  --color-stroke: var(--stroke);
+  --color-ink-muted-on-dark: var(--ink-muted-on-dark);
+  --color-on-dark: var(--on-dark);
+  --color-line-on-dark: var(--line-on-dark);
+  --color-stroke-on-dark: var(--stroke-on-dark);
+  --color-destructive: var(--destructive);
+  --color-destructive-on-dark: var(--destructive-on-dark);
+  --color-success: var(--success);
+  --color-success-on-dark: var(--success-on-dark);
+
+  /* shadcn semantic aliases, bound to the brand palette */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Radius — near-square corners: 2px / 4px / 8px (DESIGN.md `rounded`) */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+
+  /* Spacing scale (DESIGN.md `spacing`).
+     Keys are SEMANTIC, not t-shirt sizes, and that is deliberate: Tailwind 4
+     resolves named `max-w-*` / `w-*` from the spacing namespace too, so a
+     `--spacing-sm` silently turns `max-w-sm` into 16px instead of 24rem.
+     f4-shell lost a sheet to exactly that (clamped to 16px wide). Never
+     reintroduce xs/sm/md/lg/xl here. Utilities: p-inline, gap-group, m-band. */
+  --spacing-inline: 8px;
+  --spacing-stack: 16px;
+  --spacing-group: 32px;
+  --spacing-section: 64px;
+  --spacing-band: 120px;
+
+  /* Elevation — "Detached" is the only shadow in the system (DESIGN.md §4) */
+  --shadow-detached: 0 8px 32px oklch(0.18 0.008 75 / 0.12);
+
+  /* Typography — display face is Archivo with the variable `wdth` axis, rendered
+     expanded at 125 (font-stretch is applied where the display face is used).
+     Body face is Schibsted Grotesk. next/font already sets each variable to the
+     real family followed by its metric-adjusted fallback face (see the comment
+     above @theme), so each stack goes straight from the variable to generic
+     families — re-adding the fallback name here would only double it in the
+     computed stack. */
+  --font-sans: var(--font-schibsted), "Helvetica Neue", sans-serif;
+  --font-display: var(--font-archivo), "Helvetica Neue", sans-serif;
+  --font-heading: var(--font-display);
+
+  /* Type scale (DESIGN.md § Typography → Hierarchy) */
+  --text-display: clamp(2.75rem, 6vw, 5.25rem);
+  --text-display--line-height: 0.98;
+  --text-display--letter-spacing: -0.025em;
+  --text-display--font-weight: 700;
+  --text-headline: clamp(1.75rem, 3vw, 2.75rem);
+  --text-headline--line-height: 1.1;
+  --text-headline--letter-spacing: -0.015em;
+  --text-headline--font-weight: 600;
+  --text-title: 1.125rem;
+  --text-title--line-height: 1.35;
+  --text-title--font-weight: 600;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.6;
+  --text-label: 0.8125rem;
+  --text-label--line-height: 1.3;
+  --text-label--letter-spacing: 0.01em;
+  --text-label--font-weight: 500;
+
+  /* Module Grid — 5:2 base cell derived from the 20ft container footprint
+     (DESIGN.md § The Module Grid). Utility: aspect-module (image crops). */
+  --aspect-module: 5 / 2;
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  /* Brand palette (DESIGN.md frontmatter `colors` + button hover state) */
+  --brass: oklch(0.74 0.115 80);
+  --brass-deep: oklch(0.48 0.095 70);
+  --brass-hover: oklch(0.63 0.12 78);
+  --ink: oklch(0.18 0.008 75);
+  --ink-muted: oklch(0.44 0.006 75);
+  --surface-white: oklch(1 0 0);
+  --surface-ink: oklch(0.21 0.012 75);
+  --line: oklch(0.9 0.004 75);
+  --stroke: oklch(0.64 0.006 75);
+  --ink-muted-on-dark: oklch(0.74 0.006 75);
+  --on-dark: oklch(0.96 0.004 75);
+  --line-on-dark: oklch(0.32 0.008 75);
+  --stroke-on-dark: oklch(0.52 0.008 75);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --destructive-on-dark: oklch(0.68 0.19 27.325);
+  --success: oklch(0.5 0.13 150);
+  --success-on-dark: oklch(0.75 0.15 150);
+
+  /* shadcn semantic aliases on the default (light) surface */
+  --background: var(--surface-white);
+  --foreground: var(--ink);
+  --card: var(--surface-white);
+  --card-foreground: var(--ink);
+  --popover: var(--surface-white);
+  --popover-foreground: var(--ink);
+  --primary: var(--brass);
+  --primary-foreground: var(--ink);
+  --secondary: var(--surface-white);
+  --secondary-foreground: var(--ink);
+  --muted: var(--surface-white);
+  --muted-foreground: var(--ink-muted);
+  --accent: var(--surface-white);
+  --accent-foreground: var(--ink);
+  --border: var(--line);
+  --input: var(--stroke);
+  --ring: var(--ink);
+
+  /* Module Grid (DESIGN.md § The Module Grid). The gutter is proportional to
+     the cell, mirroring the product: the joining gap between joined modules is
+     declared as 1/40 of the module length, so the gutter is 0.025 × cell width.
+     The grid below derives both gutters and the stacked crop from this one
+     constant — change it here and the whole system follows. */
+  --module-gap-ratio: 0.025;
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+/* Ink Surface — a dark SECTION treatment, not a theme. Applying `.ink-surface`
+   to a band swaps in the mandatory dark-surface counterparts (the Every-Surface
+   Rule): Brass instead of Deep Brass for figures, Muted On Dark for secondary
+   copy, On Dark for the focus ring, Line/Stroke On Dark for hairlines and
+   interactive boundaries, and the on-dark state colours. */
+.ink-surface {
+  --background: var(--surface-ink);
+  --foreground: var(--on-dark);
+  --card: var(--surface-ink);
+  --card-foreground: var(--on-dark);
+  --popover: var(--surface-ink);
+  --popover-foreground: var(--on-dark);
+  --secondary: var(--surface-ink);
+  --secondary-foreground: var(--on-dark);
+  --muted: var(--surface-ink);
+  --muted-foreground: var(--ink-muted-on-dark);
+  --accent: var(--surface-ink);
+  --accent-foreground: var(--on-dark);
+  --brass-deep: var(--brass);
+  --destructive: var(--destructive-on-dark);
+  --success: var(--success-on-dark);
+  --ring: var(--on-dark);
+  --border: var(--line-on-dark);
+  --input: var(--stroke-on-dark);
+  background-color: var(--surface-ink);
+  color: var(--on-dark);
+  /* DESIGN.md §2: body text on Ink Surface raises line-height by 0.05 (1.6 → 1.65).
+     This declaration only reaches text that INHERITS its line-height — see the
+     companion rule below for elements carrying the Body utility. */
+  line-height: 1.65;
+}
+
+/* The §2 raise must survive the Body utility, not just inheritance. Because the
+   type scale lives under `@theme inline`, Tailwind 4 compiles `.text-body` to a
+   LITERAL `line-height: var(--tw-leading, 1.6)` on the element itself, and an
+   element's own declaration always beats an inherited one — so the 1.65 above
+   never reached real body copy. This explicit scoped override targets the
+   element (unlayered author CSS outranks `@layer utilities`, whatever the
+   specificity). Chosen over scoping Tailwind's internal `--tw-leading`, which
+   would work (`var(--tw-leading, 1.6)` reads the variable first) but couples
+   the design system to a framework implementation detail that can change in
+   any minor release. */
+.ink-surface .text-body {
+  line-height: 1.65;
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
-  body {
-    @apply bg-background text-foreground;
+  /* Focus ring (DESIGN.md §5): a 2px ring offset 2px, Ink on light surfaces.
+     `.ink-surface` redefines --ring to --on-dark, so the surface decides the
+     ring — an ink ring on Ink Surface is 1.06:1 and invisible. Full alpha:
+     shadcn's stock focus ring draws the outline color at half alpha, which
+     dilutes Ink to ~1.9:1 on white, below the 3:1 that WCAG 1.4.11 / 2.4.11
+     require of a focus indicator. */
+  *:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
   }
   html {
     @apply font-sans;
   }
+  body {
+    @apply bg-background text-foreground;
+    text-wrap: pretty;
+  }
+  h1,
+  h2 {
+    font-family: var(--font-display);
+    /* Archivo Expanded: the variable `wdth` axis at 125. Without this the face
+       renders at normal width and the width-contrast hierarchy disappears. */
+    font-stretch: 125%;
+  }
+  /* Balance Rule (DESIGN.md §3): text-wrap only. Title-level headings (h3)
+     stay in the body face — the Hierarchy assigns Title to Schibsted Grotesk,
+     not to Archivo Expanded. */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+}
+
+/* Module Grid (DESIGN.md § The Module Grid) — the signature system. The 5:2
+   base cell derives from the 20ft container footprint (20×8ft); a 40ft module
+   is two cells side by side, a stacked two-storey build two cells vertically.
+   The column count is FIXED per breakpoint (never auto-fit) so every cell
+   boundary is addressable — hairline rules land on cell boundaries and process
+   steps step across cells. The gutter is proportional: r × cell width, with
+   r = --module-gap-ratio (the joining gap, 1/40 of the module length).
+   Derivation: with n columns and gutter g = r·cell, cell = (100% − (n−1)·g)/n,
+   which solves to g = 100% · r / (n + r·(n−1)) — the formula used below. */
+@layer components {
+  .grid-modules {
+    --module-cols: 1;
+    --_module-gutter: calc(
+      100% * var(--module-gap-ratio) /
+        (var(--module-cols) + var(--module-gap-ratio) * (var(--module-cols) - 1))
+    );
+    display: grid;
+    grid-template-columns: repeat(var(--module-cols), minmax(0, 1fr));
+    column-gap: var(--_module-gutter);
+    /* Cancels the last row's gutter margin below. CONSTRAINT for f4-shell:
+       this percentage margin resolves against the grid's CONTAINING block,
+       while the item margins it cancels resolve against each item's grid
+       AREA — the cancellation is exact only while .grid-modules fills its
+       containing block's inline size. Never constrain the grid element
+       itself (no max-width / inline-size on .grid-modules); wrap it in a
+       constraining parent instead. */
+    margin-block-end: calc(-1 * var(--_module-gutter));
+  }
+
+  /* Row gutter. A percentage `row-gap` resolves against the grid's own
+     (indefinite) block size, so it cannot express r × cell; a grid item's
+     percentage margin resolves against its grid AREA — the cell width — so
+     the row gutter is exactly r × cell. Grid-item margins never collapse,
+     and each row's gutter is the margin of its tallest-spanning item. */
+  .grid-modules > * {
+    margin-block-end: calc(100% * var(--module-gap-ratio));
+  }
+
+  @media (min-width: 48rem) {
+    .grid-modules {
+      --module-cols: 2;
+    }
+  }
+
+  @media (min-width: 80rem) {
+    .grid-modules {
+      --module-cols: 4;
+    }
+  }
+
+  /* Whole-cell spans. A span never exceeds the track count at its breakpoint —
+   "where a layout cannot resolve to whole cells, the layout is wrong, not the
+   grid" — so spans collapse to one cell below the breakpoint that can hold
+   them instead of creating implicit tracks. The gutter margin of a spanning
+   item is rescaled to r × ONE cell: its grid area is N cells + (N−1) gutters
+   wide, and cell = area / (N + r·(N−1)) by the same derivation as above. */
+  .cell-span-2,
+  .cell-span-3 {
+    grid-column: span 1;
+  }
+
+  @media (min-width: 48rem) {
+    .cell-span-2 {
+      grid-column: span 2;
+    }
+    .grid-modules > .cell-span-2 {
+      margin-block-end: calc(
+        100% * var(--module-gap-ratio) / (2 + var(--module-gap-ratio))
+      );
+    }
+  }
+
+  @media (min-width: 80rem) {
+    .cell-span-3 {
+      grid-column: span 3;
+    }
+    .grid-modules > .cell-span-3 {
+      margin-block-end: calc(
+        100% * var(--module-gap-ratio) / (3 + 2 * var(--module-gap-ratio))
+      );
+    }
+  }
+}
+
+/* Two 5:2 cells stacked plus one joining gutter: height = 2 + 2 + 5r in cell
+   units = 4.125 at r = 0.025. Derived from --module-gap-ratio; keep in sync. */
+@utility aspect-module-stacked {
+  aspect-ratio: 5 / 4.125;
 }

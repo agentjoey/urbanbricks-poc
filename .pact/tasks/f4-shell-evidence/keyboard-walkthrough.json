@@ -1,0 +1,416 @@
+{
+  "expected": "skip link focused first (ink pill, On Dark outline); Enter -> #content, next Tab lands inside main; nav link on white: 2px solid Ink full alpha, 2px offset; footer link on Ink Surface: 2px solid On Dark full alpha, 2px offset",
+  "skipDesc": {
+    "tag": "A",
+    "text": "Skip to content",
+    "href": "#content",
+    "slot": null,
+    "inSheet": false,
+    "inFooterInk": false,
+    "rect": {
+      "x": 16,
+      "y": 15,
+      "w": 125,
+      "h": 41
+    }
+  },
+  "skipFocus": {
+    "text": "Skip to content",
+    "matchesFocusVisible": true,
+    "outlineWidth": "2px",
+    "outlineStyle": "solid",
+    "outlineColor": "lab(95.3672 0.340372 1.47672)",
+    "outlineOffset": "2px",
+    "rect": {
+      "x": 16,
+      "y": 15,
+      "w": 125,
+      "h": 41
+    }
+  },
+  "afterSkip": {
+    "hash": "#content",
+    "active": "BODY"
+  },
+  "afterSkipTabLandsInMain": true,
+  "afterSkipTab": {
+    "tag": "A",
+    "text": "Templates",
+    "href": "https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app",
+    "slot": null,
+    "inSheet": false,
+    "inFooterInk": false,
+    "rect": {
+      "x": 400,
+      "y": 808,
+      "w": 88,
+      "h": 23
+    }
+  },
+  "lightNavStyles": {
+    "tag": "A",
+    "text": "Models",
+    "href": "/models",
+    "slot": null,
+    "inSheet": false,
+    "inFooterInk": false,
+    "rect": {
+      "x": 1033,
+      "y": 25,
+      "w": 46,
+      "h": 16
+    },
+    "styles": {
+      "text": "Models",
+      "matchesFocusVisible": true,
+      "outlineWidth": "2px",
+      "outlineStyle": "solid",
+      "outlineColor": "oklab(0.18 0.00206867 0.00773121)",
+      "outlineOffset": "2px",
+      "rect": {
+        "x": 1033,
+        "y": 25,
+        "w": 46,
+        "h": 16
+      }
+    }
+  },
+  "darkFooterStyles": {
+    "tag": "A",
+    "text": "urbanbricks",
+    "href": "/",
+    "slot": null,
+    "inSheet": false,
+    "inFooterInk": true,
+    "rect": {
+      "x": 32,
+      "y": 738,
+      "w": 122,
+      "h": 26
+    },
+    "styles": {
+      "text": "urbanbricks",
+      "matchesFocusVisible": true,
+      "outlineWidth": "2px",
+      "outlineStyle": "solid",
+      "outlineColor": "lab(95.3672 0.340372 1.47672)",
+      "outlineOffset": "2px",
+      "rect": {
+        "x": 32,
+        "y": 738,
+        "w": 122,
+        "h": 26
+      }
+    }
+  },
+  "fullWalk": [
+    {
+      "tag": "A",
+      "text": "Skip to content",
+      "href": "#content",
+      "slot": null,
+      "inSheet": false,
+      "inFooterInk": false,
+      "rect": {
+        "x": 16,
+        "y": 15,
+        "w": 125,
+        "h": 41
+      },
+      "styles": {
+        "text": "Skip to content",
+        "matchesFocusVisible": true,
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "lab(95.3672 0.340372 1.47672)",
+        "outlineOffset": "2px",
+        "rect": {
+          "x": 16,
+          "y": 15,
+          "w": 125,
+          "h": 41
+        }
+      }
+    },
+    {
+      "tag": "A",
+      "text": "urbanbricks",
+      "href": "/",
+      "slot": null,
+      "inSheet": false,
+      "inFooterInk": false,
+      "rect": {
+        "x": 32,
+        "y": 20,
+        "w": 122,
+        "h": 24
+      },
+      "styles": {
+        "text": "urbanbricks",
+        "matchesFocusVisible": true,
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "lab(5.27514 0.590012 2.10143)",
+        "outlineOffset": "2px",
+        "rect": {
+          "x": 32,
+          "y": 20,
+          "w": 122,
+          "h": 24
+        }
+      }
+    },
+    {
+      "tag": "A",
+      "text": "Models",
+      "href": "/models",
+      "slot": null,
+      "inSheet": false,
+      "inFooterInk": false,
+      "rect": {
+        "x": 1033,
+        "y": 25,
+        "w": 46,
+        "h": 16
+      },
+      "styles": {
+        "text": "Models",
+        "matchesFocusVisible": true,
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "oklab(0.18 0.00206867 0.00773121)",
+        "outlineOffset": "2px",
+        "rect": {
+          "x": 1033,
+          "y": 25,
+          "w": 46,
+          "h": 16
+        }
+      }
+    },
+    {
+      "tag": "A",
+      "text": "How it works",
+      "href": "/how-it-works",
+      "slot": null,
+      "inSheet": false,
+      "inFooterInk": false,
+      "rect": {
+        "x": 1111,
+        "y": 25,
+        "w": 81,
+        "h": 16
+      },
+      "styles": {
+        "text": "How it works",
+        "matchesFocusVisible": true,
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "oklab(0.18 0.00206867 0.00773121)",
+        "outlineOffset": "2px",
+        "rect": {
+          "x": 1111,
+          "y": 25,
+          "w": 81,
+          "h": 16
+        }
+      }
+    },
+    {
+      "tag": "A",
+      "text": "About",
+      "href": "/about",
+      "slot": null,
+      "inSheet": false,
+      "inFooterInk": false,
+      "rect": {
+        "x": 1224,
+        "y": 25,
+        "w": 38,
+        "h": 16
+      },
+      "styles": {
+        "text": "About",
+        "matchesFocusVisible": true,
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "oklab(0.18 0.00206867 0.00773121)",
+        "outlineOffset": "2px",
+        "rect": {
+          "x": 1224,
+          "y": 25,
+          "w": 38,
+          "h": 16
+        }
+      }
+    },
+    {
+      "tag": "A",
+      "text": "Get a quote",
+      "href": "/contact",
+      "slot": "button",
+      "inSheet": false,
+      "inFooterInk": false,
+      "rect": {
+        "x": 1295,
+        "y": 14,
+        "w": 113,
+        "h": 36
+      },
+      "styles": {
+        "text": "Get a quote",
+        "matchesFocusVisible": true,
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "oklab(0.18 0.00206867 0.00773121)",
+        "outlineOffset": "1px",
+        "rect": {
+          "x": 1295,
+          "y": 14,
+          "w": 113,
+          "h": 36
+        }
+      }
+    },
+    {
+      "tag": "A",
+      "text": "Templates",
+      "href": "https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app",
+      "slot": null,
+      "inSheet": false,
+      "inFooterInk": false,
+      "rect": {
+        "x": 400,
+        "y": 872,
+        "w": 88,
+        "h": 23
+      },
+      "styles": {
+        "text": "Templates",
+        "matchesFocusVisible": true,
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "lab(5.27514 0.590012 2.10143)",
+        "outlineOffset": "2px",
+        "rect": {
+          "x": 400,
+          "y": 872,
+          "w": 88,
+          "h": 23
+        }
+      }
+    },
+    {
+      "tag": "A",
+      "text": "Learning",
+      "href": "https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app",
+      "slot": null,
+      "inSheet": false,
+      "inFooterInk": false,
+      "rect": {
+        "x": 400,
+        "y": 438,
+        "w": 73,
+        "h": 23
+      },
+      "styles": {
+        "text": "Learning",
+        "matchesFocusVisible": true,
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "lab(5.27514 0.590012 2.10143)",
+        "outlineOffset": "2px",
+        "rect": {
+          "x": 400,
+          "y": 438,
+          "w": 73,
+          "h": 23
+        }
+      }
+    },
+    {
+      "tag": "A",
+      "text": "Deploy Now",
+      "href": "https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app",
+      "slot": null,
+      "inSheet": false,
+      "inFooterInk": false,
+      "rect": {
+        "x": 400,
+        "y": 498,
+        "w": 158,
+        "h": 48
+      },
+      "styles": {
+        "text": "Deploy Now",
+        "matchesFocusVisible": true,
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "oklab(0.205195 0.00200481 0.00749439)",
+        "outlineOffset": "2px",
+        "rect": {
+          "x": 400,
+          "y": 498,
+          "w": 158,
+          "h": 48
+        }
+      }
+    },
+    {
+      "tag": "A",
+      "text": "Documentation",
+      "href": "https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app",
+      "slot": null,
+      "inSheet": false,
+      "inFooterInk": false,
+      "rect": {
+        "x": 574,
+        "y": 498,
+        "w": 158,
+        "h": 48
+      },
+      "styles": {
+        "text": "Documentation",
+        "matchesFocusVisible": true,
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "oklab(0.18 0.00206867 0.00773121)",
+        "outlineOffset": "2px",
+        "rect": {
+          "x": 574,
+          "y": 498,
+          "w": 158,
+          "h": 48
+        }
+      }
+    },
+    {
+      "tag": "A",
+      "text": "urbanbricks",
+      "href": "/",
+      "slot": null,
+      "inSheet": false,
+      "inFooterInk": true,
+      "rect": {
+        "x": 32,
+        "y": 738,
+        "w": 122,
+        "h": 26
+      },
+      "styles": {
+        "text": "urbanbricks",
+        "matchesFocusVisible": true,
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "lab(95.3672 0.340372 1.47672)",
+        "outlineOffset": "2px",
+        "rect": {
+          "x": 32,
+          "y": 738,
+          "w": 122,
+          "h": 26
+        }
+      }
+    }
+  ]
+}

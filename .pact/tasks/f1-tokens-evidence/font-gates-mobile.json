@@ -1,0 +1,98 @@
+{
+  "status": "done",
+  "gate1_wdth": {
+    "computedFontStretch": "125%",
+    "computedFontFamily": "Archivo, \"Archivo Fallback\", \"Archivo Fallback\", Archivo, \"Helvetica Neue\", sans-serif",
+    "expandedWidthPx": 103.47,
+    "normalWidthPx": 83.42
+  },
+  "gate2_fallbackThroughCascade": {
+    "sansComputedStack": "\"Schibsted Grotesk\", \"Schibsted Grotesk Fallback\", \"Schibsted Grotesk Fallback\", \"Helvetica Neue\", sans-serif",
+    "displayComputedStack": "Archivo, \"Archivo Fallback\", \"Archivo Fallback\", Archivo, \"Helvetica Neue\", sans-serif",
+    "schibstedFaceAvailable": true,
+    "archivoFaceAvailable": true,
+    "schibstedFallbackAvailable": true,
+    "archivoFallbackAvailable": true,
+    "rawArialWidthPx": 393.69,
+    "sansInheritWidthPx": 389,
+    "sansUtilWidthPx": 389,
+    "displayWidthPx": 401.69,
+    "sansOverArial": 0.99,
+    "sansInheritOverArial": 0.99,
+    "displayOverArial": 1.02,
+    "expectedSansRatio": 1.0449,
+    "expectedDisplayRatio": 0.987
+  },
+  "gate3_tnum": {
+    "perDigitWidthTnumOn": {
+      "0": 40.63,
+      "1": 40.63,
+      "2": 40.63,
+      "3": 40.63,
+      "4": 40.63,
+      "5": 40.63,
+      "6": 40.63,
+      "7": 40.63,
+      "8": 40.63,
+      "9": 40.63
+    },
+    "perDigitMaxDeltaPx": 0,
+    "proportional11111": 166.72,
+    "proportional88888": 285.28,
+    "tabular11111": 325,
+    "tabular88888": 325
+  },
+  "moduleGrid": {
+    "columnCount": 1,
+    "cellWidthPx": 352,
+    "colGapPx": null,
+    "gutterOverCell": null,
+    "rowGapPx": 8.8,
+    "rowGapOverCell": 0.025,
+    "rowEqualsCol": null,
+    "span2WidthPx": 352,
+    "span2ExpectedPx": 352,
+    "span3WidthPx": 352,
+    "span3ExpectedPx": 352,
+    "trailingResiduePx": 0
+  },
+  "inkSurface": {
+    "bodyLineHeight": "28.05px",
+    "bodyFontSize": "17px",
+    "hairlineBorderColor": "lab(21.1318 0.728652 2.98569)",
+    "lineOnDarkControl": "lab(21.1318 0.728652 2.98569)",
+    "backgroundColor": "lab(8.37179 1.19996 4.20676)"
+  },
+  "focusRing": {
+    "light": {
+      "matchesFocusVisible": true,
+      "outlineWidth": "2px",
+      "outlineStyle": "solid",
+      "outlineColor": "lab(5.27514 0.590012 2.10143)",
+      "outlineOffset": "2px"
+    },
+    "dark": {
+      "matchesFocusVisible": true,
+      "outlineWidth": "2px",
+      "outlineStyle": "solid",
+      "outlineColor": "lab(95.3672 0.340372 1.47672)",
+      "outlineOffset": "2px"
+    }
+  },
+  "darkMediaRuleCount": 0,
+  "fontFacesBeforeDelete": [
+    "Archivo unloaded",
+    "Archivo unloaded",
+    "Archivo loaded",
+    "Archivo Fallback unloaded",
+    "Schibsted Grotesk unloaded",
+    "Schibsted Grotesk loaded",
+    "Schibsted Grotesk Fallback unloaded",
+    "Archivo Fallback unloaded",
+    "Schibsted Grotesk Fallback unloaded",
+    "__nextjs-Geist unloaded",
+    "__nextjs-Geist Mono unloaded",
+    "__nextjs-Geist unloaded",
+    "__nextjs-Geist Mono unloaded"
+  ]
+}

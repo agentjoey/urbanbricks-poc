@@ -1,0 +1,52 @@
+{
+  "grid": {
+    "cardCount": 7,
+    "slugs": [
+      "/models/harbor-20",
+      "/models/harbor-40",
+      "/models/meridian",
+      "/models/meridian-stack",
+      "/models/counter",
+      "/models/workroom",
+      "/models/basecamp"
+    ],
+    "cardBorderTopColor": "lab(58.2503 0.519633 2.22081)",
+    "cardBorderStyle": "solid",
+    "cardBorderWidth": "1px",
+    "visualisationCaptions": 7,
+    "priceText": "£34,000 – £46,000",
+    "priceColor": "lab(39.487 15.2605 41.6949)",
+    "priceWeight": "600",
+    "statusLine": "All 7 models"
+  },
+  "filterCommercial": {
+    "activeChips": [
+      {
+        "label": "Commercial",
+        "bg": "lab(5.27514 0.590012 2.10143)",
+        "weight": "600"
+      }
+    ],
+    "slugs": [
+      "/models/counter",
+      "/models/workroom",
+      "/models/basecamp"
+    ],
+    "status": "3 of 7 models"
+  },
+  "empty": {
+    "hasEmpty": true,
+    "clearFilters": true,
+    "quoteReachable": true,
+    "status": "0 of 7 models"
+  },
+  "noJs": {
+    "slugs": [
+      "/models/harbor-20",
+      "/models/harbor-40",
+      "/models/meridian",
+      "/models/meridian-stack"
+    ],
+    "status": "4 of 7 models"
+  }
+}

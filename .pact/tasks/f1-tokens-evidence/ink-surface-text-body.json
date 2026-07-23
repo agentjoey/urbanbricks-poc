@@ -1,0 +1,32 @@
+{
+  "url": "http://127.0.0.1:3210/probe-f1",
+  "measuredAt": "2026-07-21T19:14:48.292Z",
+  "note": "Production build (pnpm build && next start) serving a real route whose elements carry the .text-body utility inside .ink-surface.",
+  "result": {
+    "#body-in-ink": {
+      "className": "text-body",
+      "fontSize": "17px",
+      "lineHeight": "28.05px",
+      "fontFamily": "\"Schibsted Grotesk\", \"Schibsted Grotesk Fallback\", \"Helvetica Neue\", sans-serif",
+      "ratio": 1.6500000000000001,
+      "expectedLineHeight": "28.05px (17px * 1.65)"
+    },
+    "#body-in-light": {
+      "className": "text-body",
+      "fontSize": "17px",
+      "lineHeight": "27.2px",
+      "fontFamily": "\"Schibsted Grotesk\", \"Schibsted Grotesk Fallback\", \"Helvetica Neue\", sans-serif",
+      "ratio": 1.5999999999999999,
+      "expectedLineHeight": "27.2px (17px * 1.6)"
+    },
+    "#plain-in-ink": {
+      "className": "(none)",
+      "fontSize": "16px",
+      "lineHeight": "26.4px",
+      "fontFamily": "\"Schibsted Grotesk\", \"Schibsted Grotesk Fallback\", \"Helvetica Neue\", sans-serif",
+      "ratio": 1.65
+    },
+    "bodyFontStack": "\"Schibsted Grotesk\", \"Schibsted Grotesk Fallback\", \"Helvetica Neue\", sans-serif",
+    "stackFallbackCount": 1
+  }
+}

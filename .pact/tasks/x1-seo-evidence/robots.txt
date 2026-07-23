@@ -1,0 +1,6 @@
+User-Agent: *
+Allow: /
+Disallow: /admin
+
+Host: https://urbanbricks.uk
+Sitemap: https://urbanbricks.uk/sitemap.xml

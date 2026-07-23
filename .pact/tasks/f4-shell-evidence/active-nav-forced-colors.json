@@ -1,0 +1,26 @@
+{
+  "note": "forced-colors: active — author colours are overridden by system colours; the weight step (600 vs 500) and the 2px underline thickness must survive",
+  "links": [
+    {
+      "text": "Models",
+      "fontWeight": "600",
+      "textDecorationLine": "underline",
+      "textDecorationThickness": "2px",
+      "textDecorationColor": "lab(39.487 15.2605 41.6949)"
+    },
+    {
+      "text": "How it works",
+      "fontWeight": "500",
+      "textDecorationLine": "underline",
+      "textDecorationThickness": "2px",
+      "textDecorationColor": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "About",
+      "fontWeight": "500",
+      "textDecorationLine": "underline",
+      "textDecorationThickness": "2px",
+      "textDecorationColor": "rgba(0, 0, 0, 0)"
+    }
+  ]
+}
