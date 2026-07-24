@@ -71,7 +71,8 @@ verify:content  → 45 unverified 值（故意保留，见下）
 □ verify:content 干净后 → Vercel 设 SITE_INDEXABLE=true → 重新部署 → 开放收录
 □ 三个密钥填进 Vercel 环境变量（已配 production/preview，确认值正确）：
    DATABASE_URL · QUOTE_COOKIE_SECRET · ADMIN_PASSWORD
-□ 真 GA4 measurement ID → NEXT_PUBLIC_GA_ID（现为占位 G-PLACEHOLDER0）
+☑ 真 GA4 measurement ID → NEXT_PUBLIC_GA_ID = G-HC2E0LYTPK（2026-07-24 已写入 Vercel Production + .env.local）
+   ⚠ NEXT_PUBLIC 值在**构建时**内联，须触发一次全新 production **构建**才生效（redeploy 复用旧构建无效）
 □ /privacy 的 [保留期限] 占位符填真实法律值
 ```
 
