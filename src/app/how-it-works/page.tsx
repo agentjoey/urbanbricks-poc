@@ -116,6 +116,7 @@ export default function HowItWorksPage() {
             <SpecTable rows={scheduleRows} className="cell-span-2" />
             <RenderImage
               aspect="5:2"
+              src="/images/context/delivery-crane.png"
               className="cell-span-2"
               alt="Visualisation of a finished urbanbricks module being craned onto its prepared foundations."
               sizes="(min-width: 80rem) 50vw, 100vw"

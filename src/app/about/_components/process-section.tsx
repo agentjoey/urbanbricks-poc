@@ -45,6 +45,7 @@ export function ProcessSection() {
           <div className="grid-modules">
             <RenderImage
               aspect="5:2"
+              src="/images/context/process-fitout.png"
               alt="Visualisation of an urbanbricks module being fitted out in the factory."
               className="cell-span-3"
             />

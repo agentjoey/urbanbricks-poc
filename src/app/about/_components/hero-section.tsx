@@ -16,7 +16,8 @@ export function HeroSection() {
           <div className="grid-modules">
             <RenderImage
               aspect="5:2"
-              alt="Visualisation of an urbanbricks modular building in daylight."
+              src="/images/context/about-hero.png"
+              alt="Visualisation of an urbanbricks container building in daylight."
               className="cell-span-3"
             />
           </div>

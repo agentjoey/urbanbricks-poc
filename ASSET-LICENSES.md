@@ -35,7 +35,7 @@ accurate: they are renders, not photos and not third-party buildings. No stock
 | `models/harbor-40-card.png` | Harbor 40 card (3:2) | AI render (own design) | Owner-generated | Same building | ✅ Render |
 | `models/meridian-hero.png` | Meridian hero (5:2) | AI render (own design) | Owner-generated | Dark multi-module home, glazed | ✅ Render |
 | `models/meridian-card.png` | Meridian card (3:2) | AI render (own design) | Owner-generated | Same building | ✅ Render |
-| `models/meridian-stack-hero.png` | Meridian Stack hero (5:2) | AI render (own design) | Owner-generated | Two-storey stacked — NOTE: crop is close, reads as a detail not a whole building; flagged for a re-generation before launch | ⚠️ Render (weak crop) |
+| `models/meridian-stack-hero.png` | Meridian Stack hero (5:2) | AI render (own design) | Owner-generated | Two-storey stacked, whole-building view (re-generated 2026-07-24) | ✅ Render |
 | `models/meridian-stack-card.png` | Meridian Stack card (3:2) | AI render (own design) | Owner-generated | Two-storey stacked | ✅ Render |
 | `models/counter-hero.png` | Counter/bar hero (5:2) | AI render (own design) | Owner-generated | Dark-green container bar, serving hatch, blue hour | ✅ Render |
 | `models/counter-card.png` | Counter/bar card (3:2) | AI render (own design) | Owner-generated | Same building | ✅ Render |
@@ -44,6 +44,15 @@ accurate: they are renders, not photos and not third-party buildings. No stock
 | `models/basecamp-hero.png` | Basecamp/camp hero (5:2) | AI render (own design) | Owner-generated | Dark container cabin, forest, misty | ✅ Render |
 | `models/basecamp-card.png` | Basecamp/camp card (3:2) | AI render (own design) | Owner-generated | Same building | ✅ Render |
 | `models/residential-interior.png` | Shared interior (4:3) | AI render (own design) | Owner-generated | Open-plan container interior, daylight | ✅ Render |
+| `context/about-hero.png` | About hero (5:2) | AI render (own design) | Owner-generated | Grey timber-clad container home, open glazing, daylight | ✅ Render |
+| `context/craft-build.png` | About craft (4:3) | AI render (own design) | Owner-generated | Container module under construction, clean modern workshop | ✅ Render |
+| `context/craft-fitout.png` | About craft (4:3) | AI render (own design) | Owner-generated | Interior fit-out (bathroom) on the factory floor | ✅ Render |
+| `context/process-fitout.png` | About process (5:2) | AI render (own design) | Owner-generated | Module being fitted out in a clean factory | ✅ Render |
+| `context/delivery-crane.png` | How-it-works (5:2) | AI render (own design) | Owner-generated | Finished module craned onto foundations — NOTE: background has a stray rusty container; fine at POC, worth a re-gen with a cleaner site before launch | ⚠️ Render (busy background) |
+
+**meridian-stack-hero re-generated 2026-07-24**: the earlier close crop was
+replaced with a whole-building three-quarter view (upper module cantilever,
+glass-balustrade balcony, dusk). The ⚠️ note on it in the row above is cleared.
 
 ## Search brief (per slot)
 

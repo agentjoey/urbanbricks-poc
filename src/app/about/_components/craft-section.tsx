@@ -28,12 +28,14 @@ export function CraftSection() {
         <div className="grid-modules">
           <RenderImage
             aspect="4:3"
-            alt="Visualisation of a modular building under construction in the factory."
+            src="/images/context/craft-build.png"
+            alt="Visualisation of a container building under construction in the factory."
             className="cell-span-2"
           />
           <RenderImage
             aspect="4:3"
-            alt="Visualisation of an interior fit-out inside a module."
+            src="/images/context/craft-fitout.png"
+            alt="Visualisation of an interior fit-out inside a container module."
             className="cell-span-2"
           />
         </div>
