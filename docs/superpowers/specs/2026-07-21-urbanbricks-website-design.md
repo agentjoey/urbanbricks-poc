@@ -334,20 +334,25 @@ leads
 
 ## 10. 待办与开放问题
 
+> **当前状态总览见 `PROJECT-STATUS.md`**（2026-07-24 起为单一权威入口）。本表保留决策沿革。
+
 | 项 | 责任人 | 状态 |
 |---|---|---|
-| 域名 `urbanbricks.uk` | Human Owner | ✅ 已购入。站点完成后绑定 Vercel |
-| 货币与计量单位最终取值 | Human Owner | 待定（`content/site.ts` 单一配置，改动成本低）|
-| **交付周期真实数值** | Human Owner | **最高优先级** —— 定位「Open in weeks, not years」整个压在它上面；若真实工期以月/季计，是推翻定位而非改文案 |
-| 3D 渲染图（自有户型） | Human Owner | 待办 —— 图像政策第 1 级，页面主视觉依赖它 |
-| 工厂/工艺过程实拍 | Human Owner | **已从「待办」升级为业务流程产物**（2026-07-22）：Human Owner 确认 urbanbricks 会向客户提供其建筑在工厂生产过程的照片。该承诺保留在 FAQ 中，同时意味着图像政策第 2 级素材会自然产生。首批订单开始即应归档，用于网站 —— 这是唯一 100% 真实、且直接论证「快」的机制的素材。 |
+| 域名 `urbanbricks.uk` | Human Owner | ✅ **已绑定并解析**（2026-07-24，Cloudflare DNS A→Vercel，SSL 有效）|
+| 货币 | Human Owner | ✅ **USD**（2026-07-23）。记录了与 .uk 域名的战略张力 |
+| 计量单位 | Human Owner | ✅ **sq ft**（2026-07-23）|
+| **交付周期真实数值** | Human Owner | ✅ **工厂建造 30 天已确认**（2026-07-22），口径由类型系统强制（不含地基/审批）|
+| 3D 渲染图（自有户型 15 张 + 工艺/关于 5 张） | Human Owner | ✅ **全部完成并上线**（2026-07-23/24，AI 渲染自有设计）。全站零占位框。delivery-crane 一张背景可选重生 |
+| 工厂/工艺过程实拍 | Human Owner | 待办（升级为业务流程产物，2026-07-22）：urbanbricks 会向客户提供工厂生产照片，首批订单起归档，可替换当前渲染占位 |
 | 结果目标（Baseline → Target 与测量窗口） | Human Owner | 暂缓，首批数据后补齐 |
-| Kimi model pin 是否改为 K3 | Human Owner | 待确认 |
-| Neon 项目开通 | Primary Agent | ✅ `urbanbricks-poc` / `morning-bread-90534781` / us-east-1 / PG18。连接串在本地 `.env.local`（已被 gitignore 覆盖，历史零泄露）|
-| 连接串写入 Vercel 环境变量 | Human Owner | 待办 —— 部署前必须完成，且**只走环境变量**，仓库是 public 的 |
-| GA4 property 与 Search Console 开通 | Human Owner | 待办 |
-| 真实品牌资产（logo / 色彩 / 字体） | 无，由设计阶段产出 | 已决 |
-| 真实客户评价 / 项目案例 / 认证 | Human Owner | 缺失，相关区块保持空槽位 |
+| Neon 项目开通 | Primary Agent | ✅ `urbanbricks-poc` / `morning-bread-90534781` / us-east-1 / PG18 |
+| 三个密钥写入 Vercel 环境变量 | Human Owner | ✅ **已配** production/preview（DATABASE_URL / QUOTE_COOKIE_SECRET / ADMIN_PASSWORD）。上线前确认值正确 |
+| 真 GA4 measurement ID | Human Owner | 待办 —— 现为占位 `G-PLACEHOLDER0`，机制已建（PECR 同意闸门） |
+| Search Console | Human Owner | 待办 —— 待 SITE_INDEXABLE 开放后接入 |
+| 45 个 unverified() 事实值 | Human Owner | 待办（产品参数需工程图纸；运营信息可陆续给）—— **noindex 守着，假数据不外泄** |
+| 质保期限 | Human Owner | ✅ 结构 10 年 / 防水 5 年 / 部件 2 年 已确认（2026-07-24），但代码去包裹待批量处理 |
+| 真实品牌资产（logo / 色彩 / 字体） | 已决 | 由设计阶段产出 |
+| 真实客户评价 / 项目案例 / 认证 | Human Owner | 缺失，相关区块保持空槽位（不可编造）|
 
 ---
 
