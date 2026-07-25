@@ -1,6 +1,6 @@
 # urbanbricks POC — 项目状态
 
-_最后更新：2026-07-24_
+_最后更新：2026-07-25_
 
 一句话：**完整的集装箱住宅公司官网已构建、通过全部独立复核、部署在真实域名 `urbanbricks.uk` 上，处于 noindex 保护的「预上线」状态**。剩下的全部是需要 Human Owner 真实数据的核实项，不是工程工作。
 
@@ -71,8 +71,9 @@ verify:content  → 45 unverified 值（故意保留，见下）
 □ verify:content 干净后 → Vercel 设 SITE_INDEXABLE=true → 重新部署 → 开放收录
 □ 三个密钥填进 Vercel 环境变量（已配 production/preview，确认值正确）：
    DATABASE_URL · QUOTE_COOKIE_SECRET · ADMIN_PASSWORD
-☑ 真 GA4 measurement ID → NEXT_PUBLIC_GA_ID = G-HC2E0LYTPK（2026-07-24 已写入 Vercel Production + .env.local）
-   ⚠ NEXT_PUBLIC 值在**构建时**内联，须触发一次全新 production **构建**才生效（redeploy 复用旧构建无效）
+☑ 真 GA4 measurement ID → NEXT_PUBLIC_GA_ID = G-HC2E0LYTPK。2026-07-24 写入 Vercel Production + .env.local，
+   并已跑全新 production 构建（非 redeploy）使其在构建时内联生效 —— **已在线上 JS bundle 中核实存在**，
+   全站零 `G-PLACEHOLDER0` 残留
 □ /privacy 的 [保留期限] 占位符填真实法律值
 ```
 

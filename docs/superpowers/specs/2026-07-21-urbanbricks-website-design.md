@@ -336,6 +336,8 @@ leads
 
 > **当前状态总览见 `PROJECT-STATUS.md`**（2026-07-24 起为单一权威入口）。本表保留决策沿革。
 
+_本表 2026-07-25 校对：与 PROJECT-STATUS.md、`pnpm verify:content`（45 项不变）、pact STATE（18/18 accepted）、线上 `urbanbricks.uk` 逐项核对一致。_
+
 | 项 | 责任人 | 状态 |
 |---|---|---|
 | 域名 `urbanbricks.uk` | Human Owner | ✅ **已绑定并解析**（2026-07-24，Cloudflare DNS A→Vercel，SSL 有效）|
@@ -347,7 +349,7 @@ leads
 | 结果目标（Baseline → Target 与测量窗口） | Human Owner | 暂缓，首批数据后补齐 |
 | Neon 项目开通 | Primary Agent | ✅ `urbanbricks-poc` / `morning-bread-90534781` / us-east-1 / PG18 |
 | 三个密钥写入 Vercel 环境变量 | Human Owner | ✅ **已配** production/preview（DATABASE_URL / QUOTE_COOKIE_SECRET / ADMIN_PASSWORD）。上线前确认值正确 |
-| 真 GA4 measurement ID | Human Owner | 待办 —— 现为占位 `G-PLACEHOLDER0`，机制已建（PECR 同意闸门） |
+| 真 GA4 measurement ID | Human Owner | ✅ **已上线**（2026-07-25）——`G-HC2E0LYTPK`，写入 Vercel Production 并经全新构建核实存在于线上 JS bundle；PECR 同意闸门未变 |
 | Search Console | Human Owner | 待办 —— 待 SITE_INDEXABLE 开放后接入 |
 | 45 个 unverified() 事实值 | Human Owner | 待办（产品参数需工程图纸；运营信息可陆续给）—— **noindex 守着，假数据不外泄** |
 | 质保期限 | Human Owner | ✅ 结构 10 年 / 防水 5 年 / 部件 2 年 已确认（2026-07-24），但代码去包裹待批量处理 |
