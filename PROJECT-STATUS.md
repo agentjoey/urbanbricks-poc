@@ -96,6 +96,7 @@ verify:content  → 45 unverified 值（故意保留，见下）
 
 | 文档 | 内容 |
 |---|---|
+| `HANDOFF.md` | **交接给新 agent 必读**——协议硬规则、技术陷阱、内容红线 |
 | `PRODUCT.md` | 定位、信念阶梯、设计原则、真实性红线 |
 | `DESIGN.md` | 设计系统（token、字体、组件、Do/Don't）|
 | `docs/superpowers/specs/2026-07-21-*.md` | 完整 T3 spec |
